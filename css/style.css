@@ -1,0 +1,124 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.clear  {
+	clear:both;
+}
+/*  STYLE PERSO */
+.blueviolet {
+	color: lightslategray;
+}
+
+/*.navbar-inverse {
+	background-color: blueviolet;
+	color: darkred;
+}*/
+.navbar-inverse .navbar-brand  {
+	color:firebrick;
+}
+.navbar-inverse .navbar-nav>li>a  {
+	color: firebrick;
+}
+
+.erreur {
+	background-color: darkred;
+	color: white;
+	font-style: italic;
+	padding: 5px;
+	margin-top: 20px;
+}
+.succes {
+	background-color: darkgreen;
+	color: white;
+	font-style: italic;
+	padding: 5px;
+	margin-top: 20px;
+}
+
+/* PAGE PROFIL */
+.infos_profil {
+	color: #428bca;
+	display: inline-block;
+	width: 100px;
+	font-style: italic;
+}
+
+/* FICHE ARTICLE */
+p .label_fiche {
+	display: inline-block;
+	width: 140px;
+	color: #428bca;
+}
+.fiche_article p {
+	text-align: left;
+}
+.panel-body .fiche_image {
+	text-align: center;
+}
+.addmember {
+	margin-bottom : 40px;
+}
+.olive {
+	margin-bottom: 15px;
+	}
+
+.fichepro {
+
+	width:100%;
+}
+
+input.nn {
+    -moz-appearance: textfield;
+}
+
+.salle_titre {
+	color: steelblue;
+	font-weight: bold;
+}
+
+.salle_prix {
+	font-weight: bold;
+
+}
+
+/* Tableau d'affichage des tables */
+.affichage {
+	text-align: center;
+}
+
+th.affichage {
+	background-color: darkslategray;
+	color: beige;
+}
+
+/* Connexion */
+.container_connexion {
+	position: fixed;
+	z-index:1;
+	width: 100%;
+	height: 100%;
+	padding: 5em 30em 5em 30em;
+
+background: rgba(0, 0, 0, 0.3);
+	/*opacity: 0.5;*/
+
+}
+
+.block_connexion {
+	margin: 0 auto;
+	padding: 15px;
+	background-color: white;
+	border-radius: 1em;
+	border: 1px solid;
+}
+
+.fermeture>a {
+	text-decoration: none;
+	color: red;
+
+}
