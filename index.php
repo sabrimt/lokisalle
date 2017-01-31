@@ -23,6 +23,7 @@ while($produit = $contenu_produit->fetch_assoc())
 
 	$tab_produit[] = $produit;
 }
+// test github
 
 
 // debug($tab_produit);
