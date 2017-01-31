@@ -184,23 +184,6 @@ include("../inc/nav.inc.php");
 						<label for="description">Description</label>
 						<textarea class="form-control" id="description" placeholder="Description..." name="description"><?php if(isset($_POST['description'])){ echo $_POST['description']; } else { echo $description; } ?></textarea>
 					</div>
-
-					<?php if(isset($_GET['action']) && $_GET['action'] == 'modification')
-					{
-				  	?>
-				  	<div class="col-sm-4">
-						<label for="photo_actuelle">Photo actuelle</label><br/>
-						<img src="<?php echo URL . $photo ?>" alt="" width="140" />
-						<input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
-				  	</div>
-					<?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
-					} ?>
-
-					<div class="<?php echo $disp_photo; ?>form-group">
-						<label for="photo">Photo</label>
-						<input type="file" class="form-control" id="photo" name="photo"  style="min-height: 50px;"/>
-					</div>
-
 				</div><!-- col-sm-6 -->
 
 				<div class="col-sm-6">
@@ -226,6 +209,24 @@ include("../inc/nav.inc.php");
 					</div>
 				  
 		  		</div>
+                                <div class="row">
+                                        <?php if(isset($_GET['action']) && $_GET['action'] == 'modification')
+					{
+				  	?>
+				  	<div class="col-sm-4">
+						<label for="photo_actuelle">Photo actuelle</label><br/>
+						<img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
+						<input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
+				  	
+                                                <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
+                                                } ?>
+
+                                                <div class="form-group">
+                                                        <label for="photo">Photo</label>
+                                                        <input type="file" class="form-control" id="photo" name="photo" style="min-height: 50px;"/>
+                                                </div>
+                                        </div>
+                                </div>
 			  	<!-- </div> -->		  
 			  
 				<hr />
