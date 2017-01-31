@@ -68,10 +68,18 @@ p .label_fiche {
 	}
 
 .fichepro {
-
-	width:100%;
+    width:100%;
 }
-
+.no-photo {
+    height: 165.36px;
+    margin-bottom: 9.64px;
+    padding-top: 30%;
+    background-color:#ccc;
+    text-align: center;
+}
+.no-photo p {
+        font-weight: bold;
+    }
 input.nn {
     -moz-appearance: textfield;
 }
@@ -104,7 +112,7 @@ th.affichage {
 	height: 100%;
 	padding: 5em 30em 5em 30em;
 
-background: rgba(0, 0, 0, 0.3);
+background: rgba(0, 0, 0, 0.4);
 	/*opacity: 0.5;*/
 
 }

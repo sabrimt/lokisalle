@@ -7,26 +7,24 @@ $contenu_produit = execute_requete("SELECT * FROM produit");
 while($produit = $contenu_produit->fetch_assoc())
 {
 	$contenu_salle = execute_requete("SELECT * FROM salle WHERE id_salle = '$produit[id_salle]'");
-
-	while($salle = $contenu_salle->fetch_assoc())
-	{
-		$produit["titre"] = $salle['titre'];
-		$produit["description"] = $salle['description'];
-		$produit["photo"] = $salle['photo'];
-		$produit["ville"] = $salle['ville'];
-		$produit["adresse"] = $salle['adresse'];
-		$produit["cp"] = $salle['cp'];
-		$produit["capacite"] = $salle['capacite'];
-		$produit["categorie"] = $salle['categorie'];
-		$produit["pays"] = $salle['pays'];
-	}
+        
+	$salle = $contenu_salle->fetch_assoc();
+	
+        $produit["titre"] = $salle['titre'];
+        $produit["description"] = $salle['description'];
+        $produit["photo"] = $salle['photo'];
+        $produit["ville"] = $salle['ville'];
+        $produit["adresse"] = $salle['adresse'];
+        $produit["cp"] = $salle['cp'];
+        $produit["capacite"] = $salle['capacite'];
+        $produit["categorie"] = $salle['categorie'];
+        $produit["pays"] = $salle['pays'];
 
 	$tab_produit[] = $produit;
 }
-// test github
 
 
-// debug($tab_produit);
+debug($tab_produit);
 
 include("inc/header.inc.php");
 include("inc/nav.inc.php");
@@ -36,7 +34,7 @@ include("inc/nav.inc.php");
 
       <div class="starter-template">
         <h1><span class="blueviolet glyphicon glyphicon-home"></span> Lokisalle - Réservation de salle</h1>
-		<?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>		
+		<?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
       </div>
 	  <div class="row">
 		 <aside class="col-sm-3" style="background-color: lightskyblue; min-height: 600px">
@@ -46,10 +44,7 @@ include("inc/nav.inc.php");
 		  </aside>
 		  <div class="col-sm-9">
 		  <?php 
-			// afficher tous les produits de la BDD
-			// une req qui recupere tous le contenu de la table article
-			// dans une boucle while, transformer la ligne en cours et afficher les informations désirées.
-			// ajouter un lien voir la fiche produit !
+                        // Affichage des différents produits
 			foreach($tab_produit AS $index => $val)
 			{
 				?>
@@ -59,10 +54,13 @@ include("inc/nav.inc.php");
 				<?php 
 				if(!empty($tab_produit[$index]['photo']))
 				{
-					echo '<p><img class="fichepro" src="' . $tab_produit[$index]['photo'] . '" /></p>';
-				}
+                                    echo '<p><img class="fichepro" src="' . $tab_produit[$index]['photo'] . '" /></p>';
+				}else
+                                {
+                                    echo '<div class="no-photo"><p>Pas de photo pour cette salle</p></div>';
+                                }
 				$type_salle="Salle ";
-				if($tab_produit[$index]['capacite'] == 'bureau')
+				if($tab_produit[$index]['categorie'] == 'bureau')
 				{
 					$type_salle = "Bureau ";
 				}
