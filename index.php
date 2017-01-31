@@ -22,6 +22,7 @@ while($produit = $contenu_produit->fetch_assoc())
 	}
 
 	$tab_produit[] = $produit;
+       
 }
 // test github
 
@@ -66,8 +67,9 @@ include("inc/nav.inc.php");
 				{
 					$type_salle = "Bureau ";
 				}
-
+                            
 				?>
+                                                   
 							<div class="row">
 								<h5 class="col-sm-8 salle_titre"><?php echo $type_salle . $tab_produit[$index]['titre']; ?></h5>
 								<h5 class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</h5>
@@ -75,7 +77,7 @@ include("inc/nav.inc.php");
 							<p><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>
 							<p class="glyphicon glyphicon-calendar"> <?php echo substr(change_date($tab_produit[$index]['date_arrivee']), 0, 10) . ' au ' . substr(change_date($tab_produit[$index]['date_depart']), 0, 10); ?></p>
 							<div class="row">
-								<a class="col-sm-4 col-sm-offset-8" href=""><span class="glyphicon glyphicon-search"></span> Voir</a>
+                                                            <?php echo '<a class="col-sm-4 col-sm-offset-8" href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><span class="glyphicon glyphicon-search"></span> Voir</a>' ?>
 							</div>
 						</div>
 					</div>

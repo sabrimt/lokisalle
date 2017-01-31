@@ -47,7 +47,30 @@ body {
 	width: 100px;
 	font-style: italic;
 }
-
+/* FICHE PRODUIT */
+.fiche_main_pic {
+    text-align: center;
+}
+.main_pic {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+/*    margin-top:5px;*/
+}
+.fiche-top {
+    padding:15px;
+}
+img {
+    vertical-align: inherit;
+}
+.fiche_other_pics {
+    margin-top:20px;
+}
 /* FICHE ARTICLE */
 p .label_fiche {
 	display: inline-block;
