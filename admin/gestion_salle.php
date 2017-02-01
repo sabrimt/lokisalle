@@ -117,7 +117,7 @@ include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
 ?>
 
-    <div class="container">
+    
 
       <div class="starter-template">
         <h1><span class="blueviolet glyphicon glyphicon-cog"></span> Gestion des Salles</h1>
@@ -130,23 +130,25 @@ include("../inc/nav.inc.php");
 			<div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
 				<a href="?action=ajout" class="btn btn-primary">Ajouter une Salle</a>
 				<a href="?action=affichage" class="btn btn-info">Afficher les Salles</a>
-			<hr />
+                                <hr />
 			</div>
 		</div>
 			<?php 
 				if(isset($_GET['action']) && ($_GET['action'] == 'ajout' || $_GET['action'] == 'modification'))
 				{
-			?> 
-		<div class="col-sm-10 col-sm-offset-1">
+			?>
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
 			<form method="post" action="" enctype="multipart/form-data"> 
-				<legend><?php
-				if(isset($_GET['action']) && $_GET['action'] == 'modification')
-				{
-					echo 'Modification de la salle ' . $titre;
-				}else {
-					echo 'Ajout de Salle';
-				}
-				?></legend>
+                            <legend><?php
+                            if(isset($_GET['action']) && $_GET['action'] == 'modification')
+                            {
+                                    echo 'Modification de la salle ' . $titre;
+                            }else {
+                                    echo 'Ajout de Salle';
+                            }
+                            ?></legend>
+                            <div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
 
@@ -176,7 +178,7 @@ include("../inc/nav.inc.php");
 								echo '<option'; if( $capacite == $cap || (isset($_POST['capacite']) && $_POST['capacite'] == $cap ) ) { echo ' selected'; } echo '>' . $cap . '</option>';
 							}
 							?>
-					</select>
+                                                </select>
 					
 					</div>
 
@@ -209,39 +211,42 @@ include("../inc/nav.inc.php");
 					</div>
 				  
 		  		</div>
-                                <div class="row">
-                                        <?php if(isset($_GET['action']) && $_GET['action'] == 'modification')
-					{
-				  	?>
-				  	<div class="col-sm-4">
-						<label for="photo_actuelle">Photo actuelle</label><br/>
-						<img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
-						<input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
-				  	
-                                                <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
-                                                } ?>
+                            </div><!-- row -->
+                                
+                            <div class="row">
+                                    <?php if(isset($_GET['action']) && $_GET['action'] == 'modification')
+                                    {
+                                    ?>
+                                    <legend>Photos de la salle</legend>
+                                    <div class="col-sm-4">
+                                            <label for="photo_actuelle">Photo actuelle</label><br/>
+                                            <img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
+                                            <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
 
-                                                <div class="form-group">
-                                                        <label for="photo">Photo</label>
-                                                        <input type="file" class="form-control" id="photo" name="photo" style="min-height: 50px;"/>
-                                                </div>
-                                        </div>
-                                </div>
-			  	<!-- </div> -->		  
-			  
-				<hr />
-				<div class="row">
-					<div class="col-sm-6 col-sm-offset-3">
+                                            <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
+                                            } ?>
+                                            <div class="form-group col-sm-4">
+                                                <label for="photo" class="btn btn-label btn-primary">Ajouter une photo...</label>
+                                                <input type="file" class="input-file form-control" id="photo" name="photo"/>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="photo_1" class="btn btn-label btn-primary">Ajouter une photo...</label>
+                                                <input type="file" class="input-file form-control" id="photo2" name="photo_1"/>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <label for="photo_2" class="btn btn-label btn-primary">Ajouter une photo...</label>
+                                                <input type="file" class="input-file form-control" id="photo3" name="photo_3"/>
+                                            </div>
+                                    </div>
+                            
+                                    <div class="col-sm-6 col-sm-offset-3">
 
-						<input type="submit" class="form-control btn btn-info" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
-				
-					</div>
-				</div>
-				
+                                            <input type="submit" class="form-control btn btn-info" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
+
+                                    </div>
+                            </div><!-- row -->
 				
 			</form>
-				
-		</div>
 <?php 	}	
 
 if(isset($_GET['action']) && $_GET['action'] == 'affichage')
@@ -251,11 +256,8 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 	afficher_table_avec_boucle("SELECT * FROM salle", "id_salle");
 	
 }
-
-
-
-
-
-
-echo '</div></div><!-- /.container -->'; // fermeture du row et du container
+?>
+                    </div><!-- fermeture container dic col-sm-10 -->
+                </div><!-- fermetutre row principale -->
+<?php
 include("../inc/footer.inc.php");
