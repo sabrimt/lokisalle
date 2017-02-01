@@ -40,27 +40,44 @@ body {
 	margin-top: 20px;
 }
 
-/* PAGE PROFIL */
+/* ********************** PAGE PROFIL ********************************* */
 .infos_profil {
 	color: #428bca;
 	display: inline-block;
 	width: 100px;
 	font-style: italic;
 }
-/* FICHE PRODUIT */
-.fiche_main_pic {
+/* ********************** FICHE PRODUIT ******************************* */
+.fiche_produit_h1 {
     text-align: center;
 }
-.main_pic {
+.fiche_main_pic {
+    text-align: center;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+/*    border: 1px solid #ddd;*/
+}
+.fiche_main_pic img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 0.45s;
+}
+/*.fiche_main_pic .hideme {
+  opacity: 0;
+  transition: opacity 0s;
+}*/
+#large {
     display: inline-block;
     max-width: 100%;
     height: auto;
-    padding: 4px;
+    padding: 15px;
     line-height: 1.42857143;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
-/*    margin-top:5px;*/
+    margin-top: 6px;
 }
 .fiche-top {
     padding:15px;
@@ -68,10 +85,7 @@ body {
 img {
     vertical-align: inherit;
 }
-.fiche_other_pics {
-    margin-top:20px;
-}
-/* FICHE ARTICLE */
+
 p .label_fiche {
 	display: inline-block;
 	width: 140px;
@@ -83,26 +97,9 @@ p .label_fiche {
 .panel-body .fiche_image {
 	text-align: center;
 }
-.addmember {
-	margin-bottom : 40px;
+.fiche_produit_dispo {
+    font-weight: 700;
 }
-.olive {
-	margin-bottom: 15px;
-	}
-
-.fichepro {
-    width:100%;
-}
-.no-photo {
-    height: 165.36px;
-    margin-bottom: 9.64px;
-    padding-top: 30%;
-    background-color:#ccc;
-    text-align: center;
-}
-.no-photo p {
-        font-weight: bold;
-    }
 input.nn {
     -moz-appearance: textfield;
 }
@@ -117,7 +114,8 @@ input.nn {
 
 }
 
-/* Tableau d'affichage des tables */
+
+/* ********************** Tableau d'affichage des tables ********** */
 .affichage {
 	text-align: center;
 }
@@ -127,7 +125,7 @@ th.affichage {
 	color: beige;
 }
 
-/* Connexion */
+/* ********************** Connexion ************************* */
 .container_connexion {
 	position: fixed;
 	z-index:1;
