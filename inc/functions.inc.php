@@ -212,10 +212,15 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 		echo '<tr>';
 		foreach($entree AS $indice => $valeur)
 		{
-			// afficher l'image dans un img src !
-			if($indice == 'photo')
+			// afficher les images dans un img src !
+			if($indice == 'photo' || $indice == 'photo_2' || $indice == 'photo_3')
 			{
+                            if (!empty($valeur))
+                            {
 				echo '<td  class="affichage"><img src="' . URL . $valeur . '" alt="'. $valeur .'" width="90" /></td>';
+                            } else {
+                                echo '<td  class="affichage">Pas d\'image</td>';
+                            }
 			}elseif($indice == 'description')
 			{
 				echo '<td  class="affichage">' . substr($valeur, 0, 26) . ' <a href="">... lire la suite</a></td>';
