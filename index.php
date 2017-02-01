@@ -24,8 +24,8 @@ while($produit = $contenu_produit->fetch_assoc())
        
 }
 
-
-debug($tab_produit);
+//
+//debug($tab_produit);
 
 include("inc/header.inc.php");
 include("inc/nav.inc.php");
