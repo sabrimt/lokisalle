@@ -118,7 +118,7 @@ include("../inc/nav.inc.php");
 ?>
 
     
-
+    <div class="container">
       <div class="starter-template">
         <h1><span class="blueviolet glyphicon glyphicon-cog"></span> Gestion des Salles</h1>
 		<?php echo $msg; ?>	
@@ -138,7 +138,7 @@ include("../inc/nav.inc.php");
 				{
 			?>
                 <div class="row">
-                    <div class="col-sm-8 col-sm-offset-2">
+                    <div class="col-sm-10 col-sm-offset-1">
 			<form method="post" action="" enctype="multipart/form-data"> 
                             <legend><?php
                             if(isset($_GET['action']) && $_GET['action'] == 'modification')
@@ -226,22 +226,25 @@ include("../inc/nav.inc.php");
                                             <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
                                             } ?>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo" class="btn btn-label btn-primary">Ajouter une photo...</label>
                                                 <input type="file" class="input-file form-control" id="photo" name="photo"/>
+                                                <label for="photo" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo_1" class="btn btn-label btn-primary">Ajouter une photo...</label>
-                                                <input type="file" class="input-file form-control" id="photo2" name="photo_1"/>
+                                                <input type="file" class="input-file form-control" id="photo_2" name="photo_2"/>
+                                                <label for="photo_2" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo_2" class="btn btn-label btn-primary">Ajouter une photo...</label>
-                                                <input type="file" class="input-file form-control" id="photo3" name="photo_3"/>
+                                                <input type="file" class="input-file form-control" id="photo_3" name="photo_3"/>
+                                                <label for="photo_3" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                     </div>
                             
                                     <div class="col-sm-6 col-sm-offset-3">
 
-                                            <input type="submit" class="form-control btn btn-info" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
+                                            <input type="submit" class="form-control btn btn-primary" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
 
                                     </div>
                             </div><!-- row -->
@@ -259,5 +262,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 ?>
                     </div><!-- fermeture container dic col-sm-10 -->
                 </div><!-- fermetutre row principale -->
+    </div><!-- fermeture container -->
 <?php
 include("../inc/footer.inc.php");
