@@ -58,3 +58,29 @@ th.addEventListener('click', function(e) {
   }, 50);
   e.preventDefault();
 }, false);
+
+
+/* ****************  PLAN GOOGLE MAP ***************** */
+
+		var map;
+		function initMap(){
+		var optionsCarte = {
+		center: {lat:45.438257, lng: 4.391788},
+		zoom: 16,
+		zoomControl: true
+		};
+		var maCarte = new google.maps.Map(document.getElementById('map'), optionsCarte);
+	
+		var optionsMarqueur = {
+			position: maCarte.getCenter(),
+			map: maCarte,
+                        icon: image,
+                        title:"Hello World!"
+		};
+		var marqueur = new google.maps.Marker(optionsMarqueur);
+		};
+                var image = {
+                    url: 'img/maison.png',
+                    size: new google.maps.Size(20, 32),
+                }
+           

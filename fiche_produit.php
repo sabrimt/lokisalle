@@ -22,17 +22,12 @@ include("inc/nav.inc.php");
 ?>
 
     <div class="container">
-
-      <div class="starter-template">
-       
-			
-      </div>
-	  
+        <hr/>
+	  <h1 class="fiche_produit_h1"> <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Réservation de salle en détails  </h1>
 	  <div class="row">
-		<div class="col-sm-8">
-                    <h1 class="fiche_produit_h1"><span class="glyphicon glyphicon-play" aria-hidden="true"></span> Réservez la salle <b> <?php echo $produit['titre'] ?> </b> </h1>
-                  
-                     <div class=" panel panel-primary fiche_produit" style="background-color:#F4F7F7">
+		<div class="col-sm-8" style="display: table-cell;">
+                    <div class=" panel panel-primary fiche_produit">
+                    <legend> Description du produit - Salle <b> <?php echo $produit['titre'] ?> </b> </legend>
                         
 				<div class="col-sm-12 fiche-top gallery" id="gallery">
                                     <div class="col-sm-9 fiche_main_pic" id="lg-wrap" > <?php echo '<img id="large" data-idx="0" src="' . $produit['photo'] . '" />'; ?>
@@ -50,26 +45,24 @@ include("inc/nav.inc.php");
                                     </div>
                                 </div>
 				<div class="panel-body">
-<!--                                       <div style="background-color:pink">-->
-                                       <p><span class="label_fiche">Description:</span> <?php echo $produit['description']; ?></p>
+                                       <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Description :</b> </span> </p>
+                                       <p class="fiche_produit_description"><?php echo $produit['description']; ?></p>
                                        <hr/>
-                                       <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Disponibilités:</b> </span> </p>
-                                       <p><span class="label_fiche"> Entrée </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_arrivee'] . ' </b>' . ' '; ?></p>
-                                       <p><span class="label_fiche"> Sortie </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_depart'] . '</b>'; ?></p>
-<!--                                       </div>-->
-                                    
-                                       
+                                       <div class="col-sm-6" style="padding-left: 0">
+                                            <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Caractéristiques :</b> </span> </p>
+                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_arrivee'] . ' </b>' . ' '; ?></p>
+                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_depart'] . '</b>'; ?></p>
+                                       </div>
+                                       <div class="col-sm-6">
+                                            <p class="fiche_produit_dispo"><span class="label_fiche"> <b> </b> </span> </p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
+                                          
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Ville :</span> <?php echo  $produit['ville']; ?></p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Prix :</span> <b> <?php echo $produit['prix'] . ' euros ' ; ?> <b/></p>
+					<br/>
+                                       </div>
 					
-                                        
-                                        <p class="fiche_produit_dispo"><span class="label_fiche">Capacité:</span> <?php echo $produit['capacite']; ?></p>
-					<p class="fiche_produit_dispo"><span class="label_fiche">Adresse:</span> <?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' .  $produit['ville']; ?></p>
-	
-					
-                                        <hr/>
-					
-					 <p class="fiche_produit_dispo" style="font-size:18pt;"><span class="label_fiche" >Prix:</span> <?php echo $produit['prix'] . ' euros ' ; ?></p>
-					
-					<hr/>
+                                      
 					<?php
 				
 					echo '<form method="post" action="panier.php">';
@@ -79,11 +72,29 @@ include("inc/nav.inc.php");
 				
 					?>
 					<br/>
-					<p><a href="index.php"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>RETOUR</a></p>
+					<p style="text-align:center;"><a href="index.php"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>RETOUR</a></p>
 				</div>
 			</div>
-		</div>
-	  </div>
+                </div>
+              <div class="col-sm-4" style="display: table-cell;">
+                   <div class=" panel panel-primary fiche_produit" >
+                        <legend> Accès à la salle :  </legend>
+                        <p class="fiche_produit_dispo"> 
+                            <span class="label_fiche adresse_carte" style="padding:10px; max-width:85px;"> Adresse :</span>
+                            <span><?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' . $produit['ville']; ?></span>
+                        </p>
+                       <div id="map">
+					
+                       </div>
+                   </div>
+                  <div class=" panel panel-primary fiche_produit">
+                       <legend> Voir aussi... </legend>
+                      <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
+                      <p class="fiche_produit_dispo"><span class="label_fiche">Adresse :</span> <?php echo $produit['adresse'] . ' ' . $produit['cp']; ?></p>
+                  </div>
+              </div>
+            
+	  </div> <!-- ROW -->
 	  
 	  
 
