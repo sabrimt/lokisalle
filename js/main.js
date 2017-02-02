@@ -14,7 +14,7 @@ $(document).ready(function()
 
 
 
-});
+//});
 
 //var th = document.getElementById('thumbnails');
 //
@@ -34,23 +34,45 @@ $(document).ready(function()
 
 
 /***** WORK ON INPUT-FILE (GESTION SALLE) *****/
-var replace = 'Selectionné   <span class="glyphicon glyphicon-ok"></span>';// remplace le contenu du label
-//var i = 1;
-//var id_photo_complete = '';
-//while( i <= 3 ){
-    $('#photo').on('change', function (){
-        $('#photo1').html(replace);
-        // ++++ ajouter class au label : changer couleurs
+var full = 'Selectionné   <span class="glyphicon glyphicon-ok"></span>';// label en cas de fichier sélectionné
+var empty = 'Ajouter une photo...<span class="glyphicon glyphicon-save"></span>';// label quand le input est vide
+var i = 1;
+var id_photo_complete = '';
+
+
+
+while( i <= 3 ){
+    var photo = '#photo' + id_photo_complete;
+    var label = '#photo' + i;
+    change_label(label, photo);
+    i++;
+    id_photo_complete = '_' + i;
+}
+
+function change_label(label, photo){
+    var photo_sel = $(photo);
+    var label_sel = $(label);
+    if (photo_sel.val() !== "")
+    {
+        label_sel.html(full)
+            .addClass("oqp");
+        console.log(photo_sel.val());
+    }
+    photo_sel.on('change', function (){
+//        console.log('changement ¤¤¤ ' + photo_sel.val() + ' ¤¤¤');
+
+        if (photo_sel.val() == "")
+        {
+            label_sel.html(empty)
+                    .removeClass("oqp");
+        } else {
+            label_sel.html(full)
+                    .addClass("oqp");
+            
+        }
     });
-//    i++;
-//    id_photo_complete = '_' + i;
-//}
-$('#photo_2').on('change', function (){
-    $('#photo2').html(replace);
-    // ++++ ajouter class au label : changer couleurs
-});
-$('#photo_3').on('change', function (){
-    $('#photo3').html(replace);
-    // ++++ ajouter class au label : changer couleurs
-});
+    
+};
+
 /***** work on input-file (gestion salle) *****/
+}); // fermeture document.ready
