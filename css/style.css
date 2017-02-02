@@ -9,7 +9,7 @@ body {
 .clear  {
 	clear:both;
 }
-/*  STYLE PERSO */
+/* ******************  STYLE PERSO ******************** */
 .blueviolet {
 	color: lightslategray;
 }
@@ -40,16 +40,19 @@ body {
 	margin-top: 20px;
 }
 
-/* PAGE PROFIL */
+/* ****************** PAGE PROFIL ******************* */
 .infos_profil {
 	color: #428bca;
 	display: inline-block;
 	width: 100px;
 	font-style: italic;
 }
-/* FICHE PRODUIT */
+/* ****************** FICHE PRODUIT ******************** */
 .fiche_main_pic {
     text-align: center;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-top:20px;
 }
 .main_pic {
     display: inline-block;
@@ -62,6 +65,30 @@ body {
     border-radius: 4px;
 /*    margin-top:5px;*/
 }
+#large {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.fiche_main_pic img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 1.85s;
+}
+.fiche_main_pic .hideme {
+  opacity: 0;
+  transition: opacity 0s;
+}
 .fiche-top {
     padding:15px;
 }
@@ -69,9 +96,9 @@ img {
     vertical-align: inherit;
 }
 .fiche_other_pics {
-    margin-top:20px;
+   
 }
-/* FICHE ARTICLE */
+
 p .label_fiche {
 	display: inline-block;
 	width: 140px;
@@ -117,7 +144,7 @@ input.nn {
 
 }
 
-/* Tableau d'affichage des tables */
+/* ************* Tableau d'affichage des tables *************** */
 .affichage {
 	text-align: center;
 }
