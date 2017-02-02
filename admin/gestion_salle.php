@@ -11,6 +11,8 @@ if(!utilisateur_est_connecte_et_est_admin())
 $titre = "";
 $description = "";
 $photo = "";
+$photo_2 = "";
+$photo_3 = "";
 $pays = "";
 $ville = "";
 $adresse = "";
@@ -27,9 +29,15 @@ if(isset($_GET['action']) && $_GET['action'] == 'suppression')
 		$salle_a_supprimer = execute_requete("SELECT photo FROM salle WHERE id_salle='$_GET[id]'");
 		$photo_a_supprimer = $salle_a_supprimer->fetch_assoc();
 		if(!empty($photo_a_supprimer['photo']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo']))
-		{
-			unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo']); // pour supprimer la photo de cet salle.
-		}
+                {
+                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo']); // pour supprimer la photo de cet salle.
+                }elseif(!empty($photo_a_supprimer['photo_2']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo_2']))
+                {
+                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo_2']);
+                }elseif(!empty($photo_a_supprimer['photo_3']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo_3']))
+                {
+                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo_3']);
+                }
 		
 		execute_requete("DELETE FROM salle WHERE id_salle='$_GET[id]'");
 	}	
@@ -69,9 +77,13 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 	}else {
 		
 		$photo_bdd = ""; // pour éviter une erreur undefined si l'utilisateur ne charge pas de photo.
+		$photo_2_bdd = "";
+		$photo_3_bdd = "";
 		if(isset($_GET['action']) && $_GET['action'] == 'modification')
 		{
 			$photo_bdd = $_POST['photo_actuelle']; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
+			$photo_2_bdd = $_POST['photo_2_actuelle'];
+			$photo_3_bdd = $_POST['photo_3_actuelle'];
 		}		
 		if(!empty($_FILES['photo']['name'])) // si une photo a été postée
 		{
@@ -97,12 +109,12 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 			
 			if(isset($_GET['action']) && $_GET['action'] == 'ajout')
 			{
-				execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd')");
+				execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo, photo_2, photo_3) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd', '$photo_2_bdd', '$photo_3_bdd')");
 
 					//echo '<h1>Test ok</h1>';
 			}elseif (isset($_GET['action']) && $_GET['action'] == 'modification' )
 			{
-				execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd' WHERE id_salle='$id_salle'");
+				execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd', photo_2='$photo_2_bdd', photo_3='$photo_3_bdd' WHERE id_salle='$id_salle'");
 			}
 			$msg .= '<div class="succes">' . ucfirst($_GET['action']) . ' OK !</div>';
 			$_GET['action'] = 'affichage'; // on bascule sur l'affichage du tableau pour voir l'enregsitrement ou la modification qui vient d'être exécutée.			 
@@ -118,7 +130,7 @@ include("../inc/nav.inc.php");
 ?>
 
     
-
+    <div class="container">
       <div class="starter-template">
         <h1><span class="blueviolet glyphicon glyphicon-cog"></span> Gestion des Salles</h1>
 		<?php echo $msg; ?>	
@@ -138,7 +150,7 @@ include("../inc/nav.inc.php");
 				{
 			?>
                 <div class="row">
-                    <div class="col-sm-8 col-sm-offset-2">
+                    <div class="col-sm-10 col-sm-offset-1">
 			<form method="post" action="" enctype="multipart/form-data"> 
                             <legend><?php
                             if(isset($_GET['action']) && $_GET['action'] == 'modification')
@@ -163,7 +175,7 @@ include("../inc/nav.inc.php");
 							<option style="text-align: center;" selected disabled >--- Selectionnez une catégorie ---</option>
 							<option value="reunion" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "reunion" ) || ($categorie == "reunion") ) echo 'selected'; ?> >Réunion</option>
 							<option value="bureau" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "bureau" ) || ($categorie == "bureau") ) echo 'selected'; ?> >Bureau</option>
-						<option value="formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "formation" ) || ($categorie == "formation") ) echo 'selected'; ?> >Formation</option>
+                                                        <option value="formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "formation" ) || ($categorie == "formation") ) echo 'selected'; ?> >Formation</option>
 						</select>
 					</div>
 
@@ -226,22 +238,25 @@ include("../inc/nav.inc.php");
                                             <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
                                             } ?>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo" class="btn btn-label btn-primary">Ajouter une photo...</label>
                                                 <input type="file" class="input-file form-control" id="photo" name="photo"/>
+                                                <label for="photo" id="photo1" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo_1" class="btn btn-label btn-primary">Ajouter une photo...</label>
-                                                <input type="file" class="input-file form-control" id="photo2" name="photo_1"/>
+                                                <input type="file" class="input-file form-control" id="photo_2" name="photo_2"/>
+                                                <label for="photo_2" id="photo2" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                             <div class="form-group col-sm-4">
-                                                <label for="photo_2" class="btn btn-label btn-primary">Ajouter une photo...</label>
-                                                <input type="file" class="input-file form-control" id="photo3" name="photo_3"/>
+                                                <input type="file" class="input-file form-control" id="photo_3" name="photo_3"/>
+                                                <label for="photo_3" id="photo3" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
+                                                
                                             </div>
                                     </div>
                             
                                     <div class="col-sm-6 col-sm-offset-3">
 
-                                            <input type="submit" class="form-control btn btn-info" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
+                                            <input type="submit" class="form-control btn btn-primary" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
 
                                     </div>
                             </div><!-- row -->
@@ -259,5 +274,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 ?>
                     </div><!-- fermeture container dic col-sm-10 -->
                 </div><!-- fermetutre row principale -->
+    </div><!-- fermeture container -->
 <?php
 include("../inc/footer.inc.php");
