@@ -153,6 +153,15 @@ background: rgba(0, 0, 0, 0.4);
 	color: red;
 
 }
+
+/********* GESTION DES SALLES **********/
+.bloc-photos {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.photo-actuelle{
+    margin-top: 15px;
+}
 /**** BOUTONS INPUT-FILE ****/
 
 /*cacher le champ input*/
@@ -170,10 +179,6 @@ background: rgba(0, 0, 0, 0.4);
     .btn-label {
        font-size: 0.8em;
     }
-}
-.bloc-photos {
-    margin-top: 20px;
-    margin-bottom: 30px;
 }
 .btn-label {
     display: block;
@@ -197,3 +202,4 @@ background: rgba(0, 0, 0, 0.4);
     color: lime;
 }
 /**** boutons input-file ****/
+/********* gestion des salles **********/

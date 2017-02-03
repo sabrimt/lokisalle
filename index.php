@@ -39,7 +39,6 @@ include("inc/nav.inc.php");
       </div>
 	  <div class="row">
 		 <aside class="col-sm-3" style="background-color: lightskyblue; min-height: 600px">
-		  
 			
 			
 		  </aside>

@@ -38,13 +38,16 @@ var full = 'Selectionné   <span class="glyphicon glyphicon-ok"></span>';// labe
 var empty = 'Ajouter une photo...<span class="glyphicon glyphicon-save"></span>';// label quand le input est vide
 var i = 1;
 var id_photo_complete = '';
+//var affiche_image = $()
 
 
 
 while( i <= 3 ){
     var photo = '#photo' + id_photo_complete;
     var label = '#photo' + i;
+    
     change_label(label, photo);
+    
     i++;
     id_photo_complete = '_' + i;
 }
@@ -52,11 +55,11 @@ while( i <= 3 ){
 function change_label(label, photo){
     var photo_sel = $(photo);
     var label_sel = $(label);
+    console.log('valeur : ' + photo_sel.val());
     if (photo_sel.val() !== "")
     {
         label_sel.html(full)
             .addClass("oqp");
-        console.log(photo_sel.val());
     }
     photo_sel.on('change', function (){
 //        console.log('changement ¤¤¤ ' + photo_sel.val() + ' ¤¤¤');
