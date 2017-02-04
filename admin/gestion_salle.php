@@ -20,7 +20,16 @@ $cp = "";
 $capacite = "";
 $categorie = "";
 
-
+/* VARIABLES INITIALISEES POUR LES VERIFICATIONS D'AFFICHAGE DES PHOTOS ACTUELLES */
+        $photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
+        $photo2_exists = FALSE;
+        $photo3_exists = FALSE;
+        
+        $photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
+        $photo2_action = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
+        $photo3_action = 'Ajouter ';
+        
+        
 /* SUPPRESSION */
 if(isset($_GET['action']) && $_GET['action'] == 'suppression')
 {
@@ -58,13 +67,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 	}
         
         /* VERIFICATIONS POUR AFFICHAGE DES PHOTOS ACTUELLES */
-        $photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
-        $photo2_exists = FALSE;
-        $photo3_exists = FALSE;
-        
-        $photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
-        $photo2_action = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
-        $photo3_action = 'Ajouter ';
         
         if(!empty($photo)) // si la photo exite
         {
