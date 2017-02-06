@@ -95,9 +95,9 @@ function utilisateur_est_connecte_et_est_admin()
 }
 
 // FONCTIONS GESTION BOUTIQUE
-function verif_extension_photo()
-{
-	$extension = strrchr($_FILES['photo']['name'], '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
+function verif_extension_photo($col_name)
+{   
+	$extension = strrchr($_FILES[$col_name]['name'], '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
 	$extension = strtolower(substr($extension, 1)); // ici on transforme la chaine en minuscule (strtolower) au cas ou et on coupe le point du début de la chaine (substr) au final le .jpg ou .JPG devient => jpg
 	$extension_valide = array('jpg', 'jpeg', 'png', 'gif'); // on place dans un tableau array les extensions accepetées.
 	
@@ -105,10 +105,6 @@ function verif_extension_photo()
 	
 	return $verif_extension; // on renvoi donc true ou false.
 }
-
-
-// .jpg
-// .jpeg
 
 /* FONCTIONS PANIER */
 //--- création du panier
@@ -213,7 +209,7 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 		foreach($entree AS $indice => $valeur)
 		{
 			// afficher les images dans un img src !
-			if($indice == 'photo' || $indice == 'photo_2' || $indice == 'photo_3')
+			if(($indice == 'photo') || ($indice == 'photo_2') || ($indice == 'photo_3'))
 			{
                             if (!empty($valeur))
                             {

@@ -207,6 +207,15 @@ background: rgba(0, 0, 0, 0.4);
 	color: red;
 
 }
+
+/********* GESTION DES SALLES **********/
+.bloc-photos {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.photo-actuelle{
+    margin-top: 15px;
+}
 /**** BOUTONS INPUT-FILE ****/
 
 /*cacher le champ input*/
@@ -220,6 +229,11 @@ background: rgba(0, 0, 0, 0.4);
 }
 
 /*stylisation du label*/
+@media screen and (max-width: 1000px){
+    .btn-label {
+       font-size: 0.8em;
+    }
+}
 .btn-label {
     display: block;
     width: 70%;
@@ -227,10 +241,19 @@ background: rgba(0, 0, 0, 0.4);
 }
 .input-file:focus + label {
 	outline: 1px dotted #000;
-	outline: -webkit-focus-ring-color auto 5px;
+	outline: -webkit-focus-ring-color auto 4px;
 }
 .btn-label span {
-    text-shadow: #777 1px 1px, #777 -1px 1px, #777 -1px -1px, #777 1px -1px;
-/*text-shadow: 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px #FFF, 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255), 0px 0px 6px rgb(255, 255, 255);*/
+    margin-left: 5px;
+}
+.oqp {
+    background-color: #91BACF;
+}
+.oqp:hover {
+    background-color: #77ABD6;
+}
+.oqp>span {
+    color: lime;
 }
 /**** boutons input-file ****/
+/********* gestion des salles **********/

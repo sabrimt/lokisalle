@@ -20,7 +20,16 @@ $cp = "";
 $capacite = "";
 $categorie = "";
 
-
+/* VARIABLES INITIALISEES POUR LES VERIFICATIONS D'AFFICHAGE DES PHOTOS ACTUELLES */
+        $photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
+        $photo2_exists = FALSE;
+        $photo3_exists = FALSE;
+        
+        $photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
+        $photo2_action = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
+        $photo3_action = 'Ajouter ';
+        
+        
 /* SUPPRESSION */
 if(isset($_GET['action']) && $_GET['action'] == 'suppression')
 {
@@ -56,13 +65,33 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 		$salle_actuelle = $resultat->fetch_assoc(); // on transforme la ligne de l'objet resultat en tableau array
 		extract($salle_actuelle);
 	}
+        
+        /* VERIFICATIONS POUR AFFICHAGE DES PHOTOS ACTUELLES */
+        
+        if(!empty($photo)) // si la photo exite
+        {
+            $photo_action = 'Changer ';// j'affiche 'changer photo'
+            $photo_exists = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
+        }
+        
+        if(!empty($photo_2))
+        {
+            $photo2_action = 'Changer ';
+            $photo2_exists = TRUE;
+        }
+        
+        if(!empty($photo_3))
+        {
+            $photo3_action = 'Changer ';
+            $photo3_exists = TRUE;
+        }
 }
 
 // controles sur la validité des saisies du formulaire
 
 if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays']) && isset($_POST['ville']) && isset($_POST['adresse']) && isset($_POST['cp']) && isset($_POST['capacite']) && isset($_POST['categorie']))
 {
-	//debug($_POST);
+	debug($_POST);
 	/*foreach($_POST as $indice => $valeur)
 	{
 		$_POST[$indice] = htmlentities($valeur, ENT_QUOTES);
@@ -75,7 +104,7 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 	{
 		$msg .= '<div class="erreur">Erreur: La référence: '. $titre . ' est indisponible</div>';
 	}else {
-		
+	// VERIFICATION PHOTOS	
 		$photo_bdd = ""; // pour éviter une erreur undefined si l'utilisateur ne charge pas de photo.
 		$photo_2_bdd = "";
 		$photo_3_bdd = "";
@@ -84,11 +113,13 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 			$photo_bdd = $_POST['photo_actuelle']; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
 			$photo_2_bdd = $_POST['photo_2_actuelle'];
 			$photo_3_bdd = $_POST['photo_3_actuelle'];
-		}		
+                        
+		}
+                // vérif sur photo
 		if(!empty($_FILES['photo']['name'])) // si une photo a été postée
 		{
-			
-			if(verif_extension_photo())
+                    
+			if(verif_extension_photo('photo'))
 			{
 
 				// il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
@@ -103,6 +134,45 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 				$msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
 			}
 		}
+                // vérif sur photo_2
+                if(!empty($_FILES['photo_2']['name'])) // si une photo a été postée
+		{
+                    
+			if(verif_extension_photo('photo_2'))
+			{
+
+				// il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
+				// on concatène donc la référence qui est unique avec le nom de la photo.
+				$nom_2_photo = $_FILES['photo_2']['name'];
+				$photo_2_bdd = 'img/' . $nom_2_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
+				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_2_photo; // représente le chemin absolu pour enregistrer la photo.
+				copy($_FILES['photo_2']['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
+				
+				
+			}else { // l'extension de la photo n'est pas valide
+				$msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
+			}
+		}
+                // vérif sur photo_3
+                if(!empty($_FILES['photo_3']['name'])) // si une photo a été postée
+		{
+                    
+			if(verif_extension_photo('photo_3'))
+			{
+
+				// il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
+				// on concatène donc la référence qui est unique avec le nom de la photo.
+				$nom_3_photo = $_FILES['photo_3']['name'];
+				$photo_3_bdd = 'img/' . $nom_3_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
+				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_3_photo; // représente le chemin absolu pour enregistrer la photo.
+				copy($_FILES['photo_3']['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
+				
+				
+			}else { // l'extension de la photo n'est pas valide
+				$msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
+			}
+		}
+            // Vérification photos END
 			
 		if(empty($msg) && !empty($titre) && !empty($categorie) ) // s'il n'y a pas d'erreur au préalable, alors on lance l'enregistrement en BDD et champs requis remplis
 		{
@@ -224,43 +294,67 @@ include("../inc/nav.inc.php");
 				  
 		  		</div>
                             </div><!-- row -->
-                                
-                            <div class="row">
-                                    <?php if(isset($_GET['action']) && $_GET['action'] == 'modification')
-                                    {
-                                    ?>
-                                    <legend>Photos de la salle</legend>
-                                    <div class="col-sm-4">
-                                            <label for="photo_actuelle">Photo actuelle</label><br/>
-                                            <img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
-                                            <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
-
-                                            <?php $disp_photo = "col-sm-8 "; // ajout d'une classe "col" pour l'affichage des photos
-                                            } ?>
-                                            <div class="form-group col-sm-4">
-                                                <input type="file" class="input-file form-control" id="photo" name="photo"/>
-                                                <label for="photo" id="photo1" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
-                                                
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="file" class="input-file form-control" id="photo_2" name="photo_2"/>
-                                                <label for="photo_2" id="photo2" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
-                                                
-                                            </div>
-                                            <div class="form-group col-sm-4">
-                                                <input type="file" class="input-file form-control" id="photo_3" name="photo_3"/>
-                                                <label for="photo_3" id="photo3" class="btn btn-label btn-info">Ajouter une photo...   <span class="glyphicon glyphicon-save"></span></label>
-                                                
-                                            </div>
-                                    </div>
                             
-                                    <div class="col-sm-6 col-sm-offset-3">
+                            <div class="row bloc-photos ">
+                                <legend>Photos de la salle</legend>
+                                <div class="form-group col-sm-4">
 
-                                            <input type="submit" class="form-control btn btn-primary" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
-
+                                    <input type="file" class="input-file form-control" id="photo" name="photo"/>
+                                    <label for="photo" id="photo1" class="btn btn-label btn-info"><?php echo $photo_action ?>photo...<span class="glyphicon glyphicon-save"></span></label>
+                                <?php
+                                if($photo_exists)
+                                {?>
+                                    <div class="photo-actuelle col-sm-10 col-sm-offset-1">
+                                        <label for="photo_actuelle">Photo actuelle</label><br/>
+                                        <img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
+                                        <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
                                     </div>
-                            </div><!-- row -->
-				
+                                <?php
+                                }?>
+
+                                </div>
+
+                                <div class="form-group col-sm-4">
+
+                                    <input type="file" class="input-file form-control" id="photo_2" name="photo_2"/>
+                                    <label for="photo_2" id="photo2" class="btn btn-label btn-info"><?php echo $photo2_action ?>photo...<span class="glyphicon glyphicon-save"></span></label>
+
+                                <?php
+                                if($photo2_exists)
+                                {?>
+                                    <div class="photo-actuelle col-sm-10 col-sm-offset-1">
+                                        <label for="photo_2_actuelle">Photo actuelle</label><br/>
+                                        <img src="<?php echo URL . $photo_2 ?>" alt="<?php echo $photo_2 ?>" width="100%" />
+                                        <input type="hidden" name="photo_2_actuelle" value="<?php echo $photo_2 ?>" />
+                                    </div>
+                                <?php
+                                }?>
+
+                                </div>
+                                <div class="form-group col-sm-4">
+
+                                    <input type="file" class="input-file form-control" id="photo_3" name="photo_3"/>
+                                    <label for="photo_3" id="photo3" class="btn btn-label btn-info"><?php echo $photo3_action ?>photo...<span class="glyphicon glyphicon-save"></span></label>
+
+                                <?php
+                                if($photo3_exists)
+                                {?>
+                                    <div class="photo-actuelle col-sm-10 col-sm-offset-1">
+                                        <label for="photo_3_actuelle">Photo actuelle</label><br/>
+                                        <img src="<?php echo URL . $photo_3 ?>" alt="<?php echo $photo_3 ?>" width="100%" />
+                                        <input type="hidden" name="photo_3_actuelle" value="<?php echo $photo_3 ?>" />
+                                    </div>
+                                <?php 
+                                } ?>
+                                </div>
+                            </div><!-- row bloc_photos -->
+                            <div class="row">
+                                <div class="col-sm-6 col-sm-offset-3">
+
+                                        <input type="submit" class="form-control btn btn-primary" id="enregistrer" name="enregistrer" value="Enregistrer Salle" /><hr />
+
+                                </div>
+                            </div>
 			</form>
 <?php 	}	
 
