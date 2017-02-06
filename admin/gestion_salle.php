@@ -22,14 +22,14 @@ $categorie = "";
 
 /* VARIABLES INITIALISEES POUR LES VERIFICATIONS D'AFFICHAGE DES PHOTOS ACTUELLES */
         $photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
-        $photo2_exists = FALSE;
-        $photo3_exists = FALSE;
+        $photo_exists_2 = FALSE;
+        $photo_exists_3 = FALSE;
         
         $photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
-        $photo2_action = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
-        $photo3_action = 'Ajouter ';
+        $photo_action_2 = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
+        $photo_action_3 = 'Ajouter ';
         
-        
+
 /* SUPPRESSION */
 if(isset($_GET['action']) && $_GET['action'] == 'suppression')
 {
@@ -76,14 +76,14 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
         
         if(!empty($photo_2))
         {
-            $photo2_action = 'Changer ';
-            $photo2_exists = TRUE;
+            $photo_action_2 = 'Changer ';
+            $photo_exists_2 = TRUE;
         }
         
         if(!empty($photo_3))
         {
-            $photo3_action = 'Changer ';
-            $photo3_exists = TRUE;
+            $photo_action_3 = 'Changer ';
+            $photo_exists_3 = TRUE;
         }
 }
 
@@ -91,7 +91,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 
 if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays']) && isset($_POST['ville']) && isset($_POST['adresse']) && isset($_POST['cp']) && isset($_POST['capacite']) && isset($_POST['categorie']))
 {
-	debug($_POST);
+//	debug($_POST);
 	/*foreach($_POST as $indice => $valeur)
 	{
 		$_POST[$indice] = htmlentities($valeur, ENT_QUOTES);
@@ -104,16 +104,24 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 	{
 		$msg .= '<div class="erreur">Erreur: La référence: '. $titre . ' est indisponible</div>';
 	}else {
-	// VERIFICATION PHOTOS	
+	// VERIFICATION PHOTOS
 		$photo_bdd = ""; // pour éviter une erreur undefined si l'utilisateur ne charge pas de photo.
-		$photo_2_bdd = "";
-		$photo_3_bdd = "";
+		$photo_bdd_2 = "";
+		$photo_bdd_3 = "";
 		if(isset($_GET['action']) && $_GET['action'] == 'modification')
 		{
-			$photo_bdd = $_POST['photo_actuelle']; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
-			$photo_2_bdd = $_POST['photo_2_actuelle'];
-			$photo_3_bdd = $_POST['photo_3_actuelle'];
-                        
+			if(isset($_POST['photo_actuelle']))
+                        {
+                            $photo_bdd = $_POST['photo_actuelle']; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
+                        }
+                        if(isset($_POST['photo_actuelle_2']))
+                        {
+                            $photo_bdd_2 = $_POST['photo_actuelle_2'];
+                        }
+                        if(isset($_POST['photo_actuelle_3']))
+                        {
+                            $photo_bdd_3 = $_POST['photo_actuelle_3'];
+                        }
 		}
                 // vérif sur photo
 		if(!empty($_FILES['photo']['name'])) // si une photo a été postée
@@ -143,9 +151,9 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 
 				// il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
 				// on concatène donc la référence qui est unique avec le nom de la photo.
-				$nom_2_photo = $_FILES['photo_2']['name'];
-				$photo_2_bdd = 'img/' . $nom_2_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
-				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_2_photo; // représente le chemin absolu pour enregistrer la photo.
+				$nom_photo_2 = $_FILES['photo_2']['name'];
+				$photo_bdd_2 = 'img/' . $nom_photo_2; // $photo_bdd représente le src que nous allons enregistrer en BDD
+				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_photo_2; // représente le chemin absolu pour enregistrer la photo.
 				copy($_FILES['photo_2']['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
 				
 				
@@ -162,9 +170,9 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 
 				// il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
 				// on concatène donc la référence qui est unique avec le nom de la photo.
-				$nom_3_photo = $_FILES['photo_3']['name'];
-				$photo_3_bdd = 'img/' . $nom_3_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
-				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_3_photo; // représente le chemin absolu pour enregistrer la photo.
+				$nom_photo_3 = $_FILES['photo_3']['name'];
+				$photo_bdd_3 = 'img/' . $nom_photo_3; // $photo_bdd représente le src que nous allons enregistrer en BDD
+				$chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_photo_3; // représente le chemin absolu pour enregistrer la photo.
 				copy($_FILES['photo_3']['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
 				
 				
@@ -179,12 +187,12 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 			
 			if(isset($_GET['action']) && $_GET['action'] == 'ajout')
 			{
-				execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo, photo_2, photo_3) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd', '$photo_2_bdd', '$photo_3_bdd')");
+				execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo, photo_2, photo_3) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd', '$photo_bdd_2', '$photo_bdd_3')");
 
 					//echo '<h1>Test ok</h1>';
 			}elseif (isset($_GET['action']) && $_GET['action'] == 'modification' )
 			{
-				execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd', photo_2='$photo_2_bdd', photo_3='$photo_3_bdd' WHERE id_salle='$id_salle'");
+				execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd', photo_2='$photo_bdd_2', photo_3='$photo_bdd_3' WHERE id_salle='$id_salle'");
 			}
 			$msg .= '<div class="succes">' . ucfirst($_GET['action']) . ' OK !</div>';
 			$_GET['action'] = 'affichage'; // on bascule sur l'affichage du tableau pour voir l'enregsitrement ou la modification qui vient d'être exécutée.			 
@@ -193,7 +201,7 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 	
 }
 
-
+        $photos = array($photo, $photo_2, $photo_3);
 
 include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
@@ -307,7 +315,7 @@ include("../inc/nav.inc.php");
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
                                         <label for="photo_actuelle">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
-                                        <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" />
+                                        <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" /><?= $photos[0] ?>
                                     </div>
                                 <?php
                                 }?>
@@ -317,15 +325,15 @@ include("../inc/nav.inc.php");
                                 <div class="form-group col-sm-4">
 
                                     <input type="file" class="input-file form-control" id="photo_2" name="photo_2"/>
-                                    <label for="photo_2" id="photo2" class="btn btn-label btn-info"><?php echo $photo2_action ?>photo...<span class="glyphicon glyphicon-save"></span></label>
+                                    <label for="photo_2" id="photo2" class="btn btn-label btn-info"><?php echo $photo_action_2 ?>photo...<span class="glyphicon glyphicon-save"></span></label>
 
                                 <?php
-                                if($photo2_exists)
+                                if($photo_exists_2)
                                 {?>
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
-                                        <label for="photo_2_actuelle">Photo actuelle</label><br/>
+                                        <label for="photo_actuelle_2">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . $photo_2 ?>" alt="<?php echo $photo_2 ?>" width="100%" />
-                                        <input type="hidden" name="photo_2_actuelle" value="<?php echo $photo_2 ?>" />
+                                        <input type="hidden" name="photo_actuelle_2" value="<?php echo $photo_2 ?>" />
                                     </div>
                                 <?php
                                 }?>
@@ -334,15 +342,15 @@ include("../inc/nav.inc.php");
                                 <div class="form-group col-sm-4">
 
                                     <input type="file" class="input-file form-control" id="photo_3" name="photo_3"/>
-                                    <label for="photo_3" id="photo3" class="btn btn-label btn-info"><?php echo $photo3_action ?>photo...<span class="glyphicon glyphicon-save"></span></label>
+                                    <label for="photo_3" id="photo3" class="btn btn-label btn-info"><?php echo $photo_action_3 ?>photo...<span class="glyphicon glyphicon-save"></span></label>
 
                                 <?php
-                                if($photo3_exists)
+                                if($photo_exists_3)
                                 {?>
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
-                                        <label for="photo_3_actuelle">Photo actuelle</label><br/>
+                                        <label for="photo_actuelle_3">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . $photo_3 ?>" alt="<?php echo $photo_3 ?>" width="100%" />
-                                        <input type="hidden" name="photo_3_actuelle" value="<?php echo $photo_3 ?>" />
+                                        <input type="hidden" name="photo_actuelle_3" value="<?php echo $photo_3 ?>" />
                                     </div>
                                 <?php 
                                 } ?>
@@ -364,6 +372,10 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 	// Création de tableau pour afficher la table
 	afficher_table_avec_boucle("SELECT * FROM salle", "id_salle");
 	
+}
+foreach ($photos as $index => $photo)
+{
+    echo $index . ' ===> ' . $photo . '<br>';
 }
 ?>
                     </div><!-- fermeture container dic col-sm-10 -->
