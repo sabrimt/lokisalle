@@ -31,7 +31,7 @@
         <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
     
     
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAStftnDxrXsZeedcHQnErvd3HdkbNGZIQ&callback=initMap" type="text/javascript"></script>
+<!--        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAStftnDxrXsZeedcHQnErvd3HdkbNGZIQ&callback=initMap" type="text/javascript"></script>-->
 
   </body>
 </html>
