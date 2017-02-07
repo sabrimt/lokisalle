@@ -9,7 +9,12 @@ if(!preg_match('#^[0-9]+$#', $_GET['id'])) // on vérifie si l'id ne contient qu
 
 $id_produit = $_GET['id']; // récupération de l'id
 $get_produit = execute_requete("SELECT * FROM salle s, produit p WHERE s.id_salle = p.id_salle AND id_produit = $id_produit");
+if($get_produit->num_rows == 0) // si il n'a pas de ligne, l'id ne correspond à rien => on renvoi sur l'accueil		  
+      {
+        header("location:index.php");
+      }
 $produit = $get_produit->fetch_assoc();
+$reftitre = strtolower(substr($produit['titre'], 0, 3));
 
 //debug($produit);
 
@@ -23,12 +28,10 @@ include("inc/nav.inc.php");
 
     <div class="container">
         <hr/>
-	  <h1 class="fiche_produit_h1"> <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Réservation de salle en détails  </h1>
+        <h1 class="fiche_produit_h1"> <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp; Réservation de la salle <b> <?php echo $produit['titre'] ?> </b> <small><i>- Réference: <?php echo $produit['id_produit'].$reftitre ?> </i></small> </h1>
 	  <div class="row">
 		<div class="col-sm-8" style="display: table-cell;">
                     <div class=" panel panel-primary fiche_produit">
-                    <legend> Description du produit - Salle <b> <?php echo $produit['titre'] ?> </b> </legend>
-                        
 				<div class="col-sm-12 fiche-top gallery" id="gallery">
                                     <div class="col-sm-9 fiche_main_pic" id="lg-wrap" > <?php echo '<img id="large" data-idx="0" src="' . $produit['photo'] . '" />'; ?>
                                     </div>
@@ -88,13 +91,21 @@ include("inc/nav.inc.php");
                        </div>
                    </div>
                   <div class=" panel panel-primary fiche_produit">
-                       <legend> Voir aussi... </legend>
-                      <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
-                      <p class="fiche_produit_dispo"><span class="label_fiche">Adresse :</span> <?php echo $produit['adresse'] . ' ' . $produit['cp']; ?></p>
+                       <legend> Voir les autres disponibilités... </legend>
+                      <p class="fiche_produit_dispo"><span class="label_fiche">Salle :</span> <?php echo $produit['titre'] ?></p>
+                     
                   </div>
               </div>
             
 	  </div> <!-- ROW -->
+          <div class="row">
+              <div class="col-sm-12" style="display: table-cell;">
+                <div class="fiche_produits_salles_villes panel panel-primary" style="min-height:200px;">
+                    ALLO ICI AUTRES PRODUITS DANS LA MÊME VILLE
+
+                </div>
+              </div>
+          </div> <!-- ROW -->
 	  
 	  
 

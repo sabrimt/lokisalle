@@ -49,6 +49,7 @@ include("inc/nav.inc.php");
                         // Affichage des différents produits
 			foreach($tab_produit AS $index => $val)
 			{
+                            $reftitre = strtolower(substr($tab_produit[$index]['titre'], 0, 3));
 				?>
 				<div class="col-sm-4">
 					<div class=" panel panel-primary">
@@ -56,7 +57,7 @@ include("inc/nav.inc.php");
 				<?php 
 				if(!empty($tab_produit[$index]['photo']))
 				{
-                                    echo '<p><img class="fichepro" src="' . $tab_produit[$index]['photo'] . '" /></p>';
+                                    echo '<p><a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><img class="fichepro" src="' . $tab_produit[$index]['photo'] . '" /></a></p>';
 				}else
                                 {
                                     echo '<div class="no-photo"><p>Pas de photo pour cette salle</p></div>';
@@ -68,21 +69,30 @@ include("inc/nav.inc.php");
 				}
                             
 				?>
-                                                   
-							<div class="row">
-								<h5 class="col-sm-8 salle_titre"><?php echo $type_salle . $tab_produit[$index]['titre']; ?></h5>
-								<h5 class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</h5>
-							</div>
-							<p><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>
-							<p class="glyphicon glyphicon-calendar"> <?php echo substr(change_date($tab_produit[$index]['date_arrivee']), 0, 10) . ' au ' . substr(change_date($tab_produit[$index]['date_depart']), 0, 10); ?></p>
-							<div class="row">
-                                                            <?php echo '<a class="col-sm-4 col-sm-offset-8" href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><span class="glyphicon glyphicon-search"></span> Voir</a>' ?>
-							</div>
-						</div>
-					</div>
-				</div>
-				<?php } ?>
-		  
+                                <div class="row">
+                                        <h5 class="col-sm-8 salle_titre"><?php echo $type_salle . $tab_produit[$index]['titre']; ?></h5>
+                                        <h5 class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</h5>
+                                </div>
+                                <p class="index-descr-fiche"><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>
+                                <p class="index-ref-fiche"> <small> <i>Référence: <?php echo $tab_produit[$index]['id_produit'].$reftitre; ?></i></small></p>
+                                <p class="glyphicon glyphicon-calendar"> <?php 
+                                    if (substr(change_date($tab_produit[$index]['date_arrivee']), 0, 10)==substr(change_date($tab_produit[$index]['date_depart']), 0, 10))
+                                        {
+                                        echo substr(change_date($tab_produit[$index]['date_arrivee']), 0, 10) . ' <small> ' . ' de ' . substr(change_date($tab_produit[$index]['date_arrivee']), 11, 5) . ' à ' . substr(change_date($tab_produit[$index]['date_depart']), 11, 5) . '</small>' ;
+                                        } else {
+                                        echo substr(change_date($tab_produit[$index]['date_arrivee']), 0, 10) . ' au ' . substr(change_date($tab_produit[$index]['date_depart']), 0, 10); 
+                                        } ?>
+                                </p>
+                                <div class="row">
+                                    <div class="index-voir col-sm-6 col-sm-offset-3">
+                                    <?php echo '<a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><button type="button" class="btn btn-info index-bouton-voir"><span class="glyphicon glyphicon-search"></span> Voir</button></a>' ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
 		  	</div>
 		</div>
 	  
