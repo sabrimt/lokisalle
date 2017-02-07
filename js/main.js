@@ -13,26 +13,6 @@ $(document).ready(function()
     });
 
 
-
-//});
-/* ********** POURQUOI CA ECRASE MES TRUCS A CHAQUE FOIS SABER ???!!! le JS de la fiche produit avait disparu ***** */
-
-
-    th.addEventListener('click', function(e) {
-      var t = e.target, new_src = t.parentNode.href, 
-          large = document.getElementById('large'),
-          cl = large.classList,
-          lgwrap = document.getElementById('lg-wrap');
-      lgwrap.style.backgroundImage = 'url(' +large.src + ')';
-      if(cl) cl.add('hideme');
-      window.setTimeout(function(){
-        large.src = new_src;
-        if(cl) cl.remove('hideme');
-      }, 50);
-      e.preventDefault();
-    }, false);
-
-
 /***** WORK ON INPUT-FILE (GESTION SALLE) *****/
     var full = 'Selectionné   <span class="glyphicon glyphicon-ok"></span>';// label en cas de fichier sélectionné
     var empty = 'Ajouter une photo...<span class="glyphicon glyphicon-save"></span>';// label quand le input est vide
@@ -79,7 +59,5 @@ $(document).ready(function()
 
 /***** work on input-file (gestion salle) *****/
 }); // fermeture document.ready
-$('#photo_3').on('change', function (){
-    });
 
 
