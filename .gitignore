@@ -1,4 +1,3 @@
-/nbproject/private/
+/nbproject/
 inc/init\.inc\.php
-
-*.jpg
+/img/
