@@ -144,15 +144,15 @@ p .label_fiche {
     text-align: center;
 }
 .no-photo p {
-        font-weight: bold;
-    }
+    font-weight: bold;
+}
 input.nn {
     -moz-appearance: textfield;
 }
 
 .salle_titre {
-	color: steelblue;
-	font-weight: bold;
+    color: steelblue;
+    font-weight: bold;
 }
 #map {
     height: 190px;
@@ -212,6 +212,9 @@ background: rgba(0, 0, 0, 0.4);
 .bloc-photos {
     margin-top: 20px;
     margin-bottom: 30px;
+}
+legend {
+    margin-bottom: 20px;
 }
 .photo-actuelle{
     margin-top: 15px;

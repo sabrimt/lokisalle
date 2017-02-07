@@ -17,34 +17,34 @@ $(document).ready(function()
     var full = 'Selectionné   <span class="glyphicon glyphicon-ok"></span>';// label en cas de fichier sélectionné
     var empty = 'Ajouter une photo...<span class="glyphicon glyphicon-save"></span>';// label quand le input est vide
     var i = 1;
-    var id_photo_complete = '';
+    var id_complete = '';
     //var affiche_image = $()
 
 
 
     while( i <= 3 ){
-        var photo = '#photo' + id_photo_complete;
-        var label = '#photo' + i;
+        var photo = '#photo' + id_complete;
+        var label = '#photo_lab' + id_complete;
 
         change_label(label, photo);
 
         i++;
-        id_photo_complete = '_' + i;
+        id_complete = '_' + i;
     }
 
     function change_label(label, photo){
-        var photo_sel = $(photo);
+        var sel = $(photo);
         var label_sel = $(label);
-        console.log('valeur : ' + photo_sel.val());
-        if (photo_sel.val() !== "")
+
+        if (sel.val() !== "")
         {
             label_sel.html(full)
                 .addClass("oqp");
         }
-        photo_sel.on('change', function (){
-    //        console.log('changement ¤¤¤ ' + photo_sel.val() + ' ¤¤¤');
+        sel.on('change', function (){
+    //        console.log('changement ¤¤¤ ' + sel.val() + ' ¤¤¤');
 
-            if (photo_sel.val() == "")
+            if (sel.val() == "")
             {
                 label_sel.html(empty)
                         .removeClass("oqp");
