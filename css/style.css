@@ -9,7 +9,7 @@ body {
 .clear  {
 	clear:both;
 }
-/*  STYLE PERSO */
+/* ******************  STYLE PERSO ******************** */
 .blueviolet {
 	color: lightslategray;
 }
@@ -40,16 +40,36 @@ body {
 	margin-top: 20px;
 }
 
-/* PAGE PROFIL */
+/* ****************** PAGE PROFIL ******************* */
 .infos_profil {
 	color: #428bca;
 	display: inline-block;
 	width: 100px;
 	font-style: italic;
 }
-/* FICHE PRODUIT */
+/* ****************** FICHE PRODUIT ******************** */
+.panel-body {
+    padding-bottom: 0;
+}
+.fiche_produit {
+    margin-top: 25px;
+}
+.fiche_produit_h1 {
+font-size:18pt;
+}
+
+legend {
+    padding-left:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom: 0;
+/*    text-align: center;*/
+}
 .fiche_main_pic {
     text-align: center;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-top:20px;
 }
 .main_pic {
     display: inline-block;
@@ -62,6 +82,30 @@ body {
     border-radius: 4px;
 /*    margin-top:5px;*/
 }
+#large {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.fiche_main_pic img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 1.85s;
+}
+.fiche_main_pic .hideme {
+  opacity: 0;
+  transition: opacity 0s;
+}
 .fiche-top {
     padding:15px;
 }
@@ -69,9 +113,8 @@ img {
     vertical-align: inherit;
 }
 .fiche_other_pics {
-    margin-top:20px;
 }
-/* FICHE ARTICLE */
+
 p .label_fiche {
 	display: inline-block;
 	width: 140px;
@@ -111,13 +154,24 @@ input.nn {
 	color: steelblue;
 	font-weight: bold;
 }
-
+#map {
+    height: 190px;
+    max-width: 345px;
+    border-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
+    }
 .salle_prix {
 	font-weight: bold;
 
 }
 
-/* Tableau d'affichage des tables */
+@media screen and (max-width: 700px) {
+  .fiche_main_pic  {
+    display:none;
+  }
+}
+/* ************* Tableau d'affichage des tables *************** */
 .affichage {
 	text-align: center;
 }
