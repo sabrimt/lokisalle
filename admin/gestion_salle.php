@@ -21,14 +21,15 @@ $capacite = "";
 $categorie = "";
 
 /* VARIABLES INITIALISEES POUR LES VERIFICATIONS D'AFFICHAGE DES PHOTOS ACTUELLES */
-        $photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
-        $photo_exists_2 = FALSE;
-        $photo_exists_3 = FALSE;
+$photo_exists = FALSE; // variables qui vérifient l'existance de photo en BDD et permettent ou non l'affichage de l'élément 'photo actuelle'
+$photo_exists_2 = FALSE;
+$photo_exists_3 = FALSE;
+
+$photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
+$photo_action_2 = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
+$photo_action_3 = 'Ajouter ';
         
-        $photo_action = 'Ajouter '; // variables qui permettent de modifier le label pour la selection de photo s'il y'en a déjà
-        $photo_action_2 = 'Ajouter ';// Si pas de photo j'affiche 'ajouter photo'
-        $photo_action_3 = 'Ajouter ';
-        
+$cols = ['photo', 'photo_2', 'photo_3'];
 
 /* SUPPRESSION */
 if(isset($_GET['action']) && $_GET['action'] == 'suppression')
@@ -37,15 +38,12 @@ if(isset($_GET['action']) && $_GET['action'] == 'suppression')
 	{
 		$salle_a_supprimer = execute_requete("SELECT photo FROM salle WHERE id_salle='$_GET[id]'");
 		$photo_a_supprimer = $salle_a_supprimer->fetch_assoc();
-		if(!empty($photo_a_supprimer['photo']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo']))
+                foreach($cols as $col)
                 {
-                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo']); // pour supprimer la photo de cet salle.
-                }elseif(!empty($photo_a_supprimer['photo_2']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo_2']))
-                {
-                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo_2']);
-                }elseif(!empty($photo_a_supprimer['photo_3']) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer['photo_3']))
-                {
-                    unlink(RACINE_SERVER . URL . $photo_a_supprimer['photo_3']);
+                    if(!empty($photo_a_supprimer[$col]) && file_exists(RACINE_SERVER . URL . $photo_a_supprimer[$col]))
+                    {
+                        unlink(RACINE_SERVER . URL . $photo_a_supprimer[$col]); // pour supprimer la photo de cet salle.
+                    }
                 }
 		
 		execute_requete("DELETE FROM salle WHERE id_salle='$_GET[id]'");
@@ -67,24 +65,44 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 	}
         
         /* VERIFICATIONS POUR AFFICHAGE DES PHOTOS ACTUELLES */
-        
-        if(!empty($photo)) // si la photo exite
-        {
-            $photo_action = 'Changer ';// j'affiche 'changer photo'
-            $photo_exists = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
-        }
-        
-        if(!empty($photo_2))
-        {
-            $photo_action_2 = 'Changer ';
-            $photo_exists_2 = TRUE;
-        }
-        
-        if(!empty($photo_3))
-        {
-            $photo_action_3 = 'Changer ';
-            $photo_exists_3 = TRUE;
-        }
+//        if(!empty($photos))
+//        {
+            $action = 'photo_action';
+            $exists = 'photo_exists';
+            $i = 1;
+            foreach ($cols as $col) {
+                if(!empty($$col)) // si la photo existe
+                {
+                    if($i > 1){
+                        $n = '_' . $i;
+                    }else{
+                        $n = "";
+                    }
+                    
+                    ${$action . $n} = 'Changer ';// j'affiche 'changer photo'
+                    ${$exists . $n} = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
+                    
+                    $i++;
+                } 
+            }
+//        }
+//        if(!empty($photo)) // si la photo exite
+//        {
+//            $photo_action = 'Changer ';// j'affiche 'changer photo'
+//            $photo_exists = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
+//        }
+//        
+//        if(!empty($photo_2))
+//        {
+//            $photo_action_2 = 'Changer ';
+//            $photo_exists_2 = TRUE;
+//        }
+//        
+//        if(!empty($photo_3))
+//        {
+//            $photo_action_3 = 'Changer ';
+//            $photo_exists_3 = TRUE;
+//        }
 }
 
 // controles sur la validité des saisies du formulaire
@@ -108,20 +126,30 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 		$photo_bdd = ""; // pour éviter une erreur undefined si l'utilisateur ne charge pas de photo.
 		$photo_bdd_2 = "";
 		$photo_bdd_3 = "";
+                
 		if(isset($_GET['action']) && $_GET['action'] == 'modification')
 		{
-			if(isset($_POST['photo_actuelle']))
-                        {
-                            $photo_bdd = $_POST['photo_actuelle']; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
+                    $i=1;
+                    foreach ($cols as $col)
+                    {
+                        if($i > 1){
+                            $n = '_' . $i;
+                        }else{
+                            $n = "";
                         }
-                        if(isset($_POST['photo_actuelle_2']))
+			if(isset($_POST["photo_actuelle$n"]))
                         {
-                            $photo_bdd_2 = $_POST['photo_actuelle_2'];
+                            ${'photo_bdd' . $n} = $_POST['photo_actuelle' . $n]; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
                         }
-                        if(isset($_POST['photo_actuelle_3']))
-                        {
-                            $photo_bdd_3 = $_POST['photo_actuelle_3'];
-                        }
+                    }
+//                        if(isset($_POST['photo_actuelle_2']))
+//                        {
+//                            $photo_bdd_2 = $_POST['photo_actuelle_2'];
+//                        }
+//                        if(isset($_POST['photo_actuelle_3']))
+//                        {
+//                            $photo_bdd_3 = $_POST['photo_actuelle_3'];
+//                        }
 		}
                 // vérif sur photo
 		if(!empty($_FILES['photo']['name'])) // si une photo a été postée
@@ -200,8 +228,6 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 	}
 	
 }
-
-        $photos = array($photo, $photo_2, $photo_3);
 
 include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
@@ -315,7 +341,7 @@ include("../inc/nav.inc.php");
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
                                         <label for="photo_actuelle">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . $photo ?>" alt="<?php echo $photo ?>" width="100%" />
-                                        <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>" /><?= $photos[0] ?>
+                                        <input type="hidden" name="photo_actuelle" value="<?php echo $photo ?>"/>
                                     </div>
                                 <?php
                                 }?>
@@ -350,7 +376,7 @@ include("../inc/nav.inc.php");
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
                                         <label for="photo_actuelle_3">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . $photo_3 ?>" alt="<?php echo $photo_3 ?>" width="100%" />
-                                        <input type="hidden" name="photo_actuelle_3" value="<?php echo $photo_3 ?>" />
+                                        <input type="hidden" name="photo_actuelle_3" value="<?php echo $photo_3 ?>"/>
                                     </div>
                                 <?php 
                                 } ?>
@@ -372,10 +398,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 	// Création de tableau pour afficher la table
 	afficher_table_avec_boucle("SELECT * FROM salle", "id_salle");
 	
-}
-foreach ($photos as $index => $photo)
-{
-    echo $index . ' ===> ' . $photo . '<br>';
 }
 ?>
                     </div><!-- fermeture container dic col-sm-10 -->
