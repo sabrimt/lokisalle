@@ -25,14 +25,13 @@
 
 <!-- JQUERY UI CSS -->
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="<?= URL; ?>css/jquery-ui-timepicker-addon.css">
+        <link rel="stylesheet" href="<?= URL; ?>css/jquery-ui-timepicker-addon.css">
 
-    <!-- JAVASCRIPT PERSO  -->
-    <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
+<!-- JAVASCRIPT PERSO  -->
+        <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
     
     
-	 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAStftnDxrXsZeedcHQnErvd3HdkbNGZIQ&callback=initMap"
-	  type="text/javascript"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAStftnDxrXsZeedcHQnErvd3HdkbNGZIQ&callback=initMap" type="text/javascript"></script>
 
   </body>
 </html>
