@@ -105,6 +105,40 @@ function verif_extension_photo($col_name)
 	
 	return $verif_extension; // on renvoi donc true ou false.
 }
+/****** redimensionnement des images ******/
+function accorder_image($source)
+{
+    $extension = strrchr($source, '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
+    $ext = strtolower(substr($extension, 1)); // donne 'jpg' ou 'jpeg' ou 'png'...
+
+    $image_create = 'imagecreatefrom' . $ext; // détermine le nom de la function en fonction de l'extension du fichier
+    $largeur = 600;// définition des nouvelles valeurs 
+    $hauteur = 400;
+    
+    
+    $image = $image_create($source);
+    $taille = getimagesize($source);
+    $sortie = imagecreatetruecolor($largeur,$hauteur);
+
+    $coef = min($taille[0]/$largeur,$taille[1]/$hauteur);
+
+    $deltax = $taille[0]-($coef * $largeur); 
+    $deltay = $taille[1]-($coef * $hauteur);
+
+    imagecopyresampled($sortie,$image,0,0,$deltax/2,$deltay/2,$largeur,$hauteur,$taille[0]-$deltax,$taille[1]-$deltay);
+    // header('Content-type: image/jpeg');
+    
+    imagejpeg($sortie,'A_mini.png',100);
+    
+    
+    
+    /*
+      Libération de la mémoire allouée aux deux images (sources et nouvelle).
+    */
+    imagedestroy($image);
+    imagedestroy($source_image);
+}
+
 
 /* FONCTIONS PANIER */
 //--- création du panier
@@ -253,67 +287,6 @@ function change_date($date_bdd)
     return $date->format('d/m/Y H:i');
 }
 
-/****** REDIMENTION DES IMAGES ******/
-function redimensionner_image($source, $type_value = "W", $new_value,  $compression = 70, $sortie = "")
-{
-    /*
-      Récupération des dimensions de l'image afin de vérifier
-      que ce fichier correspond bel et bien à un fichier image.
-      Stockage dans deux variables le cas échéant.
-    */
-    if( !( list($source_largeur, $source_hauteur) = getimagesize($source) ) ) {
-        return false;
-    }
-    /*
-      Calcul de la valeur dynamique en fonction des dimensions actuelles
-      de l'image et de la dimension fixe que nous avons précisée en argument.
-    */
-    if( $type_value == "H" ) {
-        $nouv_hauteur = $new_value;
-        $nouv_largeur = ($new_value / $source_hauteur) * $source_largeur;
-    } else {
-        $nouv_largeur = $new_value;
-        $nouv_hauteur = ($new_value / $source_largeur) * $source_hauteur;
-    }
-    /*
-    Création du conteneur, c'est-à-dire l'image qui va contenir la version
-    redimensionnée. Elle aura donc les nouvelles dimensions.
-    */
-    $image = imagecreatetruecolor($nouv_largeur, $nouv_hauteur);
-    /*
-      Importation de l'image source. Stockage dans une variable pour pouvoir
-      effectuer certaines actions.
-    */
-    $source_image = imagecreatefromstring(file_get_contents($source));
-    /*
-      Copie de l'image dans le nouveau conteneur en la rééchantillonant. Ceci
-      permet de ne pas perdre de qualité.
-    */
-    imagecopyresampled($image, $source_image, 0, 0, 0, 0, $nouv_largeur, $nouv_hauteur, $source_largeur, $source_hauteur);
-    /*
-      Si nous avons spécifié une sortie et qu'il s'agit d'un chemin valide (accessible
-      par le script)
-    */
-    if(strlen($sortie) > 0 and @touch($sortie)) {
-        /*
-         Enregistrement de l'image et affichage d'une notification à l'utilisateur.
-        */
-        imagejpeg($image, $sortie, $compression);
-        echo "Fichier sauvegardé.";
-    } else {
-        /*
-         ...Nous indiquons au navigateur que nous affichons une image en définissant le
-         header et nous affichons l'image.
-        */
-        header("Content-Type: image/jpeg");
-        imagejpeg($image, NULL, $compression);
-    }
-    /*
-      Libération de la mémoire allouée aux deux images (sources et nouvelle).
-    */
-    imagedestroy($image);
-    imagedestroy($source_image);
-}
 
 
 

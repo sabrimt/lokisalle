@@ -284,7 +284,7 @@ include("../inc/nav.inc.php");
                                     <label for="photo<?= $n ?>" id="photo_lab<?= $n ?>" class="btn btn-label btn-info"><?php echo ${'photo_action' . $n} ?>photo...<span class="glyphicon glyphicon-save"></span></label>
                                 <?php
                                 if(${'photo_exists' . $n})
-                                {?>
+                                {debug(getimagesize(RACINE_SERVER . URL . ${'photo' . $n}));?>
                                     <div class="photo-actuelle col-sm-10 col-sm-offset-1">
                                         <label for="photo_actuelle<?= $n ?>">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . ${'photo' . $n} ?>" alt="<?php echo ${'photo' . $n} ?>" width="100%" />
