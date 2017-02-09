@@ -66,7 +66,6 @@ include("inc/nav.inc.php");
 				{
 					$type_salle = "Bureau ";
 				}
-                            
 				?>
                                                    
 							<div class="row">

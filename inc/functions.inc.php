@@ -107,36 +107,44 @@ function verif_extension_photo($col_name)
 }
 /****** redimensionnement des images ******/
 function accorder_image($source)
-{
-    $extension = strrchr($source, '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
-    $ext = strtolower(substr($extension, 1)); // donne 'jpg' ou 'jpeg' ou 'png'...
-
-    $image_create = 'imagecreatefrom' . $ext; // détermine le nom de la function en fonction de l'extension du fichier
-    $largeur = 600;// définition des nouvelles valeurs 
-    $hauteur = 400;
+{   
+    // Je renomme le fichier de sortie
+    $explode_src = explode('.', $source);
+    $src_name = $explode_src[0];
+    $renamed = $src_name . time() . '.jpg';
+    
+    // je récupère le type mime
+    $mime = mime_content_type('../' . $source);
+    $explode_mime = explode('/', $mime);
+    $ext = $explode_mime[count($explode_mime) - 1];
+    
+    $image_create = 'imagecreatefrom' . $ext; // détermine le nom de la function en fonction du mime type du fichier
+    $largeur = 300;// définition des nouvelles valeurs 
+    $hauteur = 200;
     
     
-    $image = $image_create($source);
-    $taille = getimagesize($source);
+    $image = $image_create('../' . $source);
+    $taille = getimagesize('../' . $source);
     $sortie = imagecreatetruecolor($largeur,$hauteur);
 
     $coef = min($taille[0]/$largeur,$taille[1]/$hauteur);
 
-    $deltax = $taille[0]-($coef * $largeur); 
+    $deltax = $taille[0]-($coef * $largeur);
     $deltay = $taille[1]-($coef * $hauteur);
 
     imagecopyresampled($sortie,$image,0,0,$deltax/2,$deltay/2,$largeur,$hauteur,$taille[0]-$deltax,$taille[1]-$deltay);
-    // header('Content-type: image/jpeg');
     
-    imagejpeg($sortie,'A_mini.png',100);
-    
-    
-    
+    imagejpeg($sortie, '../' . $renamed, 100);
+       
     /*
       Libération de la mémoire allouée aux deux images (sources et nouvelle).
     */
+    imagedestroy($sortie);
     imagedestroy($image);
-    imagedestroy($source_image);
+    
+    unlink('../' . $source); // Je supprime l'image chargée temporairement
+    
+    return $renamed;
 }
 
 
