@@ -52,12 +52,13 @@ $title = 'connexion'; ?>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="<?php echo URL; ?>index.php">Lokisalle - Location de salle</a>
+         
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li <?php echo active(URL . 'qui_sommes_nous.php') ; ?> ><a href="<?php echo URL; ?>qui_sommes_nous.php">Qui sommes nous?</a></li>
-            <li <?php echo active(URL . 'contact.php') ; ?> ><a href="<?php echo URL; ?>contact.php">Contact</a></li>
+              <li>  <a class="navbar-brand" href="<?php echo URL; ?>index.php"> CavaSalle</a> </li>
+              <li>  <a href="<?php echo URL; ?>qui_sommes_nous.php"> Qui sommes nous?</a></li>
+              <li>  <a href="<?php echo URL; ?>contact.php">Contact</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
           		

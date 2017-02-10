@@ -14,17 +14,21 @@ body {
 	color: lightslategray;
 }
 
-/*.navbar-inverse {
-	background-color: blueviolet;
-	color: darkred;
-}*/
+.navbar-inverse {
+	background-color: #225BAA;
+	color: #EBFAFF;
+        border-color: white;
+}
 .navbar-inverse .navbar-brand  {
-	color:firebrick;
+	color:white;
 }
 .navbar-inverse .navbar-nav>li>a  {
-	color: firebrick;
+	color: #EBFAFF;
 }
-
+.navbar-inverse .navbar-nav>li>a:hover {
+    color: darkred;
+    
+}
 .erreur {
 	background-color: darkred;
 	color: white;
@@ -40,6 +44,36 @@ body {
 	margin-top: 20px;
 }
 /* ****************** INDEX - PAGE D'ACCUEIL ********************** */
+h1 {
+    font-family: 'Nunito', sans-serif;
+    text-align:center;
+    
+}
+#carousel-example-generic {
+    margin-top:10px;
+    margin-bottom: 20px;
+    max-height:350px;
+    max-width:1200px;
+    margin-right:15px;
+    margin-left:15px;
+}
+.carousel-inner {
+   max-height:250px;
+   max-width:1200px;
+   text-align: center;
+}
+.item {
+    min-height: 223px;
+}
+.carrousel-image {
+}
+.carrousel-descriptif {
+     font-family: 'Nunito', sans-serif;
+     padding:50px;
+}
+.aside {
+    margin-top:10px;
+}
 .index-descr-fiche {
     margin-bottom:0px;
 }
@@ -87,6 +121,12 @@ body {
 }
 .fiche_produit_h1 {
 font-size:18pt;
+}
+.fiche_produit_h2 {
+font-size:16pt;
+text-align: center;
+margin-top:0;
+margin-bottom: 0;
 }
 
 legend {
@@ -184,6 +224,14 @@ input.nn {
   .fiche_main_pic  {
     display:none;
   }
+}
+
+.fiche_produits_salles_villes {
+    padding-left:15px;
+    margin-left:15px;
+    margin-right:15px;
+    
+    
 }
 /* ************* Tableau d'affichage des tables *************** */
 .affichage {
