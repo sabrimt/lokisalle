@@ -3,6 +3,15 @@ require_once("inc/init.inc.php");
 
 $tab_produit = array();
 
+$filtre="";
+$date_arrivee= "";
+$date_depart="";
+$prix=3000;   //le plus cher par defaut
+$capacite=0;
+$capacite_affichage = "toutes";
+$date_default = "p.date_arrivee > NOW()";
+$filtre=array("p.etat='libre'", "$date_default");
+
 $contenu_produit = execute_requete("SELECT * FROM produit");
 while($produit = $contenu_produit->fetch_assoc())
 {
@@ -27,6 +36,30 @@ while($produit = $contenu_produit->fetch_assoc())
        
 }
 
+
+//liste pour le filtre
+$resultat_ville= execute_requete("SELECT DISTINCT ville FROM salle");
+
+$liste_ville="";
+while ($element=$resultat_ville->fetch_assoc()){
+	if (isset($_GET['ville']) && $_GET['ville']==$element['ville']){
+		$liste_ville.='<option selected value="'.$element['ville'].'">'.ucfirst($element['ville']).'</option>';
+	}
+	else{
+		$liste_ville.='<option value="'.$element['ville'].'">'.ucfirst($element['ville']).'</option>';
+	}
+}
+$resultat_cat=execute_requete("SELECT DISTINCT categorie FROM salle");
+$liste_cat="";
+while ($element=$resultat_cat->fetch_assoc()){
+	if (isset($_GET['categorie']) && $_GET['categorie']==$element['categorie']){
+		$liste_cat.='<option selected value="'.$element['categorie'].'">'.ucfirst($element['categorie']).'</option>';
+	}
+	else{
+		$liste_cat.='<option value="'.$element['categorie'].'">'.ucfirst($element['categorie']).'</option>';
+	}
+}
+
 //
 //debug($tab_produit);
 
@@ -43,15 +76,56 @@ include("inc/nav.inc.php");
   </div>-->
 
       <div class="row">
-            <div class="col-sm-3 aside" ">
-                <div class="recherche" style="background-color: lightskyblue; min-height: 600px">
-                    <p> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> ici recherche de salles </p>
-                </div>
-                <div class="recherche" style="background-color: pink; min-height: 600px">
-                    <p><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> ici pub pour gagner de l'argent</p>
-                </div>
+            <aside id="filtres-boutique" class="col-sm-3">
+                    <form method="GET" action="" class="form">
+                            <div class="form-group">
+                                    <label for="cat">Catégorie </label>
+                                    <select name="cat" id="cat" class="form-control">
+                                            <option value="tous">Tous les produits</option>
+                                            <?= $liste_cat; ?>
+                                    </select>
 
-            </div>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="ville"> Ville </label>
+                                    <select name="ville" id="ville" class="form-control">
+                                            <option value="tous">Toutes les villes</option>
+                                            <?= $liste_ville; ?>
+                                    </select>
+                            </div>
+
+                            <!-- ajouter du javascript pour afficher la valeur des input dessous -->
+                            <div class="form-group">
+                                    <label for="capacite"> Capacité : <span id="capaciteFiltre"><?= $capacite_affichage ?></span> <span class="small">(maximum)</span></label>
+                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="10" name="capacite">
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="prix"> Prix : <span id="prixFiltre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
+                                    <input type="range" value="<?= $prix ?>" max="3000" min="0" step="300" name="prix" id="prix">
+                            </div>
+
+                            <!-- <?php //$msg_info; ?> -->
+
+                            <div class="form-group">
+                                    <label for="date-arrive-pdt">Date d'arrivée</label>
+                                    <div class="input-group">
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                                            <input type="text" class="form-control datepicker" name="date_arrivee" id="date-arrive-pdt" placeholder="Date d'arrivée" value="<?= $date_arrivee ?>">
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                    <label for="date-depart-pdt">Date de départ</label>
+                                    <div class="input-group">
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                                            <input type="text" class="form-control datepicker" name="date_depart" id="date-depart-pdt" placeholder="Date de départ" value="<?= $date_depart ?>">
+                                    </div>
+                            </div>
+
+                            <input type="submit" value="Valider" class="btn btn-default btn-ok">
+                    </form>
+             </aside>
              <div class="col-sm-9">
              <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->

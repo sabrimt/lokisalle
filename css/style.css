@@ -155,7 +155,7 @@ legend {
 }
 #large {
     display: inline-block;
-    max-width: 100%;
+    width: 86%;
     height: auto;
     padding: 4px;
     line-height: 1.42857143;
