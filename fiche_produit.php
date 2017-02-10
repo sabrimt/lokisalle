@@ -19,7 +19,7 @@ $reftitrecat = strtolower(substr($produit['categorie'], 0, 2));
 
 
 $ville = $produit['ville'];
-$autres_villes = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 3");
+$autres_villes = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 5");
 //debug($autres_villes);
 
 
@@ -55,8 +55,8 @@ include("inc/nav.inc.php");
                                        <hr/>
                                        <div class="col-sm-6" style="padding-left: 0">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Caractéristiques :</b> </span> </p>
-                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_arrivee'] . ' </b>' . ' '; ?></p>
-                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_depart'] . '</b>'; ?></p>
+                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . '  ' . ' <b> ' . substr(change_date($produit['date_arrivee']), 0, 16) . ' </b>'; ?></p>
+                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . substr(change_date($produit['date_depart']), 0, 16) . '</b>'; ?></p>
                                        </div>
                                        <div class="col-sm-6">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> </b> </span> </p>
@@ -111,14 +111,22 @@ include("inc/nav.inc.php");
                                 {
 
                         ?>
-                        <div class="col-sm-4">
-                                <div class=" panel panel-primary">
-                                   <div class="panel-body">
-                                       <p style="text-align: center;">
-                                Salle <?php echo $autres_salles['titre'] . ' ' . ' - ' . ' ' . $autres_salles['categorie'] ?>
-                                       </p>
+                        <div class=" col-sm-3">
+                                <div class=" panel vignette_fichpro panel-primary">
+                                    <div class="panel-body">
+                                        <p style="text-align: center;">
+                                            Salle <?php echo $autres_salles['titre'] . ' ' . ' - ' . ' ' . $autres_salles['categorie'] ?> 
+                                        </p>
+                                        <p style="text-align: center; font-size: 9pt;">
+                                            Capacité <?php echo $autres_salles['capacite'] . ' ' . ' personnes ' ?>
+                                        </p>
                                            <a href=""><img class="fichepro" src="<?php echo $autres_salles['photo']?>"></a>
-                                   </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="index-voir col-sm-6 col-sm-offset-3">
+                                        <?php echo '<a href=""><button type="button" class="btn btn-info index-bouton-voir"><span class="glyphicon glyphicon-search"></span> Voir</button></a>' ?>
+                                        </div>
+                                    </div> 
                                 </div>
                         </div>
                         <?php
