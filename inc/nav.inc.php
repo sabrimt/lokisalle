@@ -149,4 +149,46 @@ $title = 'connexion'; ?>
         </div>
     </div><!-- /.container -->
     
+    
+<!--     Button trigger modal 
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+     Modal 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                    <div class="starter-template">
+                        <h2 class="modal-title" id="myModalLabel"><span class="blueviolet glyphicon glyphicon-lock"></span> Connexion</h2>
+                    </div>
+                </div>
+                <form method="post" action="">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                
+                                <div class="form-group">
+                                    <label for="pseudo">Pseudo</label>
+                                    <input type="text" class="form-control" id="pseudo" placeholder="Pseudo..." name="pseudo" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="mdp">Mot de passe</label>
+                                    <input type="text" class="form-control" id="mdp" placeholder="Mot de passe..." name="mdp" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Retour</button>
+                        <input type="submit" class="form-control btn btn-success" id="connexion" name="connexion" value="Connexion" />
+                        <button type="button" class="btn btn-primary">Se connecter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    -->
     <?php }
