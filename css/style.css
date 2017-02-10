@@ -14,17 +14,21 @@ body {
 	color: lightslategray;
 }
 
-/*.navbar-inverse {
-	background-color: blueviolet;
-	color: darkred;
-}*/
+.navbar-inverse {
+	background-color: #225BAA;
+	color: #EBFAFF;
+        border-color: white;
+}
 .navbar-inverse .navbar-brand  {
-	color:firebrick;
+	color:white;
 }
 .navbar-inverse .navbar-nav>li>a  {
-	color: firebrick;
+	color: #EBFAFF;
 }
-
+.navbar-inverse .navbar-nav>li>a:hover {
+    color: darkred;
+    
+}
 .erreur {
 	background-color: darkred;
 	color: white;
@@ -38,6 +42,67 @@ body {
 	font-style: italic;
 	padding: 5px;
 	margin-top: 20px;
+}
+/* ****************** INDEX - PAGE D'ACCUEIL ********************** */
+h1 {
+    font-family: 'Nunito', sans-serif;
+    text-align:center;
+    
+}
+#carousel-example-generic {
+    margin-top:10px;
+    margin-bottom: 20px;
+    max-height:350px;
+    max-width:1200px;
+    margin-right:15px;
+    margin-left:15px;
+}
+.carousel-inner {
+   max-height:250px;
+   max-width:1200px;
+   text-align: center;
+}
+.item {
+    min-height: 223px;
+}
+.carrousel-image {
+}
+.carrousel-descriptif {
+     font-family: 'Nunito', sans-serif;
+     padding:50px;
+}
+.aside {
+    margin-top:10px;
+}
+.index-descr-fiche {
+    margin-bottom:0px;
+}
+.index-ref-fiche {
+    margin-top:0px;
+}
+.index-voir {
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+.index-bouton-voir {
+    width:100%;
+}
+.no-photo {
+    height: 165.36px;
+    margin-bottom: 9.64px;
+    padding-top: 30%;
+    background-color:#ccc;
+    text-align: center;
+}
+.no-photo p {
+        font-weight: bold;
+    }
+.salle_prix {
+	font-weight: bold;
+}
+.salle_titre {
+	color: steelblue;
+	font-weight: bold;
 }
 
 /* ****************** PAGE PROFIL ******************* */
@@ -56,6 +121,12 @@ body {
 }
 .fiche_produit_h1 {
 font-size:18pt;
+}
+.fiche_produit_h2 {
+font-size:16pt;
+text-align: center;
+margin-top:0;
+margin-bottom: 0;
 }
 
 legend {
@@ -136,24 +207,11 @@ p .label_fiche {
 .fichepro {
     width:100%;
 }
-.no-photo {
-    height: 165.36px;
-    margin-bottom: 9.64px;
-    padding-top: 30%;
-    background-color:#ccc;
-    text-align: center;
-}
-.no-photo p {
-    font-weight: bold;
-}
+
 input.nn {
     -moz-appearance: textfield;
 }
 
-.salle_titre {
-    color: steelblue;
-    font-weight: bold;
-}
 #map {
     height: 190px;
     max-width: 345px;
@@ -161,15 +219,19 @@ input.nn {
     margin-left: auto;
     margin-right: auto;
     }
-.salle_prix {
-	font-weight: bold;
-
-}
 
 @media screen and (max-width: 700px) {
   .fiche_main_pic  {
     display:none;
   }
+}
+
+.fiche_produits_salles_villes {
+    padding-left:15px;
+    margin-left:15px;
+    margin-right:15px;
+    
+    
 }
 /* ************* Tableau d'affichage des tables *************** */
 .affichage {
