@@ -56,7 +56,6 @@ $(document).ready(function()
         });
 
     };
-
 /***** work on input-file (gestion salle) *****/
 }); // fermeture document.ready
 

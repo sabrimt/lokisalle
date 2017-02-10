@@ -3,32 +3,37 @@ require_once("inc/init.inc.php");
 
 if(!preg_match('#^[0-9]+$#', $_GET['id'])) // on vérifie si l'id ne contient que des chiffres.
 {
-	header("location:index.php"); // sinon on renvoi sur boutique
+	header("location:index.php"); // sinon on renvoi sur l'accueil
 	exit();
 }
 
 $id_produit = $_GET['id']; // récupération de l'id
 $get_produit = execute_requete("SELECT * FROM salle s, produit p WHERE s.id_salle = p.id_salle AND id_produit = $id_produit");
+if($get_produit->num_rows == 0) // si il n'a pas de ligne, l'id ne correspond à rien => on renvoi sur l'accueil		  
+      {
+        header("location:index.php");
+      }
 $produit = $get_produit->fetch_assoc();
+$reftitre = strtolower(substr($produit['titre'], 0, 3));
+$reftitrecat = strtolower(substr($produit['categorie'], 0, 2));
 
-//debug($produit);
+
+$ville = $produit['ville'];
+$autres_villes = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 3");
+//debug($autres_villes);
 
 
 include("inc/header.inc.php");
 include("inc/nav.inc.php");
-// EXERCICE:
-// Afficher sur la page un lien qui permet de revenir à sa sélection sur la page boutique (par exemple si l'utilisateur est sur un pantalon, on le renvoie sur boutique.php avec par défaut la catégorie pantalon affichée)
-// Dans les informations produit, afficher le stock ou le message "rupture de stock pour ce produit" si le stock est à 0
 ?>
 
     <div class="container">
         <hr/>
-	  <h1 class="fiche_produit_h1"> <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> Réservation de salle en détails  </h1>
+        <h1 class="fiche_produit_h1"> <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> &nbsp; Réservation de la salle <b> <?php echo $produit['titre'] ?> </b>  </h1>
+        <h2 class="fiche_produit_h2"> <small><i> Salle <?php echo $produit['categorie'] ?> - Réference: <?php echo $reftitrecat.$reftitre.$produit['id_produit'] ?> </i></small></i></h2>
 	  <div class="row">
 		<div class="col-sm-8" style="display: table-cell;">
                     <div class=" panel panel-primary fiche_produit">
-                    <legend> Description du produit - Salle <b> <?php echo $produit['titre'] ?> </b> </legend>
-                        
 				<div class="col-sm-12 fiche-top gallery" id="gallery">
                                     <div class="col-sm-9 fiche_main_pic" id="lg-wrap" > <?php echo '<img id="large" data-idx="0" src="' . $produit['photo'] . '" />'; ?>
                                     </div>
@@ -88,17 +93,45 @@ include("inc/nav.inc.php");
                        </div>
                    </div>
                   <div class=" panel panel-primary fiche_produit">
-                       <legend> Voir aussi... </legend>
-                      <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
-                      <p class="fiche_produit_dispo"><span class="label_fiche">Adresse :</span> <?php echo $produit['adresse'] . ' ' . $produit['cp']; ?></p>
+                       <legend> Voir les autres disponibilités... </legend>
+                      <p class="fiche_produit_dispo"><span class="label_fiche">Salle :</span> <?php echo $produit['titre'] ?></p>
+                     
                   </div>
               </div>
             
 	  </div> <!-- ROW -->
-	  
-	  
+          <div class="row">
+                <div class="fiche_produits_salles_villes panel panel-primary">
+                    <legend> Egalement à <?php echo $produit['ville'] ?> ...   </legend>
+                    <div class="row">
+                        <?php
+                            while($autres_salles = $autres_villes->fetch_assoc())
+                            {
+                                if ($autres_salles['id_salle'] != $produit['id_salle'])
+                                {
 
+                        ?>
+                        <div class="col-sm-4">
+                                <div class=" panel panel-primary">
+                                   <div class="panel-body">
+                                       <p style="text-align: center;">
+                                Salle <?php echo $autres_salles['titre'] . ' ' . ' - ' . ' ' . $autres_salles['categorie'] ?>
+                                       </p>
+                                           <a href=""><img class="fichepro" src="<?php echo $autres_salles['photo']?>"></a>
+                                   </div>
+                                </div>
+                        </div>
+                        <?php
+                                }
+                            }
+                        ?>
+                    </div>
+              </div>
+          </div> <!-- ROW -->
     </div><!-- /.container -->
+    
+    
+    
 <!--  /* ******* FICHE PRODUIT ******* */-->
     <script>
       
