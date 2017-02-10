@@ -133,9 +133,11 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
                                         // il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
                                         // on concatène donc la référence qui est unique avec le nom de la photo.
                                         $nom_photo = $_FILES[$photon]['name'];
-                                        ${'photo_bdd'.$n} = 'img/' . $nom_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
+                                        $photo_tmp = 'img/' . $nom_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
                                         $chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_photo; // représente le chemin absolu pour enregistrer la photo.
                                         copy($_FILES[$photon]['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
+                                        
+                                        ${'photo_bdd'.$n} = accorder_image($photo_tmp);
 
 
                                 }else { // l'extension de la photo n'est pas valide
