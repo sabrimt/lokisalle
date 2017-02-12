@@ -80,9 +80,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 
                 ${$action . $n} = 'Changer ';// j'affiche 'changer photo'
                 ${$exists . $n} = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
-
-                $i++;
             } 
+                $i++;
+            
         }
 }
 
@@ -283,10 +283,8 @@ include("../inc/nav.inc.php");
                                 {
                                     if($i > 1){
                                         $n = '_' . $i;
-                                        $prev =  '_' . ($i - 1);
                                     }else{
                                         $n = "";
-                                        $prev = "";
                                     }
                                     $i++;
                                 ?>
@@ -304,9 +302,6 @@ include("../inc/nav.inc.php");
                                         <div class="col-sm-1 col-sm-offset-1"><input name="ph_del<?= $n ?>" type="checkbox"></div>
                                     </div>
                                 <?php
-                                } elseif ($photo_exists xor $photo_exists_2 xor $photo_exists_3)
-                                {
-                                    echo 'brrrrraaaaaa';
                                 }
                                 ?>
                                 </div>

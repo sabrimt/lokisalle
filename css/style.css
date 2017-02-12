@@ -87,16 +87,6 @@ h1 {
 .index-bouton-voir {
     width:100%;
 }
-.no-photo {
-    height: 165.36px;
-    margin-bottom: 9.64px;
-    padding-top: 30%;
-    background-color:#ccc;
-    text-align: center;
-}
-.no-photo p {
-        font-weight: bold;
-    }
 .salle_prix {
 	font-weight: bold;
 }
