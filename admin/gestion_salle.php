@@ -223,9 +223,10 @@ include("../inc/nav.inc.php");
 						<label for="categorie">Catégorie</label>
 						<select name="categorie" id="categorie" class="form-control" >
 							<option style="text-align: center;" selected disabled >--- Selectionnez une catégorie ---</option>
-							<option value="reunion" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "reunion" ) || ($categorie == "reunion") ) echo 'selected'; ?> >Réunion</option>
-							<option value="bureau" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "bureau" ) || ($categorie == "bureau") ) echo 'selected'; ?> >Bureau</option>
-                                                        <option value="formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "formation" ) || ($categorie == "formation") ) echo 'selected'; ?> >Formation</option>
+							<option value="Reunion" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Réunion" ) || ($categorie == "Réunion") ) echo 'selected'; ?> >Réunion</option>
+							<option value="Bureau" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Bureau" ) || ($categorie == "Bureau") ) echo 'selected'; ?> >Bureau</option>
+                                                        <option value="Formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Formation" ) || ($categorie == "Formation") ) echo 'selected'; ?> >Formation</option>
+                                                        <option value="Conference" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Conférence" ) || ($categorie == "Conférence") ) echo 'selected'; ?> >Conférence</option>
 						</select>
 					</div>
 

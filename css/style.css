@@ -44,9 +44,11 @@ body {
 	margin-top: 20px;
 }
 /* ****************** INDEX - PAGE D'ACCUEIL ********************** */
-h1 {
+.hometitre {
     font-family: 'Nunito', sans-serif;
     text-align:center;
+    margin-top:30px;
+    margin-bottom: 30px;
     
 }
 #carousel-example-generic {
@@ -92,7 +94,7 @@ h1 {
 }
 .salle_titre {
 	color: steelblue;
-	font-weight: bold;
+/*	font-weight: bold;*/
 }
 
 /* ****************** PAGE PROFIL ******************* */
@@ -110,11 +112,12 @@ h1 {
     margin-top: 25px;
 }
 .fiche_produit_h1 {
-font-size:18pt;
+font-size:22pt;
 }
 .fiche_produit_h2 {
 font-size:16pt;
-text-align: center;
+/*text-align: center;*/
+margin-left:55px;
 margin-top:0;
 margin-bottom: 0;
 }
@@ -134,7 +137,7 @@ legend {
 }
 .main_pic {
     display: inline-block;
-    width: 80%;
+    width: 100%;
     height: auto;
     padding: 4px;
     line-height: 1.42857143;
@@ -145,8 +148,8 @@ legend {
 }
 #large {
     display: inline-block;
-    width: 86%;
-    height: auto;
+    width: 80%;
+/*    height: auto;*/
     padding: 4px;
     line-height: 1.42857143;
     background-color: #fff;
@@ -220,8 +223,13 @@ input.nn {
     padding-left:15px;
     margin-left:15px;
     margin-right:15px;
+    padding-right:15px;
+/*    background-color: #6EB6FF;*/
     
     
+}
+.vignette_fichpro {
+/*   background-color: #90F2FF;*/
 }
 /* ************* Tableau d'affichage des tables *************** */
 .affichage {
@@ -237,22 +245,69 @@ th.affichage {
 .container_connexion {
 	position: fixed;
 	z-index:1;
-	width: 100%;
+	min-width: 100%;
 	height: 100%;
-	padding: 5em 30em 5em 30em;
-
-background: rgba(0, 0, 0, 0.4);
+        padding-top:30px;
+        padding-left:40px;
+        padding-right:40px;
+/*	padding: 5em 30em 5em 30em;*/
+        background: rgba(0, 0, 0, 0.4);
 	/*opacity: 0.5;*/
-
 }
 
 .block_connexion {
-	margin: 0 auto;
+/*	margin: 0 auto;*/
+        min-width:300px;
+       
 	padding: 15px;
 	background-color: white;
 	border-radius: 1em;
 	border: 1px solid;
 }
+@media screen and (max-width: 1070px) {
+   
+    .block_connexion {
+         right:5%;
+         max-width:400px;
+    }
+}
+@media screen and (max-width: 770px) {
+   
+    .block_connexion {
+/*         right:1%;*/
+         max-width:350px;
+         left:15%;
+    }
+}
+@media screen and (max-width: 560px) {
+   
+    .block_connexion {
+         right:15%;
+             left:5%;
+         max-width:350px;
+    }
+}
+@media screen and (max-width: 460px) {
+   
+    .block_connexion {
+         right:18%;
+             left:1%;
+         max-width:350px;
+    }
+}
+/*@media screen and (max-width: 765px) {
+   
+    .block_connexion {
+         right:75%;
+    }
+}*/
+/*@media screen and (max-width: 600px) {
+   
+    .block_connexion {
+         right:100%;
+         
+    }
+}*/
 
 .fermeture>a {
 	text-decoration: none;

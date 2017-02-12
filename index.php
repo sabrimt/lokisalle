@@ -164,8 +164,8 @@ include("inc/nav.inc.php");
 ?>
 
     <div class="container">
-        <h1> <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>avaSalle - Réservation de salles pour professionnels </h1>
-        <hr/>
+          <h1 class="hometitre">cAVA sALLE - Réservation de salles pour professionnels </h1>
+          <hr/>
             
         <div class="starter-template">
             <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
@@ -228,16 +228,24 @@ include("inc/nav.inc.php");
                   <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                   <li data-target="#carousel-example-generic" data-slide-to="1"></li>
                   <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="3"></li>
                 </ol>
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                   <div class="item active">
-                      <img src="img/conference_1.jpg" alt="...">
+                      <img src="img/homepub.jpg" alt="...">
                       <div class="carousel-caption">
-                          <h2><b>Salles Conférence</b></h2>
-                        <p>Conférence, Assemblée...</p>
+                          <h2><b></b></h2>
+                        <p></p>
                       </div>
+                  </div>
+                    <div class="item">
+                    <img src="img/conference_1.jpg" alt="...">
+                    <div class="carousel-caption">
+                        <h2><b>Salles Conférence</b></h2>
+                       <p>Conférence, Assemblée...</p>
+                    </div>
                   </div>
                   <div class="item">
                     <img src="img/reu_1.jpg" alt="...">
@@ -295,8 +303,8 @@ include("inc/nav.inc.php");
                                 }
                             ?>
                             <div class="row">
-                                    <h5 class="col-sm-8 salle_titre"><?php echo $type_salle . $tab_produit[$index]['titre']; ?></h5>
-                                    <h5 class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</h5>
+                                    <p class="col-sm-11 salle_titre"><?php echo '<strong>' . $tab_produit[$index]['ville'] . '</strong>' . ' - ' . $type_salle . $tab_produit[$index]['titre']; ?></p>
+                                    <p class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</p>
                             </div>
                             <p class="index-descr-fiche"><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>
                             <p class="index-ref-fiche"> <small> <i>Référence: <?php echo $tab_produit[$index]['id_produit'].$reftitre; ?></i></small></p>
