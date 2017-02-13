@@ -10,18 +10,32 @@ if(!preg_match('#^[0-9]+$#', $_GET['id'])) // on vérifie si l'id ne contient qu
 $id_produit = $_GET['id']; // récupération de l'id
 $get_produit = execute_requete("SELECT * FROM salle s, produit p WHERE s.id_salle = p.id_salle AND id_produit = $id_produit");
 if($get_produit->num_rows == 0) // si il n'a pas de ligne, l'id ne correspond à rien => on renvoi sur l'accueil		  
-      {
-        header("location:index.php");
-      }
+{
+  header("location:index.php");
+}
 $produit = $get_produit->fetch_assoc();
 $reftitre = strtolower(substr($produit['titre'], 0, 3));
 $reftitrecat = strtolower(substr($produit['categorie'], 0, 2));
 
-
+// Dans la même ville
 $ville = $produit['ville'];
-$autres_villes = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 3");
+$autres_ville = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 4");
+
+// Disponibilités
+$salle = $produit['id_salle'];
+$dispos = execute_requete("SELECT * FROM produit WHERE id_salle = '$salle' AND date_arrivee > NOW() LIMIT 3");
+
 //debug($autres_villes);
 
+// Choix de la photo à afficher
+$photo_affichee = "img/no_photo.jpg";
+if(!empty($produit['photo'])){
+    $photo_affichee = $produit['photo'];
+}elseif (!empty($produit['photo_2'])) {
+    $photo_affichee = $produit['photo_2'];
+}elseif (!empty($produit['photo_3'])) {
+    $photo_affichee = $produit['photo_3'];
+}
 
 include("inc/header.inc.php");
 include("inc/nav.inc.php");
@@ -35,7 +49,7 @@ include("inc/nav.inc.php");
 		<div class="col-sm-8" style="display: table-cell;">
                     <div class=" panel panel-primary fiche_produit">
 				<div class="col-sm-12 fiche-top gallery" id="gallery">
-                                    <div class="col-sm-9 fiche_main_pic" id="lg-wrap" > <?php echo '<img id="large" data-idx="0" src="' . $produit['photo'] . '" />'; ?>
+                                    <div class="col-sm-9 fiche_main_pic" id="lg-wrap" > <?php echo '<img id="large" data-idx="0" src="' . $photo_affichee . '" />'; ?>
                                     </div>
                                     <div class="col-sm-3 fiche_other_pics" id='thumbnails'>
                                         <div class="fiche_second_pic">
@@ -55,15 +69,15 @@ include("inc/nav.inc.php");
                                        <hr/>
                                        <div class="col-sm-6" style="padding-left: 0">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Caractéristiques :</b> </span> </p>
-                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_arrivee'] . ' </b>' . ' '; ?></p>
-                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . $produit['date_depart'] . '</b>'; ?></p>
+                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . '  ' . ' <b> ' . substr(change_date($produit['date_arrivee']), 0, 16) . ' </b>'; ?></p>
+                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . substr(change_date($produit['date_depart']), 0, 16) . '</b>'; ?></p>
                                        </div>
                                        <div class="col-sm-6">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> </b> </span> </p>
                                             <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
                                           
-                                            <p class="fiche_produit_dispo"><span class="label_fiche">Ville :</span> <?php echo  $produit['ville']; ?></p>
-                                            <p class="fiche_produit_dispo"><span class="label_fiche">Prix :</span> <b> <?php echo $produit['prix'] . ' euros ' ; ?> <b/></p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Ville : </span><?php echo  $produit['ville']; ?></p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Prix : </span><b> <?php echo $produit['prix'] . ' euros ' ; ?> <b/></p>
 					<br/>
                                        </div>
 					
@@ -77,7 +91,7 @@ include("inc/nav.inc.php");
 				
 					?>
 					<br/>
-					<p style="text-align:center;"><a href="index.php"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>RETOUR</a></p>
+					<p style="text-align: center;"><a href="index.php"><span class="glyphicon glyphicon-triangle-left" aria-hidden="true"></span>Retour à l'accueil</a></p>
 				</div>
 			</div>
                 </div>
@@ -93,32 +107,64 @@ include("inc/nav.inc.php");
                        </div>
                    </div>
                   <div class=" panel panel-primary fiche_produit">
-                       <legend> Voir les autres disponibilités... </legend>
-                      <p class="fiche_produit_dispo"><span class="label_fiche">Salle :</span> <?php echo $produit['titre'] ?></p>
-                     
+                        <legend><small><a href="index.php?salle=<?= $produit['titre'] ?>">Voir les autres disponibilités... </a></small></legend>
+                        <p class="fiche_produit_dispo"><span class="label_fiche" style="padding:10px;">Salle :</span><?= $produit['titre'] ?></p>
+                        <table>
+                        <?php
+                        while($dispo = $dispos->fetch_assoc())
+                        {
+                            if($dispo['date_arrivee'] != $produit['date_arrivee'])
+                            {
+                        ?>
+                            <tr>
+                                <td class="dispo">
+                                    <a href="fiche_produit.php?id=<?= $dispo['id_produit'] ?>">Du <?= substr(change_date($dispo['date_arrivee']), 0, 10) ?> au <?= substr(change_date($dispo['date_depart']), 0, 10) ?></a>
+                                </td>
+                            </tr>
+                        <?php
+                            }
+                        }
+                        ?>
+                        </table>
                   </div>
               </div>
             
 	  </div> <!-- ROW -->
           <div class="row">
                 <div class="fiche_produits_salles_villes panel panel-primary">
-                    <legend> Egalement à <?php echo $produit['ville'] ?> ...   </legend>
+                    <legend><a href="index.php?ville=<?= $produit['ville'] ?>">Egalement à <?= $produit['ville'] ?>...</a></legend>
+                    
                     <div class="row">
                         <?php
-                            while($autres_salles = $autres_villes->fetch_assoc())
+                            while($autres_salles = $autres_ville->fetch_assoc())
                             {
                                 if ($autres_salles['id_salle'] != $produit['id_salle'])
                                 {
-
+                                    $photo_salle = "img/no_photo.jpg";
+                                    if(!empty($autres_salles['photo'])){
+                                        $photo_salle = $autres_salles['photo'];
+                                    }elseif (!empty($autres_salles['photo_2'])) {
+                                        $photo_salle = $autres_salles['photo_2'];
+                                    }elseif (!empty($autres_salles['photo_3'])) {
+                                        $photo_salle = $autres_salles['photo_3'];
+                                    }
                         ?>
-                        <div class="col-sm-4">
-                                <div class=" panel panel-primary">
-                                   <div class="panel-body">
-                                       <p style="text-align: center;">
-                                Salle <?php echo $autres_salles['titre'] . ' ' . ' - ' . ' ' . $autres_salles['categorie'] ?>
-                                       </p>
-                                           <a href=""><img class="fichepro" src="<?php echo $autres_salles['photo']?>"></a>
-                                   </div>
+                        <div class="col-xs-6 col-md-3">
+                                <div class=" panel vignette_fichpro panel-primary">
+                                    <div class="panel-body">
+                                        <p style="text-align: center;">
+                                            Salle <?php echo $autres_salles['titre'] . ' ' . ' - ' . ' ' . $autres_salles['categorie'] ?> 
+                                        </p>
+                                        <p style="text-align: center; font-size: 9pt;">
+                                            Capacité <?php echo $autres_salles['capacite'] . ' ' . ' personnes ' ?>
+                                        </p>
+                                           <a href="index.php?salle=<?= $autres_salles['titre'] ?>"><img class="fichepro" src="<?= $photo_salle ?>"></a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="index-voir col-sm-10 col-sm-offset-1">
+                                            <a href="index.php?salle=<?= $autres_salles['titre'] ?>"><button type="button" class="btn btn-primary index-bouton-voir raised"><small><span class="glyphicon glyphicon-search"></span> Voir les prduits</small></button></a>
+                                        </div>
+                                    </div> 
                                 </div>
                         </div>
                         <?php

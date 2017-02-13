@@ -1,46 +1,26 @@
 <?php
 require_once("inc/init.inc.php");
 
-$tab_produit = array();
+$tab_produit = array(); // tableau regrouppant les informations de salles et leurs produits
 
-$filtre="";
+/***** GESTION DU FILTRE ET CONSTRUCTION DE LA REQUETE *****/
+// Initialisation des variables pour le filtre de recherche
+
 $date_arrivee= "";
 $date_depart="";
-$prix=3000;   //le plus cher par defaut
+$prix=10000;   //le plus cher par defaut
 $capacite=0;
-$capacite_affichage = "toutes";
-$date_default = "p.date_arrivee > NOW()";
-$filtre=array("p.etat='libre'", "$date_default");
+$capacite_affichage = "indifferent";
+$date_default = "date_arrivee > NOW()";
+$filtre=array("etat='libre'", "$date_default");
 
-$contenu_produit = execute_requete("SELECT * FROM produit");
-while($produit = $contenu_produit->fetch_assoc())
-{
-	$contenu_salle = execute_requete("SELECT * FROM salle WHERE id_salle = '$produit[id_salle]'");
-        
-	$salle = $contenu_salle->fetch_assoc();
-	
-        $produit["titre"] = $salle['titre'];
-        $produit["description"] = $salle['description'];
-        $produit["photo"] = $salle['photo'];
-        $produit["photo_2"] = $salle['photo_2'];
-        $produit["photo_3"] = $salle['photo_3'];
-        $produit["ville"] = $salle['ville'];
-        $produit["adresse"] = $salle['adresse'];
-        $produit["cp"] = $salle['cp'];
-        $produit["capacite"] = $salle['capacite'];
-        $produit["categorie"] = $salle['categorie'];
-        $produit["pays"] = $salle['pays'];
-        $produit["id_salle"] = $salle['id_salle'];
+$get_active = FALSE;
 
-	$tab_produit[] = $produit;
-       
-}
-
-
-//liste pour le filtre
-$resultat_ville= execute_requete("SELECT DISTINCT ville FROM salle");
-
+//listes pour les selects du filtre
+// Liste villes
+$resultat_ville = execute_requete("SELECT DISTINCT ville FROM salle");
 $liste_ville="";
+
 while ($element=$resultat_ville->fetch_assoc()){
 	if (isset($_GET['ville']) && $_GET['ville']==$element['ville']){
 		$liste_ville.='<option selected value="'.$element['ville'].'">'.ucfirst($element['ville']).'</option>';
@@ -49,8 +29,10 @@ while ($element=$resultat_ville->fetch_assoc()){
 		$liste_ville.='<option value="'.$element['ville'].'">'.ucfirst($element['ville']).'</option>';
 	}
 }
+// Liste catégories
 $resultat_cat=execute_requete("SELECT DISTINCT categorie FROM salle");
 $liste_cat="";
+
 while ($element=$resultat_cat->fetch_assoc()){
 	if (isset($_GET['categorie']) && $_GET['categorie']==$element['categorie']){
 		$liste_cat.='<option selected value="'.$element['categorie'].'">'.ucfirst($element['categorie']).'</option>';
@@ -59,8 +41,149 @@ while ($element=$resultat_cat->fetch_assoc()){
 		$liste_cat.='<option value="'.$element['categorie'].'">'.ucfirst($element['categorie']).'</option>';
 	}
 }
+// Liste catégories
+$resultat_salles=execute_requete("SELECT DISTINCT titre FROM salle");
+$liste_salle="";
 
-//
+while ($element=$resultat_salles->fetch_assoc()){
+	if (isset($_GET['salle']) && $_GET['salle']==$element['titre']){
+		$liste_salle .='<option selected value="'.$element['titre'].'">'.ucfirst($element['titre']).'</option>';
+	}
+	else{
+		$liste_salle .='<option value="'.$element['titre'].'">'.ucfirst($element['titre']).'</option>';
+	}
+}
+
+if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite']) || isset($_GET['prix']) || isset($_GET['date_arrivee']) || isset($_GET['date_depart']) || isset($_GET['salle'])){
+	$get_active = TRUE;
+        /* HTMLENTITIES pour matcher sur la BDD */
+	foreach ($_GET as $key => $value) {
+		$_GET[$key]=htmlentities($value,ENT_QUOTES);
+	}
+	/******* TRIS HORS DATE ********/
+	if (!empty($_GET['categorie']) && $_GET['categorie'] != "indifferent"){
+		array_push($filtre, "categorie='".$_GET['categorie']."'");
+	}
+	if (!empty($_GET['ville']) && $_GET['ville'] != "indifferent"){
+		array_push($filtre, "ville='".$_GET['ville']."'");
+	}
+	if (!empty($_GET['capacite'])){
+		array_push($filtre, "capacite >= ".$_GET['capacite']);
+		$capacite=$_GET['capacite'];
+		$capacite_affichage=$_GET['capacite'];
+	}
+	else
+	{
+		$capacite_affichage = "indifferent";
+	}
+        if (!empty($_GET['salle']) && $_GET['salle'] != "indifferent"){
+		array_push($filtre, "titre='".$_GET['salle']."'");
+	}
+	if (!empty($_GET['prix'])){
+		array_push($filtre, "prix <= ".$_GET['prix']);
+		$prix=$_GET['prix'];
+	}
+	/******* VERIFICATIONS DATE ********/
+		// Date arrivée
+	if(!empty($_GET['date_arrivee'])) 
+	{	
+		if (new DateTime($_GET['date_arrivee']) < new DateTime(date("d-m-Y H:i")))
+		{
+			$msg .= "<p class='error'>La date d'arrivée doit correspondre à une date future</p>";
+		}
+	}	
+	if(!empty($_GET['date_depart'])) 
+	{
+		// Date départ
+		if (new DateTime($_GET['date_depart']) < new DateTime(date("d-m-Y H:i")))
+		{
+			$msg .= "<p class='error'>La date de départ doit correspondre à une date future</p>";
+		}
+	}
+	if(!empty($_GET['date_depart']) && !empty($_GET['date_arrivee']))
+	{
+		if (new DateTime($_GET['date_depart']) < new DateTime($_GET['date_arrivee']))
+		{
+			$msg .= "<p class='error'>La date de départ doit correspondre à une date supérieure à la date d'arrivée</p>";
+		}		
+	} 		
+	/******* TRI DATE ********/
+	if(empty($msg))
+	{
+		if(!empty($_GET['date_arrivee'])) 
+		{
+			array_splice($filtre, 1, 1);
+			$date_arrivee=$_GET['date_arrivee'];
+			$_GET['date_arrivee'] = date('Y-m-d H:i:s' ,strtotime($_GET['date_arrivee']));
+			array_push($filtre, "date_arrivee >= '".$_GET['date_arrivee']."'");
+		}
+		if(!empty($_GET['date_depart']))	
+		{
+			$date_default ="";
+			$date_depart=$_GET['date_depart'];
+			$_GET['date_depart'] = date('Y-m-d H:i:s' ,strtotime($_GET['date_depart']));
+			array_push($filtre, "date_depart <= '".$_GET['date_depart']."'");			
+		}
+	}
+}
+// Creation du filtre de requête
+//debug($filtre);
+$filtre=" WHERE ".implode($filtre, " AND ");
+
+/***** END gestion du filtre et construction de la requete *****/
+
+$nb_result = "";
+// Je mets dans un array les informations de chaque produit y compris les infos de la salle qui correspond
+if($get_active)
+{
+    $contenu_produit = execute_requete(
+        "SELECT * FROM produit p JOIN salle s ON p.id_salle=s.id_salle "
+            . $filtre
+            . " GROUP BY p.id_produit"
+            . " ORDER BY p.date_arrivee ASC"
+            );
+    $nb_result = mysqli_affected_rows($mysqli);
+    while($produit = $contenu_produit->fetch_assoc())
+    {
+        $tab_produit[] = $produit;
+    }
+} else {
+    $contenu_produit = execute_requete("SELECT * FROM produit");
+    $nb_result = mysqli_affected_rows($mysqli);
+    while($produit = $contenu_produit->fetch_assoc())
+    {
+            $contenu_salle = execute_requete("SELECT * FROM salle WHERE id_salle = '$produit[id_salle]'");
+
+            $salle = $contenu_salle->fetch_assoc();
+
+            $produit["titre"] = $salle['titre'];
+            $produit["description"] = $salle['description'];
+            $produit["photo"] = $salle['photo'];
+            $produit["photo_2"] = $salle['photo_2'];
+            $produit["photo_3"] = $salle['photo_3'];
+            $produit["ville"] = $salle['ville'];
+            $produit["adresse"] = $salle['adresse'];
+            $produit["cp"] = $salle['cp'];
+            $produit["capacite"] = $salle['capacite'];
+            $produit["categorie"] = $salle['categorie'];
+            $produit["pays"] = $salle['pays'];
+            $produit["id_salle"] = $salle['id_salle'];
+
+            $tab_produit[] = $produit;
+
+    }
+}
+// Texte affiché pour le résultat de produits
+$p = "";
+if($nb_result == 0 || $nb_result > 1)
+{
+    $p = 's';
+}
+$nb_produit_texte = $nb_result . ' produit' . $p . ' disponible' . $p;
+
+
+
+// 
 //debug($tab_produit);
 
 include("inc/header.inc.php");
@@ -68,46 +191,53 @@ include("inc/nav.inc.php");
 ?>
 
     <div class="container">
-          <h1> <span class="glyphicon glyphicon-copyright-mark" aria-hidden="true"></span>avaSalle - Réservation de salles pour professionnels </h1>
+          <h1 class="hometitre">cAVA sALLE - Réservation de salles pour professionnels </h1>
           <hr/>
             
-<!--      <div class="starter-template">
+        <div class="starter-template">
             <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
-  </div>-->
+        </div>
 
-      <div class="row">
+         <div class="row">
             <aside id="filtres-boutique" class="col-sm-3">
                     <form method="GET" action="" class="form">
                             <div class="form-group">
-                                    <label for="cat">Catégorie </label>
-                                    <select name="cat" id="cat" class="form-control">
-                                            <option value="tous">Tous les produits</option>
-                                            <?= $liste_cat; ?>
+                                    <label for="categorie">Catégorie </label>
+                                    <select name="categorie" id="cattegorie" class="form-control">
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_cat ?>
                                     </select>
-
                             </div>
 
                             <div class="form-group">
                                     <label for="ville"> Ville </label>
                                     <select name="ville" id="ville" class="form-control">
-                                            <option value="tous">Toutes les villes</option>
-                                            <?= $liste_ville; ?>
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_ville ?>
                                     </select>
                             </div>
 
                             <!-- ajouter du javascript pour afficher la valeur des input dessous -->
                             <div class="form-group">
-                                    <label for="capacite"> Capacité : <span id="capaciteFiltre"><?= $capacite_affichage ?></span> <span class="small">(maximum)</span></label>
-                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="10" name="capacite">
+                                    <label for="capacite"> Capacité : <span id="capacite-filtre"><?= $capacite_affichage ?></span> <span class="small">(minimum)</span></label>
+                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="200" min="0" step="5" name="capacite">
                             </div>
 
                             <div class="form-group">
-                                    <label for="prix"> Prix : <span id="prixFiltre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
-                                    <input type="range" value="<?= $prix ?>" max="3000" min="0" step="300" name="prix" id="prix">
+                                    <label for="prix"> Prix : <span id="prix-filtre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
+                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="300" name="prix" id="prix">
                             </div>
 
-                            <!-- <?php //$msg_info; ?> -->
-
+                            <?= $msg ?>
+                                                    
+                            <div class="form-group">
+                                    <label for="salle"> Salle </label>
+                                    <select name="salle" id="salle" class="form-control">
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_salle ?>
+                                    </select>
+                            </div>
+                            
                             <div class="form-group">
                                     <label for="date-arrive-pdt">Date d'arrivée</label>
                                     <div class="input-group">
@@ -133,16 +263,24 @@ include("inc/nav.inc.php");
                   <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                   <li data-target="#carousel-example-generic" data-slide-to="1"></li>
                   <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="3"></li>
                 </ol>
 
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                   <div class="item active">
-                      <img src="img/conference_1.jpg" alt="...">
+                      <img src="img/homepub.jpg" alt="...">
                       <div class="carousel-caption">
-                          <h2><b>Salles Conférence</b></h2>
-                        <p>Conférence, Assemblée...</p>
+                          <h2><b></b></h2>
+                        <p></p>
                       </div>
+                  </div>
+                    <div class="item">
+                    <img src="img/conference_1.jpg" alt="...">
+                    <div class="carousel-caption">
+                        <h2><b>Salles Conférence</b></h2>
+                       <p>Conférence, Assemblée...</p>
+                    </div>
                   </div>
                   <div class="item">
                     <img src="img/reu_1.jpg" alt="...">
@@ -170,6 +308,7 @@ include("inc/nav.inc.php");
                   <span class="sr-only">Next</span>
                 </a>
             </div>
+                 <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
               <?php 
                     // Affichage des différents produits
                     foreach($tab_produit AS $index => $val)
@@ -183,9 +322,15 @@ include("inc/nav.inc.php");
                                 if(!empty($tab_produit[$index]['photo']))
                                 {
                                     echo '<p><a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><img class="fichepro" src="' . $tab_produit[$index]['photo'] . '" /></a></p>';
-                                }else
+                                }elseif(!empty($tab_produit[$index]['photo_2']))
                                 {
-                                    echo '<div class="no-photo"><p>Pas de photo pour cette salle</p></div>';
+                                    echo '<p><a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><img class="fichepro" src="' . $tab_produit[$index]['photo_2'] . '" /></a></p>';
+                                }elseif(!empty($tab_produit[$index]['photo_3']))
+                                {
+                                    echo '<p><a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><img class="fichepro" src="' . $tab_produit[$index]['photo_3'] . '" /></a></p>';
+                                } else
+                                {
+                                    echo '<p><a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><img class="fichepro" src="img/no_photo.jpg" /></a></p>';
                                 }
                                 $type_salle="Salle ";
                                 if($tab_produit[$index]['categorie'] == 'bureau')
@@ -194,8 +339,8 @@ include("inc/nav.inc.php");
                                 }
                             ?>
                             <div class="row">
-                                    <h5 class="col-sm-8 salle_titre"><?php echo $type_salle . $tab_produit[$index]['titre']; ?></h5>
-                                    <h5 class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</h5>
+                                    <p class="col-sm-11 salle_titre"><?php echo '<strong>' . $tab_produit[$index]['ville'] . '</strong>' . ' - ' . $type_salle . $tab_produit[$index]['titre']; ?></p>
+                                    <p class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</p>
                             </div>
                             <p class="index-descr-fiche"><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>
                             <p class="index-ref-fiche"> <small> <i>Référence: <?php echo $tab_produit[$index]['id_produit'].$reftitre; ?></i></small></p>
@@ -209,7 +354,7 @@ include("inc/nav.inc.php");
                             </p>
                             <div class="row">
                                 <div class="index-voir col-sm-6 col-sm-offset-3">
-                                <?php echo '<a href="fiche_produit.php?id=' . $tab_produit[$index]['id_produit'] . '"><button type="button" class="btn btn-info index-bouton-voir"><span class="glyphicon glyphicon-search"></span> Voir</button></a>' ?>
+                                 <a href="fiche_produit.php?id=<?= $tab_produit[$index]['id_produit'] ?>"><button type="button" class="btn btn-info index-bouton-voir"><span class="glyphicon glyphicon-search"></span> Voir</button></a>
                                 </div>
                             </div>
                         </div>

@@ -57,6 +57,27 @@ $(document).ready(function()
 
     };
 /***** work on input-file (gestion salle) *****/
+/***** FILTRE RECHERCHE ACCUEIL *****/
+$spanCapacite=$('#capacite-filtre');
+    $spanPrix=$('#prix-filtre');
+
+    $('#prix').on('input change', function(){
+        $thisValue=$(this).val();
+        $spanPrix.html($thisValue);
+    });
+
+    $('#capacite').on('input change', function(){
+        $thisValue=$(this).val();
+        if($thisValue > 0)
+        {
+            $spanCapacite.html($thisValue);
+        }
+        else
+        {
+            $spanCapacite.html("Indifférent");
+        }
+    });
+/***** filtre recherche accueil *****/
 }); // fermeture document.ready
 
 

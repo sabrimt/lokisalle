@@ -80,9 +80,9 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 
                 ${$action . $n} = 'Changer ';// j'affiche 'changer photo'
                 ${$exists . $n} = TRUE;// Je donne l'information qu'il existe déjà une photo pour adapter l'affichage
-
-                $i++;
             } 
+                $i++;
+            
         }
 }
 
@@ -142,12 +142,20 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 
                                 }else { // l'extension de la photo n'est pas valide
                                         $msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
-                                }
+                                }   
                         }
+                        // suppression de photos (si checkbox coché)
+                                if(isset($_POST['ph_del'.$n]) && $_POST['ph_del'.$n] == "on")
+                                {
+                                    if(file_exists('../' . ${'photo_bdd'.$n})){
+                                        unlink('../' . ${'photo_bdd'.$n});
+                                    }
+                                    ${'photo_bdd'.$n} = "";
+                                }
                     }
 		}
                 // Vérification photos END
-			
+		// ENREGISTREMENT EN BDD	
 		if(empty($msg) && !empty($titre) && !empty($categorie) ) // s'il n'y a pas d'erreur au préalable, alors on lance l'enregistrement en BDD et champs requis remplis
 		{
 			
@@ -165,7 +173,7 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 		}
 	}
 	
-}
+}debug($_POST);
 
 include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
@@ -215,9 +223,10 @@ include("../inc/nav.inc.php");
 						<label for="categorie">Catégorie</label>
 						<select name="categorie" id="categorie" class="form-control" >
 							<option style="text-align: center;" selected disabled >--- Selectionnez une catégorie ---</option>
-							<option value="reunion" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "reunion" ) || ($categorie == "reunion") ) echo 'selected'; ?> >Réunion</option>
-							<option value="bureau" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "bureau" ) || ($categorie == "bureau") ) echo 'selected'; ?> >Bureau</option>
-                                                        <option value="formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "formation" ) || ($categorie == "formation") ) echo 'selected'; ?> >Formation</option>
+							<option value="Reunion" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Réunion" ) || ($categorie == "Réunion") ) echo 'selected'; ?> >Réunion</option>
+							<option value="Bureau" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Bureau" ) || ($categorie == "Bureau") ) echo 'selected'; ?> >Bureau</option>
+                                                        <option value="Formation" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Formation" ) || ($categorie == "Formation") ) echo 'selected'; ?> >Formation</option>
+                                                        <option value="Conference" <?php if( (isset($_POST['categorie']) && $_POST['categorie'] == "Conférence" ) || ($categorie == "Conférence") ) echo 'selected'; ?> >Conférence</option>
 						</select>
 					</div>
 
@@ -281,7 +290,6 @@ include("../inc/nav.inc.php");
                                     $i++;
                                 ?>
                                 <div class="form-group col-sm-4">
-
                                     <input type="file" class="input-file form-control" id="photo<?= $n ?>" name="photo<?= $n ?>"/>
                                     <label for="photo<?= $n ?>" id="photo_lab<?= $n ?>" class="btn btn-label btn-info"><?php echo ${'photo_action' . $n} ?>photo...<span class="glyphicon glyphicon-save"></span></label>
                                 <?php
@@ -291,9 +299,12 @@ include("../inc/nav.inc.php");
                                         <label for="photo_actuelle<?= $n ?>">Photo actuelle</label><br/>
                                         <img src="<?php echo URL . ${'photo' . $n} ?>" alt="<?php echo ${'photo' . $n} ?>" width="100%" />
                                         <input type="hidden" name="photo_actuelle<?= $n ?>" value="<?php echo ${'photo' . $n} ?>"/>
+                                        <div class="col-sm-9"><p><i>Supprimer cette photo ?</i></p></div>
+                                        <div class="col-sm-1 col-sm-offset-1"><input name="ph_del<?= $n ?>" type="checkbox"></div>
                                     </div>
                                 <?php
-                                }?>
+                                }
+                                ?>
                                 </div>
                                 <?php } ?><!-- fermeture foreach-->
 
