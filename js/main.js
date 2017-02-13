@@ -58,8 +58,8 @@ $(document).ready(function()
     };
 /***** work on input-file (gestion salle) *****/
 /***** FILTRE RECHERCHE ACCUEIL *****/
-$spanCapacite=$('#capaciteFiltre');
-    $spanPrix=$('#prixFiltre');
+$spanCapacite=$('#capacite-filtre');
+    $spanPrix=$('#prix-filtre');
 
     $('#prix').on('input change', function(){
         $thisValue=$(this).val();

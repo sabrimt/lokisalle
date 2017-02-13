@@ -8,16 +8,16 @@ $tab_produit = array(); // tableau regrouppant les informations de salles et leu
 
 $date_arrivee= "";
 $date_depart="";
-$prix=9999;   //le plus cher par defaut
+$prix=10000;   //le plus cher par defaut
 $capacite=0;
 $capacite_affichage = "indifferent";
 $date_default = "date_arrivee > NOW()";
-$filtre=array();
-$filtre_prod=array("etat='libre'", "$date_default");
+$filtre=array("etat='libre'", "$date_default");
 
 $get_active = FALSE;
 
 //listes pour les selects du filtre
+// Liste villes
 $resultat_ville = execute_requete("SELECT DISTINCT ville FROM salle");
 $liste_ville="";
 
@@ -29,6 +29,7 @@ while ($element=$resultat_ville->fetch_assoc()){
 		$liste_ville.='<option value="'.$element['ville'].'">'.ucfirst($element['ville']).'</option>';
 	}
 }
+// Liste catégories
 $resultat_cat=execute_requete("SELECT DISTINCT categorie FROM salle");
 $liste_cat="";
 
@@ -40,8 +41,20 @@ while ($element=$resultat_cat->fetch_assoc()){
 		$liste_cat.='<option value="'.$element['categorie'].'">'.ucfirst($element['categorie']).'</option>';
 	}
 }
+// Liste catégories
+$resultat_salles=execute_requete("SELECT DISTINCT titre FROM salle");
+$liste_salle="";
 
-if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite']) || isset($_GET['prix']) || isset($_GET['date_arrivee']) || isset($_GET['date_depart'])){
+while ($element=$resultat_salles->fetch_assoc()){
+	if (isset($_GET['salle']) && $_GET['salle']==$element['titre']){
+		$liste_salle .='<option selected value="'.$element['titre'].'">'.ucfirst($element['titre']).'</option>';
+	}
+	else{
+		$liste_salle .='<option value="'.$element['titre'].'">'.ucfirst($element['titre']).'</option>';
+	}
+}
+
+if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite']) || isset($_GET['prix']) || isset($_GET['date_arrivee']) || isset($_GET['date_depart']) || isset($_GET['salle'])){
 	$get_active = TRUE;
         /* HTMLENTITIES pour matcher sur la BDD */
 	foreach ($_GET as $key => $value) {
@@ -55,7 +68,7 @@ if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite'
 		array_push($filtre, "ville='".$_GET['ville']."'");
 	}
 	if (!empty($_GET['capacite'])){
-		array_push($filtre, "capacite>".$_GET['capacite']);
+		array_push($filtre, "capacite >= ".$_GET['capacite']);
 		$capacite=$_GET['capacite'];
 		$capacite_affichage=$_GET['capacite'];
 	}
@@ -63,8 +76,11 @@ if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite'
 	{
 		$capacite_affichage = "indifferent";
 	}
+        if (!empty($_GET['salle']) && $_GET['salle'] != "indifferent"){
+		array_push($filtre, "titre='".$_GET['salle']."'");
+	}
 	if (!empty($_GET['prix'])){
-		array_push($filtre_prod, "prix < ".$_GET['prix']);
+		array_push($filtre, "prix <= ".$_GET['prix']);
 		$prix=$_GET['prix'];
 	}
 	/******* VERIFICATIONS DATE ********/
@@ -96,63 +112,74 @@ if (isset($_GET['categorie']) || isset($_GET['ville']) || isset($_GET['capacite'
 	{
 		if(!empty($_GET['date_arrivee'])) 
 		{
-			array_splice($filtre_prod, 1, 1);
+			array_splice($filtre, 1, 1);
 			$date_arrivee=$_GET['date_arrivee'];
 			$_GET['date_arrivee'] = date('Y-m-d H:i:s' ,strtotime($_GET['date_arrivee']));
-			array_push($filtre_prod, "date_arrivee > '".$_GET['date_arrivee']."'");
+			array_push($filtre, "date_arrivee >= '".$_GET['date_arrivee']."'");
 		}
 		if(!empty($_GET['date_depart']))	
 		{
 			$date_default ="";
 			$date_depart=$_GET['date_depart'];
 			$_GET['date_depart'] = date('Y-m-d H:i:s' ,strtotime($_GET['date_depart']));
-			array_push($filtre_prod, "date_depart < '".$_GET['date_depart']."'");			
+			array_push($filtre, "date_depart <= '".$_GET['date_depart']."'");			
 		}
 	}
 }
 // Creation du filtre de requête
 //debug($filtre);
 $filtre=" WHERE ".implode($filtre, " AND ");
-$filtre_prod=" WHERE ".implode($filtre_prod, " AND ");
-//debug($filtre);
 
 /***** END gestion du filtre et construction de la requete *****/
 
+$nb_result = "";
 // Je mets dans un array les informations de chaque produit y compris les infos de la salle qui correspond
 if($get_active)
 {
     $contenu_produit = execute_requete(
-        "SELECT * "
-            . "FROM produit"
-            . $filtre_prod
-            . " ORDER BY date_arrivee ASC"
+        "SELECT * FROM produit p JOIN salle s ON p.id_salle=s.id_salle "
+            . $filtre
+            . " GROUP BY p.id_produit"
+            . " ORDER BY p.date_arrivee ASC"
             );
+    $nb_result = mysqli_affected_rows($mysqli);
+    while($produit = $contenu_produit->fetch_assoc())
+    {
+        $tab_produit[] = $produit;
+    }
 } else {
     $contenu_produit = execute_requete("SELECT * FROM produit");
+    $nb_result = mysqli_affected_rows($mysqli);
+    while($produit = $contenu_produit->fetch_assoc())
+    {
+            $contenu_salle = execute_requete("SELECT * FROM salle WHERE id_salle = '$produit[id_salle]'");
+
+            $salle = $contenu_salle->fetch_assoc();
+
+            $produit["titre"] = $salle['titre'];
+            $produit["description"] = $salle['description'];
+            $produit["photo"] = $salle['photo'];
+            $produit["photo_2"] = $salle['photo_2'];
+            $produit["photo_3"] = $salle['photo_3'];
+            $produit["ville"] = $salle['ville'];
+            $produit["adresse"] = $salle['adresse'];
+            $produit["cp"] = $salle['cp'];
+            $produit["capacite"] = $salle['capacite'];
+            $produit["categorie"] = $salle['categorie'];
+            $produit["pays"] = $salle['pays'];
+            $produit["id_salle"] = $salle['id_salle'];
+
+            $tab_produit[] = $produit;
+
+    }
 }
-while($produit = $contenu_produit->fetch_assoc())
+// Texte affiché pour le résultat de produits
+$p = "";
+if($nb_result == 0 || $nb_result > 1)
 {
-	$contenu_salle = execute_requete("SELECT * FROM salle WHERE id_salle = '$produit[id_salle]'");
-        
-	$salle = $contenu_salle->fetch_assoc();
-	
-        $produit["titre"] = $salle['titre'];
-        $produit["description"] = $salle['description'];
-        $produit["photo"] = $salle['photo'];
-        $produit["photo_2"] = $salle['photo_2'];
-        $produit["photo_3"] = $salle['photo_3'];
-        $produit["ville"] = $salle['ville'];
-        $produit["adresse"] = $salle['adresse'];
-        $produit["cp"] = $salle['cp'];
-        $produit["capacite"] = $salle['capacite'];
-        $produit["categorie"] = $salle['categorie'];
-        $produit["pays"] = $salle['pays'];
-        $produit["id_salle"] = $salle['id_salle'];
-
-	$tab_produit[] = $produit;
-       
+    $p = 's';
 }
-
+$nb_produit_texte = $nb_result . ' produit' . $p . ' disponible' . $p;
 
 
 
@@ -178,7 +205,7 @@ include("inc/nav.inc.php");
                                     <label for="categorie">Catégorie </label>
                                     <select name="categorie" id="cattegorie" class="form-control">
                                             <option value="indifferent">Indifférent</option>
-                                            <?= $liste_cat; ?>
+                                            <?= $liste_cat ?>
                                     </select>
                             </div>
 
@@ -186,23 +213,31 @@ include("inc/nav.inc.php");
                                     <label for="ville"> Ville </label>
                                     <select name="ville" id="ville" class="form-control">
                                             <option value="indifferent">Indifférent</option>
-                                            <?= $liste_ville; ?>
+                                            <?= $liste_ville ?>
                                     </select>
                             </div>
 
                             <!-- ajouter du javascript pour afficher la valeur des input dessous -->
                             <div class="form-group">
-                                    <label for="capacite"> Capacité : <span id="capaciteFiltre"><?= $capacite_affichage ?></span> <span class="small">(maximum)</span></label>
-                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="10" name="capacite">
+                                    <label for="capacite"> Capacité : <span id="capacite-filtre"><?= $capacite_affichage ?></span> <span class="small">(minimum)</span></label>
+                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="200" min="0" step="5" name="capacite">
                             </div>
 
                             <div class="form-group">
-                                    <label for="prix"> Prix : <span id="prixFiltre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
-                                    <input type="range" value="<?= $prix ?>" max="9000" min="0" step="300" name="prix" id="prix">
+                                    <label for="prix"> Prix : <span id="prix-filtre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
+                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="300" name="prix" id="prix">
                             </div>
 
                             <?= $msg ?>
-
+                                                    
+                            <div class="form-group">
+                                    <label for="salle"> Salle </label>
+                                    <select name="salle" id="salle" class="form-control">
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_salle ?>
+                                    </select>
+                            </div>
+                            
                             <div class="form-group">
                                     <label for="date-arrive-pdt">Date d'arrivée</label>
                                     <div class="input-group">
@@ -273,6 +308,7 @@ include("inc/nav.inc.php");
                   <span class="sr-only">Next</span>
                 </a>
             </div>
+                 <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
               <?php 
                     // Affichage des différents produits
                     foreach($tab_produit AS $index => $val)

@@ -7,13 +7,25 @@ body {
 }
 
 .clear  {
-	clear:both;
+    clear:both;
 }
 /* ******************  STYLE PERSO ******************** */
-.blueviolet {
-	color: lightslategray;
+.btn.sharp {
+    border-radius: 0;
+}
+.btn-primary.raised {
+	box-shadow: 0 3px 0 0 #007299;
+}
+.btn-primary.raised:active, .btn-primary.raised.active {
+	background: #33a6cc;
+	box-shadow: none;
+	margin-bottom: -3px;
+	margin-top: 3px;
 }
 
+.blueviolet {
+    color: lightslategray;
+}
 .navbar-inverse {
 	background-color: #225BAA;
 	color: #EBFAFF;
@@ -95,6 +107,11 @@ body {
 .salle_titre {
 	color: steelblue;
 /*	font-weight: bold;*/
+}
+.nb-produits{
+    color: #225BAA;
+    margin: 17px;
+    border-bottom: 1px solid #225BAA;
 }
 
 /* ****************** PAGE PROFIL ******************* */
@@ -206,7 +223,7 @@ input.nn {
 }
 
 #map {
-    height: 190px;
+    height: 200px;
     max-width: 345px;
     border-radius: 2px;
     margin-left: auto;
@@ -231,6 +248,19 @@ input.nn {
 .vignette_fichpro {
 /*   background-color: #90F2FF;*/
 }
+.dispo {
+    line-height: 30px;
+    padding: 7px;
+}
+.dispo a {
+    text-decoration: none;
+    color: #333;
+    line-height: 20px;
+    padding: 5px;
+}
+.dispo a:hover {
+    color: #428bca;
+}
 /* ************* Tableau d'affichage des tables *************** */
 .affichage {
 	text-align: center;
@@ -244,7 +274,7 @@ th.affichage {
 /* Connexion */
 .container_connexion {
 	position: fixed;
-	z-index:1;
+	z-index:100;
 	min-width: 100%;
 	height: 100%;
         padding-top:30px;
