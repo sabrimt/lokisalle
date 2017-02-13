@@ -175,7 +175,7 @@ include("../inc/nav.inc.php");
 				
 		if(isset($_GET['action']) && $_GET['action'] == 'affichage')
 		{
-			afficher_table_avec_boucle("SELECT p.id_produit, p.date_arrivee, p.date_depart, s.description, s.titre, s.photo, s.ville, p.prix, p.etat FROM produit p JOIN salle s ON p.id_salle = s.id_salle", 'id_produit');
+			afficher_table_avec_boucle("SELECT p.id_produit, p.date_arrivee, p.date_depart, s.description, s.titre, s.photo, s.photo_2, s.photo_3, s.ville, p.prix, p.etat FROM produit p JOIN salle s ON p.id_salle = s.id_salle", 'id_produit');
 			
 		}
 

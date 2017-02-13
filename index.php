@@ -220,12 +220,12 @@ include("inc/nav.inc.php");
                             <!-- ajouter du javascript pour afficher la valeur des input dessous -->
                             <div class="form-group">
                                     <label for="capacite"> Capacité : <span id="capacite-filtre"><?= $capacite_affichage ?></span> <span class="small">(minimum)</span></label>
-                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="200" min="0" step="5" name="capacite">
+                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="5" name="capacite">
                             </div>
 
                             <div class="form-group">
                                     <label for="prix"> Prix : <span id="prix-filtre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
-                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="300" name="prix" id="prix">
+                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="200" name="prix" id="prix">
                             </div>
 
                             <?= $msg ?>

@@ -196,7 +196,7 @@ img {
 .fiche_other_pics {
 }
 
-p .label_fiche {
+.label_fiche {
 	display: inline-block;
 	width: 140px;
 	color: #428bca;
@@ -221,14 +221,26 @@ p .label_fiche {
 input.nn {
     -moz-appearance: textfield;
 }
-
+/** MAP **/
 #map {
     height: 200px;
     max-width: 345px;
     border-radius: 2px;
     margin-left: auto;
     margin-right: auto;
-    }
+}
+.adresse_carte {
+    margin-left: 50px;
+    max-width:85px;
+}
+#adresse {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+#text_latlng {
+    margin: 10px;
+}
+/** map end **/
 
 @media screen and (max-width: 700px) {
   .fiche_main_pic  {

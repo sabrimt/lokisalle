@@ -95,16 +95,16 @@ include("inc/nav.inc.php");
 				</div>
 			</div>
                 </div>
+              <!-- GOOGLE MAP -->
               <div class="col-sm-4" style="display: table-cell;">
                    <div class=" panel panel-primary fiche_produit" >
                         <legend> Accès à la salle :  </legend>
-                        <p class="fiche_produit_dispo"> 
-                            <span class="label_fiche adresse_carte" style="padding:10px; max-width:85px;"> Adresse :</span>
-                            <span><?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' . $produit['ville']; ?></span>
-                        </p>
-                       <div id="map">
-					
-                       </div>
+                        <p class="adresse_carte"><span class="label_fiche"> Adresse :</span></p>
+                         <span id="adresse"><?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' . $produit['ville']; ?></span>
+                        <div id="map">
+
+                        </div>
+                        <small><span id="text_latlng"></span></small>
                    </div>
                   <div class=" panel panel-primary fiche_produit">
                         <legend><small><a href="index.php?salle=<?= $produit['titre'] ?>">Voir les autres disponibilités... </a></small></legend>
@@ -118,7 +118,7 @@ include("inc/nav.inc.php");
                         ?>
                             <tr>
                                 <td class="dispo">
-                                    <a href="fiche_produit.php?id=<?= $dispo['id_produit'] ?>">Du <?= substr(change_date($dispo['date_arrivee']), 0, 10) ?> au <?= substr(change_date($dispo['date_depart']), 0, 10) ?></a>
+                                    <a href="fiche_produit.php?id=<?= $dispo['id_produit'] ?>">Du <?= substr(change_date($dispo['date_arrivee']), 0, 10) ?> au <?= substr(change_date($dispo['date_depart']), 0, 10) ?> : <?= $dispo['prix'] ?></a>
                                 </td>
                             </tr>
                         <?php
@@ -179,8 +179,8 @@ include("inc/nav.inc.php");
     
     
 <!--  /* ******* FICHE PRODUIT ******* */-->
-    <script>
-      
+<script>
+// Disposition/Gestion photos
 var th = document.getElementById('thumbnails');
 
 th.addEventListener('click', function(e) {
@@ -196,6 +196,52 @@ th.addEventListener('click', function(e) {
   }, 50);
   e.preventDefault();
 }, false);
-        </script>
+</script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?language=fr&key=AIzaSyAStftnDxrXsZeedcHQnErvd3HdkbNGZIQ">
+</script>
+<script type="text/javascript">
+    var geocoder;
+    var map;
+    // initialisation de la carte Google Map de départ
+    function initialiserCarte() {
+        geocoder = new google.maps.Geocoder();
+        // longitude du vieux Port de Marseille pour centrer la carte de départ
+        var latlng = new google.maps.LatLng(43.295309,5.374457);
+        var mapOptions = {
+            zoom      : 14,
+            center    : latlng,
+            mapTypeId : google.maps.MapTypeId.ROADMAP
+        }
+        // map-canvas est le conteneur HTML de la carte Google Map
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        trouverAdresse();
+    }
+    function trouverAdresse() {
+        // Récupération de l'adresse
+        var adresse = document.getElementById('adresse').innerHTML;
+        console.log(adresse);
+        geocoder.geocode( { 'address': adresse}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                // Récupération des coordonnées GPS de l'adresse
+                var strposition = results[0].geometry.location+"";
+                strposition=strposition.replace('(', '');
+                strposition=strposition.replace(')', '');
+                // Affichage des coordonnées dans le <span>
+                document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
+                // Création du marqueur du lieu (épingle)
+                var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                });
+            } else {
+                alert('Adresse introuvable: ' + status);
+            }
+        });
+    }
+    // Lancement de la construction de la carte google map
+    google.maps.event.addDomListener(window, 'load', initialiserCarte);
+    
+</script>
 <?php
 include("inc/footer.inc.php");
