@@ -3,12 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/xampp/htdocs/lokisalle/inc/header.inc.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/index.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/css/style.css</file>
-            <file>file:/C:/xampp/htdocs/lokisalle/fiche_produit.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/admin/gestion_salle.php</file>
+            <file>file:/C:/xampp/htdocs/lokisalle/fiche_produit.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/js/main.js</file>
+            <file>file:/C:/xampp/htdocs/lokisalle/admin/gestion_produits.php</file>
+            <file>file:/C:/xampp/htdocs/lokisalle/inc/nav.inc.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/inc/init.inc.php</file>
+            <file>file:/C:/xampp/htdocs/lokisalle/inc/footer.inc.php</file>
             <file>file:/C:/xampp/htdocs/lokisalle/inc/functions.inc.php</file>
         </group>
     </open-files>

@@ -232,12 +232,22 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 	
 	echo '<div class="col-sm-12">';
 
-	$resultat = $mysqli->query($req);// Requete de récupération de table
+	$resultat = execute_requete($req);// Requete de récupération de table
 	echo '<table border="2" class="table table-striped" style="border-collapse: collapse; width: 100%;">';
 	echo '<tr>';
+        
+        $nb_col = $resultat->field_count; // nombre de champs renvoyés par la requête(nombre de colonnes)
 	while($colonne = $resultat->fetch_field()) 
 	{
+            if($nb_col > 11)
+            {
 		echo '<th class="affichage">' . $colonne->name . '</th>';
+            } else {
+                if($colonne->name != 'photo_2' && $colonne->name != 'photo_3')
+                {
+                    echo '<th class="affichage">' . $colonne->name . '</th>';
+                }
+            }
 	}
 	if($nom_id !== "") // Si l'argument $nom_id est différent de "", ajouter les colonnes suppression et modification
 	{
@@ -246,19 +256,38 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 	echo '</tr>';
 
 	while($entree = $resultat->fetch_assoc())
-	{
+	{       $photo = ""; // permet de stocker la photo en cours
+        
 		echo '<tr>';
 		foreach($entree AS $indice => $valeur)
 		{
 			// afficher les images dans un img src !
 			if(($indice == 'photo') || ($indice == 'photo_2') || ($indice == 'photo_3'))
 			{
-                            if (!empty($valeur))
+                            if($nb_col > 11)
                             {
-				echo '<td  class="affichage"><img src="' . URL . $valeur . '" alt="'. $valeur .'" width="90" /></td>';
+                                if (!empty($valeur))
+                                {
+                                    echo '<td  class="affichage"><img src="' . URL . $valeur . '" alt="'. $valeur .'" width="90" /></td>';
+                                } else {
+                                    echo '<td  class="affichage">Pas d\'image</td>';
+                                }
                             } else {
-                                echo '<td  class="affichage">Pas d\'image</td>';
+                                    if($photo == "")
+                                    {
+                                        $photo = $valeur;
+                                    }
+                                    if ($indice == 'photo_3')
+                                    {
+                                        if(!empty($photo))
+                                        {
+                                            echo '<td  class="affichage"><img src="' . URL . $photo . '" alt="'. $photo .'" width="90" /></td>'; 
+                                        } else {
+                                            echo '<td  class="affichage">Pas d\'image</td>';
+                                        }
+                                    }
                             }
+                            
 			}elseif($indice == 'description')
 			{
 				echo '<td  class="affichage">' . substr($valeur, 0, 26) . ' <a href="">... lire la suite</a></td>';
