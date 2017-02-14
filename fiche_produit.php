@@ -19,11 +19,12 @@ $reftitrecat = strtolower(substr($produit['categorie'], 0, 2));
 
 // Dans la même ville
 $ville = $produit['ville'];
-$autres_ville = execute_requete("SELECT * FROM salle WHERE ville = '$ville' LIMIT 4");
+$salle = $produit['id_salle'];
+$arrivee = $produit['date_arrivee'];
+$autres_ville = execute_requete("SELECT * FROM salle WHERE ville = '$ville' AND id_salle != '$$salle' LIMIT 4");
 
 // Disponibilités
-$salle = $produit['id_salle'];
-$dispos = execute_requete("SELECT * FROM produit WHERE id_salle = '$salle' AND date_arrivee > NOW() LIMIT 3");
+$dispos = execute_requete("SELECT * FROM produit WHERE id_salle = '$salle' AND date_arrivee > NOW() AND date_arrivee != '$arrivee' LIMIT 3");
 
 //debug($autres_villes);
 
@@ -104,7 +105,7 @@ include("inc/nav.inc.php");
                         <div id="map">
 
                         </div>
-                        <small><span id="text_latlng"></span></small>
+<!--                        <small><span id="text_latlng"></span></small>-->
                    </div>
                   <div class=" panel panel-primary fiche_produit">
                         <legend><small><a href="index.php?salle=<?= $produit['titre'] ?>">Voir les autres disponibilités... </a></small></legend>
@@ -113,8 +114,6 @@ include("inc/nav.inc.php");
                         <?php
                         while($dispo = $dispos->fetch_assoc())
                         {
-                            if($dispo['date_arrivee'] != $produit['date_arrivee'])
-                            {
                         ?>
                             <tr>
                                 <td class="dispo">
@@ -122,7 +121,6 @@ include("inc/nav.inc.php");
                                 </td>
                             </tr>
                         <?php
-                            }
                         }
                         ?>
                         </table>
@@ -138,8 +136,6 @@ include("inc/nav.inc.php");
                         <?php
                             while($autres_salles = $autres_ville->fetch_assoc())
                             {
-                                if ($autres_salles['id_salle'] != $produit['id_salle'])
-                                {
                                     $photo_salle = "img/no_photo.jpg";
                                     if(!empty($autres_salles['photo'])){
                                         $photo_salle = $autres_salles['photo'];
@@ -168,7 +164,6 @@ include("inc/nav.inc.php");
                                 </div>
                         </div>
                         <?php
-                                }
                             }
                         ?>
                     </div>
@@ -227,8 +222,8 @@ th.addEventListener('click', function(e) {
                 var strposition = results[0].geometry.location+"";
                 strposition=strposition.replace('(', '');
                 strposition=strposition.replace(')', '');
-                // Affichage des coordonnées dans le <span>
-                document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
+//                 Affichage des coordonnées dans le <span>
+//                document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
                 // Création du marqueur du lieu (épingle)
                 var marker = new google.maps.Marker({
                         map: map,

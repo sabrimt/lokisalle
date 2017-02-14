@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="description">
     <meta name="author" content="Sabri_PA">
-    <link rel="icon" href="<?php echo URL; ?>img/favicon.png">
+    <link rel="icon" href="<?php echo URL; ?>/img/favicon.ico">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <title>CavaSalle - Réservation de salle <?php if(isset($title)) echo '- ' . $title; ?></title>

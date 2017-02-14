@@ -282,14 +282,6 @@ include("inc/nav.inc.php");
                             </div>
 
                             <?= $msg ?>
-                                                    
-                            <div class="form-group">
-                                    <label for="salle"> Salle </label>
-                                    <select name="salle" id="salle" class="form-control">
-                                            <option value="indifferent">Indifférent</option>
-                                            <?= $liste_salle ?>
-                                    </select>
-                            </div>
                             
                             <div class="form-group">
                                     <label for="date-arrive-pdt">Date d'arrivée</label>
@@ -308,6 +300,18 @@ include("inc/nav.inc.php");
 
                             <input type="submit" value="Valider" class="btn btn-default btn-ok">
                     </form>
+                    <form method="GET" action="" class="form">
+                        <legend style="padding-top: 30px;">Recherche par salle</legend>
+                            <div class="form-group">
+                                    <label for="salle">Salle</label>
+                                    <select name="salle" id="salle" class="form-control">
+                                            <option value="indifferent">-- Choix de la salle --</option>
+                                            <?= $liste_salle ?>
+                                    </select>
+                            </div>
+                            <input type="submit" value="Valider" class="btn btn-default btn-ok">
+                    </form>
+                
              </aside>
              <div class="col-sm-9">
              
