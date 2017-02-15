@@ -191,12 +191,15 @@ include("inc/nav.inc.php");
 ?>
 
     <div class="container">
-          <h1 class="hometitre">cAVA sALLE - Réservation de salles pour professionnels </h1>
+          <h1 class="hometitre" style="color: #225BAA;">CavaSalle - Réservation de salles pour professionnels </h1>
           <hr/>
-            
+          <button type="button" class="btn btn-primary recherche_mobile" style="width:100%;"><span class="glyphicon glyphicon-search"></span>
+           RECHERCHEZ VOTRE SALLE
+          </button>
+<!--     
         <div class="starter-template">
             <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
-        </div>
+        </div>-->
           <div class="row">
               <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
@@ -254,6 +257,7 @@ include("inc/nav.inc.php");
          <div class="row">
             <aside id="filtres-boutique" class="col-sm-3">
                     <form method="GET" action="" class="form">
+                        <div style="padding-top: 50px; color: #225BAA; font-size:14pt;"><i> </i></div>
                             <div class="form-group">
                                     <label for="categorie">Catégorie </label>
                                     <select name="categorie" id="cattegorie" class="form-control">
@@ -300,7 +304,7 @@ include("inc/nav.inc.php");
 
                             <input type="submit" value="Valider" class="btn btn-default btn-ok">
                     </form>
-                    <form method="GET" action="" class="form">
+                    <form method="GET" action="" class="form recherche_salle_index_cache">
                         <legend style="padding-top: 30px;">Recherche par salle</legend>
                             <div class="form-group">
                                     <label for="salle">Salle</label>
@@ -313,7 +317,7 @@ include("inc/nav.inc.php");
                     </form>
                 
              </aside>
-             <div class="col-sm-9">
+             <div class="col-xs-9 col-sm-9">
              
                  <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
               <?php 
@@ -322,9 +326,9 @@ include("inc/nav.inc.php");
                     {
                         $reftitre = strtolower(substr($tab_produit[$index]['titre'], 0, 3));
                             ?>
-                <div class="col-sm-4">
+                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4" style="min-width:271px;">
                     <div class=" panel panel-primary">
-                        <div class="panel-body">
+                        <div class="panel-body" style="min-width:240px;">
                             <?php 
                                 if(!empty($tab_produit[$index]['photo']))
                                 {

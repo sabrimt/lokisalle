@@ -20,11 +20,12 @@ $reftitrecat = strtolower(substr($produit['categorie'], 0, 2));
 // Dans la même ville
 $ville = $produit['ville'];
 $salle = $produit['id_salle'];
-$arrivee = $produit['date_arrivee'];
-$autres_ville = execute_requete("SELECT * FROM salle WHERE ville = '$ville' AND id_salle != '$$salle' LIMIT 4");
+$autres_ville = execute_requete("SELECT * FROM salle WHERE ville = '$ville' AND id_salle != '$salle' LIMIT 4");
 
 // Disponibilités
-$dispos = execute_requete("SELECT * FROM produit WHERE id_salle = '$salle' AND date_arrivee > NOW() AND date_arrivee != '$arrivee' LIMIT 3");
+$salle = $produit['id_salle'];
+$arrivee = $produit['date_arrivee'];
+$dispos = execute_requete("SELECT * FROM produit WHERE id_salle = '$salle' AND date_arrivee > NOW() AND date_arrivee != '$arrivee' LIMIT 7");
 
 //debug($autres_villes);
 
@@ -64,25 +65,26 @@ include("inc/nav.inc.php");
                                         </div>
                                     </div>
                                 </div>
-				<div class="panel-body">
+				<div class="panel-body biboudin">
                                        <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Description :</b> </span> </p>
                                        <p class="fiche_produit_description"><?php echo $produit['description']; ?></p>
                                        <hr/>
                                        <div class="col-sm-6" style="padding-left: 0">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> Caractéristiques :</b> </span> </p>
-                                            <p><span class="label_fiche"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . '  ' . ' <b> ' . substr(change_date($produit['date_arrivee']), 0, 16) . ' </b>'; ?></p>
-                                            <p><span class="label_fiche"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . substr(change_date($produit['date_depart']), 0, 16) . '</b>'; ?></p>
+                                                <div class="daty2">
+                                                <p><span class="label_fiche" style="color:black;"> Entrée : </span><?php echo ' <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>  ' . '  ' . ' <b> ' . substr(change_date($produit['date_arrivee']), 0, 16) . ' </b>'; ?></p>
+                                                <p><span class="label_fiche" style="color:black;"> Sortie : </span><?php echo ' <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  ' . ' ' . ' <b> ' . substr(change_date($produit['date_depart']), 0, 16) . '</b>'; ?></p>
+                                                </div>
+                                       
                                        </div>
                                        <div class="col-sm-6">
                                             <p class="fiche_produit_dispo"><span class="label_fiche"> <b> </b> </span> </p>
-                                            <p class="fiche_produit_dispo"><span class="label_fiche">Capacité :</span> <?php echo ' jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Capacité : </span> <?php echo 'jusqu\'à ' . $produit['capacite'] . ' ' . ' personnes '; ?></p>
                                           
-                                            <p class="fiche_produit_dispo"><span class="label_fiche">Ville : </span><?php echo  $produit['ville']; ?></p>
+                                            <p class="fiche_produit_dispo"><span class="label_fiche">Ville : </span><?php echo ' ' . $produit['ville']; ?></p>
                                             <p class="fiche_produit_dispo"><span class="label_fiche">Prix : </span><b> <?php echo $produit['prix'] . ' euros ' ; ?> <b/></p>
 					<br/>
                                        </div>
-					
-                                      
 					<?php
 				
 					echo '<form method="post" action="panier.php">';
@@ -98,35 +100,39 @@ include("inc/nav.inc.php");
                 </div>
               <!-- GOOGLE MAP -->
               <div class="col-sm-4" style="display: table-cell;">
-                   <div class=" panel panel-primary fiche_produit" >
+                   <div class="panel panel-primary fiche_produit" >
                         <legend> Accès à la salle :  </legend>
-                        <p class="adresse_carte"><span class="label_fiche"> Adresse :</span></p>
-                         <span id="adresse"><?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' . $produit['ville']; ?></span>
-                        <div id="map">
+                         <span id="adresse" ><?php echo $produit['adresse'] . ' ' . $produit['cp'] . ' ' . $produit['ville']; ?></span>
+                        <div id="map" style="margin-top:10px; margin-bottom: 10px;" >
 
                         </div>
-<!--                        <small><span id="text_latlng"></span></small>-->
                    </div>
-                  <div class=" panel panel-primary fiche_produit">
-                        <legend><small><a href="index.php?salle=<?= $produit['titre'] ?>">Voir les autres disponibilités... </a></small></legend>
-                        <p class="fiche_produit_dispo"><span class="label_fiche" style="padding:10px;">Salle :</span><?= $produit['titre'] ?></p>
-                        <table>
-                        <?php
-                        while($dispo = $dispos->fetch_assoc())
-                        {
-                        ?>
-                            <tr>
-                                <td class="dispo">
-                                    <a href="fiche_produit.php?id=<?= $dispo['id_produit'] ?>">Du <?= substr(change_date($dispo['date_arrivee']), 0, 10) ?> au <?= substr(change_date($dispo['date_depart']), 0, 10) ?> : <?= $dispo['prix'] ?></a>
-                                </td>
-                            </tr>
-                        <?php
-                        }
-                        ?>
-                        </table>
-                  </div>
+                    <div class="autres_dispo_block">
+                        <span class="glyphicon glyphicon-calendar oklm" aria-hidden="true"></span> <a href="index.php?salle=<?= $produit['titre'] ?>">Voir les autres disponibilités de la salle : </a>
+                            <ul>
+                            <?php 
+                            if($dispos->num_rows >0) {
+                           
+                            while($dispo = $dispos->fetch_assoc())
+                            {
+                            ?>
+                                <tr>
+                                    <li class="dispo">
+                                        <a class="javatest" href="fiche_produit.php?id=<?= $dispo['id_produit'] ?>"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> <?= substr(change_date($dispo['date_arrivee']), 0, 10) ?> au <?= substr(change_date($dispo['date_depart']), 0, 10) ?> : <?= $dispo['prix'] . ' €' ?></a>
+                                    </li>
+                                </tr>
+                            <?php
+                                }
+                                
+                            }else {
+                                echo '<small><i>Il n\'y a pas d\'autres disponiblités pour cette salle</i></small>' ;
+                            }
+                            
+                            ?>
+                           </ul>
+<!--                  </div>-->
+                    </div>
               </div>
-            
 	  </div> <!-- ROW -->
           <div class="row">
                 <div class="fiche_produits_salles_villes panel panel-primary">
@@ -158,7 +164,7 @@ include("inc/nav.inc.php");
                                     </div>
                                     <div class="row">
                                         <div class="index-voir col-sm-10 col-sm-offset-1">
-                                            <a href="index.php?salle=<?= $autres_salles['titre'] ?>"><button type="button" class="btn btn-primary index-bouton-voir raised"><small><span class="glyphicon glyphicon-search"></span> Voir les prduits</small></button></a>
+                                            <a href="index.php?salle=<?= $autres_salles['titre'] ?>"><button type="button" class="btn btn-primary index-bouton-voir raised"><small><span class="glyphicon glyphicon-search"></span> Voir les produits</small></button></a>
                                         </div>
                                     </div> 
                                 </div>
@@ -174,6 +180,8 @@ include("inc/nav.inc.php");
     
     
 <!--  /* ******* FICHE PRODUIT ******* */-->
+
+
 <script>
 // Disposition/Gestion photos
 var th = document.getElementById('thumbnails');
@@ -222,7 +230,7 @@ th.addEventListener('click', function(e) {
                 var strposition = results[0].geometry.location+"";
                 strposition=strposition.replace('(', '');
                 strposition=strposition.replace(')', '');
-//                 Affichage des coordonnées dans le <span>
+                // Affichage des coordonnées dans le <span>
 //                document.getElementById('text_latlng').innerHTML='Coordonnées : '+strposition;
                 // Création du marqueur du lieu (épingle)
                 var marker = new google.maps.Marker({
@@ -238,5 +246,6 @@ th.addEventListener('click', function(e) {
     google.maps.event.addDomListener(window, 'load', initialiserCarte);
     
 </script>
+
 <?php
 include("inc/footer.inc.php");

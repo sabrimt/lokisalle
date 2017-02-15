@@ -29,5 +29,13 @@
 
 <!-- JAVASCRIPT PERSO  -->
         <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
+        
+         <script>
+
+		     $(function() {
+		       $('.daty2').fadeIn(1000).css('background-color', '#f5f8fd');
+		    });
+
+	</script>
   </body>
 </html>
