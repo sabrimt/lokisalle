@@ -66,14 +66,14 @@ body {
 #carousel-example-generic {
     margin-top:10px;
     margin-bottom: 20px;
-    max-height:350px;
-    max-width:1200px;
+/*    max-height:350px;
+    max-width:1200px;*/
     margin-right:15px;
     margin-left:15px;
 }
 .carousel-inner {
-   max-height:250px;
-   max-width:1200px;
+/*   max-height:250px;
+   max-width:1200px;*/
    text-align: center;
 }
 .item {
@@ -113,7 +113,26 @@ body {
     margin: 17px;
     border-bottom: 1px solid #225BAA;
 }
-
+.recherche_mobile {
+    display:none;
+}
+.recherche_salle_index_cache {
+ display: none;   
+}
+@media screen and (max-width: 768px) {
+    #filtres-boutique {
+        display:none;
+    }
+    #carousel-example-generic {
+        display:none;
+    }
+    .hometitre {
+        font-size:16pt;
+    }
+    .recherche_mobile {
+        display:unset;
+    }
+}
 /* ****************** PAGE PROFIL ******************* */
 .infos_profil {
 	color: #428bca;
@@ -195,7 +214,13 @@ img {
 }
 .fiche_other_pics {
 }
-
+.daty2 {
+    padding-top:10px;
+    padding-bottom:5px;
+    padding-left:10px;
+    border-radius:5px;
+    display: none;
+}
 .label_fiche {
 	display: inline-block;
 	width: 140px;
@@ -247,7 +272,10 @@ input.nn {
     display:none;
   }
 }
-
+.autres_dispo_block {
+    margin-top: 30px;
+    padding-left:15px;
+}
 .fiche_produits_salles_villes {
     padding-left:15px;
     margin-left:15px;
@@ -260,9 +288,16 @@ input.nn {
 .vignette_fichpro {
 /*   background-color: #90F2FF;*/
 }
+.oklm {
+    margin-top:30px;
+    margin-bottom: 30px;
+}
 .dispo {
-    line-height: 30px;
+    padding-top:40px;
+    line-height: 20px;
     padding: 7px;
+    font-size:11px;
+    list-style-type: none; 
 }
 .dispo a {
     text-decoration: none;
