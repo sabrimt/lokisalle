@@ -29,7 +29,7 @@
 
 <!-- JAVASCRIPT PERSO  -->
         <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
-        
+<!--        
          <script>
 
 		     $(function() {
@@ -37,5 +37,11 @@
 		    });
 
 	</script>
+        <script>
+            var filtreSalle = $('#filtres-salle');
+            var filtreMobile = $('#filtres-mobile');
+        filtreSalle.clone().appendTo(filtreMobile);
+     </script>-->
+            
   </body>
 </html>

@@ -78,6 +78,16 @@ $spanCapacite=$('#capacite-filtre');
         }
     });
 /***** filtre recherche accueil *****/
+/* ****** Affichage des dates dans fiche produit ****** */
+        $(function() {
+          $('.daty2').fadeIn(1000).css('background-color', '#f5f8fd');
+       });
+
+/* ******* Bouton recherche pour responsive  ******* */
+    var filtreSalle = $('#filtres-salle');
+    var filtreMobile = $('#filtres-mobile');
+    filtreSalle.clone().appendTo(filtreMobile);
 }); // fermeture document.ready
+
 
 

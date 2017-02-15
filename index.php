@@ -193,9 +193,20 @@ include("inc/nav.inc.php");
     <div class="container">
           <h1 class="hometitre" style="color: #225BAA;">CavaSalle - Réservation de salles pour professionnels </h1>
           <hr/>
-          <button type="button" class="btn btn-primary recherche_mobile" style="width:100%;"><span class="glyphicon glyphicon-search"></span>
-           RECHERCHEZ VOTRE SALLE
-          </button>
+          <div class="panel-group recherche_mobile" id="accordion" role="tablist" aria-multiselectable="true">
+              <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                  <a id="headingOne2" class="btn btn-primary " role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="width:100%;"><span class="glyphicon glyphicon-search"></span>
+                    RECHERCHEZ VOTRE SALLE
+                   </a>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="panel-body" id="filtres-mobile">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          
 <!--     
         <div class="starter-template">
             <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
@@ -252,12 +263,11 @@ include("inc/nav.inc.php");
                   <span class="sr-only">Next</span>
                 </a>
             </div>
-              
           </div>
          <div class="row">
             <aside id="filtres-boutique" class="col-sm-3">
-                    <form method="GET" action="" class="form">
-                        <div style="padding-top: 50px; color: #225BAA; font-size:14pt;"><i> </i></div>
+                    <form method="GET" action="" class="form" id="filtres-salle">
+                        <div style=" color: #225BAA; font-size:14pt;"><i> </i></div>
                             <div class="form-group">
                                     <label for="categorie">Catégorie </label>
                                     <select name="categorie" id="cattegorie" class="form-control">
@@ -317,7 +327,7 @@ include("inc/nav.inc.php");
                     </form>
                 
              </aside>
-             <div class="col-xs-9 col-sm-9">
+             <div class="col-xs-12 col-sm-9">
              
                  <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
               <?php 
@@ -326,9 +336,11 @@ include("inc/nav.inc.php");
                     {
                         $reftitre = strtolower(substr($tab_produit[$index]['titre'], 0, 3));
                             ?>
-                <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4" style="min-width:271px;">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" >
+<!--                    style="min-width:271px;"-->
                     <div class=" panel panel-primary">
-                        <div class="panel-body" style="min-width:240px;">
+                        <div class="panel-body" >
+<!--                            style="min-width:240px;"-->
                             <?php 
                                 if(!empty($tab_produit[$index]['photo']))
                                 {
@@ -350,7 +362,7 @@ include("inc/nav.inc.php");
                                 }
                             ?>
                             <div class="row">
-                                    <p class="col-sm-11 salle_titre"><?php echo '<strong>' . $tab_produit[$index]['ville'] . '</strong>' . ' - ' . $type_salle . $tab_produit[$index]['titre']; ?></p>
+                                    <p class="col-sm-11 salle_titre"><?php echo '<strong>' . $tab_produit[$index]['ville'] . '</strong>' . ' <br/> ' . $type_salle . $tab_produit[$index]['titre']; ?></p>
                                     <p class="col-sm-4 salle_prix"><?php echo $tab_produit[$index]['prix']; ?> €</p>
                             </div>
                             <p class="index-descr-fiche"><?php echo substr($tab_produit[$index]['description'], 0, 26); ?>...</p>

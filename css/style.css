@@ -88,6 +88,12 @@ body {
 .aside {
     margin-top:10px;
 }
+#filtres-boutique{
+    padding-top:50px;
+}
+#filtres-mobile {
+    padding-bottom: 10px;
+}
 .index-descr-fiche {
     margin-bottom:0px;
 }
@@ -131,6 +137,9 @@ body {
     }
     .recherche_mobile {
         display:unset;
+    }
+    .carrousel-descriptif{
+        padding-top: 0;
     }
 }
 /* ****************** PAGE PROFIL ******************* */
