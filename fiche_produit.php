@@ -142,8 +142,6 @@ include("inc/nav.inc.php");
                         <?php
                             while($autres_salles = $autres_ville->fetch_assoc())
                             {
-                                if ($autres_salles['id_salle'] != $produit['id_salle'])
-                                {
                                     $photo_salle = "img/no_photo.jpg";
                                     if(!empty($autres_salles['photo'])){
                                         $photo_salle = $autres_salles['photo'];
@@ -172,7 +170,6 @@ include("inc/nav.inc.php");
                                 </div>
                         </div>
                         <?php
-                                }
                             }
                         ?>
                     </div>

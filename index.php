@@ -197,67 +197,8 @@ include("inc/nav.inc.php");
         <div class="starter-template">
             <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
         </div>
-
-         <div class="row">
-            <aside id="filtres-boutique" class="col-sm-3">
-                    <form method="GET" action="" class="form">
-                            <div class="form-group">
-                                    <label for="categorie">Catégorie </label>
-                                    <select name="categorie" id="cattegorie" class="form-control">
-                                            <option value="indifferent">Indifférent</option>
-                                            <?= $liste_cat ?>
-                                    </select>
-                            </div>
-
-                            <div class="form-group">
-                                    <label for="ville"> Ville </label>
-                                    <select name="ville" id="ville" class="form-control">
-                                            <option value="indifferent">Indifférent</option>
-                                            <?= $liste_ville ?>
-                                    </select>
-                            </div>
-
-                            <!-- ajouter du javascript pour afficher la valeur des input dessous -->
-                            <div class="form-group">
-                                    <label for="capacite"> Capacité : <span id="capacite-filtre"><?= $capacite_affichage ?></span> <span class="small">(minimum)</span></label>
-                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="5" name="capacite">
-                            </div>
-
-                            <div class="form-group">
-                                    <label for="prix"> Prix : <span id="prix-filtre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
-                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="200" name="prix" id="prix">
-                            </div>
-
-                            <?= $msg ?>
-                                                    
-                            <div class="form-group">
-                                    <label for="salle"> Salle </label>
-                                    <select name="salle" id="salle" class="form-control">
-                                            <option value="indifferent">Indifférent</option>
-                                            <?= $liste_salle ?>
-                                    </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                    <label for="date-arrive-pdt">Date d'arrivée</label>
-                                    <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                                            <input type="text" class="form-control datepicker" name="date_arrivee" id="date-arrive-pdt" placeholder="Date d'arrivée" value="<?= $date_arrivee ?>">
-                                    </div>
-                            </div>
-                            <div class="form-group">
-                                    <label for="date-depart-pdt">Date de départ</label>
-                                    <div class="input-group">
-                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                                            <input type="text" class="form-control datepicker" name="date_depart" id="date-depart-pdt" placeholder="Date de départ" value="<?= $date_depart ?>">
-                                    </div>
-                            </div>
-
-                            <input type="submit" value="Valider" class="btn btn-default btn-ok">
-                    </form>
-             </aside>
-             <div class="col-sm-9">
-             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+          <div class="row">
+              <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
                   <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -308,6 +249,72 @@ include("inc/nav.inc.php");
                   <span class="sr-only">Next</span>
                 </a>
             </div>
+              
+          </div>
+         <div class="row">
+            <aside id="filtres-boutique" class="col-sm-3">
+                    <form method="GET" action="" class="form">
+                            <div class="form-group">
+                                    <label for="categorie">Catégorie </label>
+                                    <select name="categorie" id="cattegorie" class="form-control">
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_cat ?>
+                                    </select>
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="ville"> Ville </label>
+                                    <select name="ville" id="ville" class="form-control">
+                                            <option value="indifferent">Indifférent</option>
+                                            <?= $liste_ville ?>
+                                    </select>
+                            </div>
+
+                            <!-- ajouter du javascript pour afficher la valeur des input dessous -->
+                            <div class="form-group">
+                                    <label for="capacite"> Capacité : <span id="capacite-filtre"><?= $capacite_affichage ?></span> <span class="small">(minimum)</span></label>
+                                    <input id="capacite" type="range" value="<?= $capacite ?>" max="100" min="0" step="5" name="capacite">
+                            </div>
+
+                            <div class="form-group">
+                                    <label for="prix"> Prix : <span id="prix-filtre"><?= $prix ?></span> &euro; <span class="small">(maximum)</span></label>
+                                    <input type="range" value="<?= $prix ?>" max="10000" min="0" step="200" name="prix" id="prix">
+                            </div>
+
+                            <?= $msg ?>
+                            
+                            <div class="form-group">
+                                    <label for="date-arrive-pdt">Date d'arrivée</label>
+                                    <div class="input-group">
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                                            <input type="text" class="form-control datepicker" name="date_arrivee" id="date-arrive-pdt" placeholder="Date d'arrivée" value="<?= $date_arrivee ?>">
+                                    </div>
+                            </div>
+                            <div class="form-group">
+                                    <label for="date-depart-pdt">Date de départ</label>
+                                    <div class="input-group">
+                                            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+                                            <input type="text" class="form-control datepicker" name="date_depart" id="date-depart-pdt" placeholder="Date de départ" value="<?= $date_depart ?>">
+                                    </div>
+                            </div>
+
+                            <input type="submit" value="Valider" class="btn btn-default btn-ok">
+                    </form>
+                    <form method="GET" action="" class="form">
+                        <legend style="padding-top: 30px;">Recherche par salle</legend>
+                            <div class="form-group">
+                                    <label for="salle">Salle</label>
+                                    <select name="salle" id="salle" class="form-control">
+                                            <option value="indifferent">-- Choix de la salle --</option>
+                                            <?= $liste_salle ?>
+                                    </select>
+                            </div>
+                            <input type="submit" value="Valider" class="btn btn-default btn-ok">
+                    </form>
+                
+             </aside>
+             <div class="col-sm-9">
+             
                  <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
               <?php 
                     // Affichage des différents produits

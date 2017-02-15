@@ -108,72 +108,77 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
 		$photo_bdd_2 = "";
 		$photo_bdd_3 = "";
                 
-		if(isset($_GET['action']) && $_GET['action'] == 'modification')
-		{
-                    $i=1;
-                    foreach ($cols as $col)
+		
+                $i=1;
+                foreach ($cols as $col)
+                {
+                    if($i > 1){
+                        $n = '_' . $i;
+                    }else{
+                        $n = "";
+                    }
+                    $i++;
+
+                    if(isset($_GET['action']) && $_GET['action'] == 'modification')
                     {
-                        if($i > 1){
-                            $n = '_' . $i;
-                        }else{
-                            $n = "";
-                        }
-                        $i++;
-			if(isset($_POST["photo_actuelle$n"]))
+                        if(isset($_POST["photo_actuelle$n"]))
                         {
                             ${'photo_bdd' . $n} = $_POST['photo_actuelle' . $n]; // dans le cas d'une modif, on place le src de l'ancienne photo dans $photo_bdd avant de tester si une nouvelle photo a été postée qui écrasera la valeur de $photo_bdd
                         }
-                        // vérif sur photo
-                        if(!empty($_FILES['photo'.$n]['name'])) // si une photo a été postée
-                        {
-                                $photon = 'photo'.$n;
-                                if(verif_extension_photo($photon))
-                                {
-
-                                        // il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
-                                        // on concatène donc la référence qui est unique avec le nom de la photo.
-                                        $nom_photo = $_FILES[$photon]['name'];
-                                        $photo_tmp = 'img/' . $nom_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
-                                        $chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_photo; // représente le chemin absolu pour enregistrer la photo.
-                                        copy($_FILES[$photon]['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
-                                        
-                                        ${'photo_bdd'.$n} = accorder_image($photo_tmp);
-
-
-                                }else { // l'extension de la photo n'est pas valide
-                                        $msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
-                                }   
-                        }
                         // suppression de photos (si checkbox coché)
-                                if(isset($_POST['ph_del'.$n]) && $_POST['ph_del'.$n] == "on")
-                                {
-                                    if(file_exists('../' . ${'photo_bdd'.$n})){
-                                        unlink('../' . ${'photo_bdd'.$n});
-                                    }
-                                    ${'photo_bdd'.$n} = "";
-                                }
+                        if(isset($_POST['ph_del'.$n]) && $_POST['ph_del'.$n] == "on")
+                        {
+                            if(file_exists('../' . ${'photo_bdd'.$n})){
+                                unlink('../' . ${'photo_bdd'.$n});
+                            }
+                            ${'photo_bdd'.$n} = "";
+                        }
                     }
-		}
-                // Vérification photos END
-		// ENREGISTREMENT EN BDD	
-		if(empty($msg) && !empty($titre) && !empty($categorie) ) // s'il n'y a pas d'erreur au préalable, alors on lance l'enregistrement en BDD et champs requis remplis
-		{
-			
-			if(isset($_GET['action']) && $_GET['action'] == 'ajout')
-			{
-				execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo, photo_2, photo_3) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd', '$photo_bdd_2', '$photo_bdd_3')");
+                    // vérif sur photo
+                    if(!empty($_FILES['photo'.$n]['name'])) // si une photo a été postée
+                    {
+                            $photon = 'photo'.$n;
+                            if(verif_extension_photo($photon))
+                            {
 
-					//echo '<h1>Test ok</h1>';
-			}elseif (isset($_GET['action']) && $_GET['action'] == 'modification' )
-			{
-				execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd', photo_2='$photo_bdd_2', photo_3='$photo_bdd_3' WHERE id_salle='$id_salle'");
-			}
-			$msg .= '<div class="succes">' . ucfirst($_GET['action']) . ' OK !</div>';
-			$_GET['action'] = 'affichage'; // on bascule sur l'affichage du tableau pour voir l'enregsitrement ou la modification qui vient d'être exécutée.			 
-		}
+                                    // il faut vérifier le nom de la photo car si une photo possède le même nom, cela pourrait l'écraser.
+                                    // on concatène donc la référence qui est unique avec le nom de la photo.
+                                    $nom_photo = $_FILES[$photon]['name'];
+                                    $photo_tmp = 'img/' . $nom_photo; // $photo_bdd représente le src que nous allons enregistrer en BDD
+                                    $chemin_dossier = RACINE_SERVER . URL . 'img/' . $nom_photo; // représente le chemin absolu pour enregistrer la photo.
+                                    copy($_FILES[$photon]['tmp_name'], $chemin_dossier); // copy() permet de copier un fichier d'un endroit vers un autre. ici tmp_name est l'emplacement temporaire ou la photo est conservée après l'avoir chargée dans un formulaire.
+
+                                    ${'photo_bdd'.$n} = accorder_image($photo_tmp);
+
+
+                            }else { // l'extension de la photo n'est pas valide
+                                    $msg .= '<div class="erreur">L\'extension de la photo n\'est pas valide<br />Extensions acceptées: jpg / jpeg / png /gif</div>';
+                            }   
+                    }
+
+                }
+        // Vérification photos END
+                // ENREGISTREMENT EN BDD	
+                if(empty($msg) && !empty($titre) && !empty($categorie) ) // s'il n'y a pas d'erreur au préalable, alors on lance l'enregistrement en BDD et champs requis remplis
+                {
+
+                        if(isset($_GET['action']) && $_GET['action'] == 'ajout')
+                        {
+                                execute_requete("INSERT INTO salle (titre, description, pays, ville, adresse, cp, capacite, categorie, photo, photo_2, photo_3) VALUES ('$titre', '$description', '$pays', '$ville', '$adresse', '$cp', '$capacite', '$categorie', '$photo_bdd', '$photo_bdd_2', '$photo_bdd_3')");
+
+                                        //echo '<h1>Test ok</h1>';
+                        }elseif (isset($_GET['action']) && $_GET['action'] == 'modification' )
+                        {
+                                execute_requete("UPDATE salle SET titre='$titre', description='$description', pays='$pays', ville='$ville', adresse='$adresse', cp='$cp', capacite='$capacite', categorie='$categorie', photo='$photo_bdd', photo_2='$photo_bdd_2', photo_3='$photo_bdd_3' WHERE id_salle='$id_salle'");
+                        }
+                        $msg .= '<div class="succes">' . ucfirst($_GET['action']) . ' OK !</div>';
+                        $_GET['action'] = 'affichage'; // on bascule sur l'affichage du tableau pour voir l'enregsitrement ou la modification qui vient d'être exécutée.			 
+                }
 	}
-	
-}debug($_POST);
+        
+        
+}
+	debug($_POST);
 
 include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
