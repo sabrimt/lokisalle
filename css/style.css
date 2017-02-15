@@ -113,7 +113,26 @@ body {
     margin: 17px;
     border-bottom: 1px solid #225BAA;
 }
-
+.recherche_mobile {
+    display:none;
+}
+.recherche_salle_index_cache {
+ display: none;   
+}
+@media screen and (max-width: 768px) {
+    #filtres-boutique {
+        display:none;
+    }
+    #carousel-example-generic {
+        display:none;
+    }
+    .hometitre {
+        font-size:16pt;
+    }
+    .recherche_mobile {
+        display:unset;
+    }
+}
 /* ****************** PAGE PROFIL ******************* */
 .infos_profil {
 	color: #428bca;
