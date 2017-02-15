@@ -7,24 +7,40 @@ body {
 }
 
 .clear  {
-	clear:both;
+    clear:both;
 }
-/*  STYLE PERSO */
-.blueviolet {
-	color: lightslategray;
+/* ******************  STYLE PERSO ******************** */
+.btn.sharp {
+    border-radius: 0;
+}
+.btn-primary.raised {
+	box-shadow: 0 3px 0 0 #007299;
+}
+.btn-primary.raised:active, .btn-primary.raised.active {
+	background: #33a6cc;
+	box-shadow: none;
+	margin-bottom: -3px;
+	margin-top: 3px;
 }
 
-/*.navbar-inverse {
-	background-color: blueviolet;
-	color: darkred;
-}*/
+.blueviolet {
+    color: lightslategray;
+}
+.navbar-inverse {
+	background-color: #225BAA;
+	color: #EBFAFF;
+        border-color: white;
+}
 .navbar-inverse .navbar-brand  {
-	color:firebrick;
+	color:white;
 }
 .navbar-inverse .navbar-nav>li>a  {
-	color: firebrick;
+	color: #EBFAFF;
 }
-
+.navbar-inverse .navbar-nav>li>a:hover {
+    color: darkred;
+    
+}
 .erreur {
 	background-color: darkred;
 	color: white;
@@ -39,21 +55,125 @@ body {
 	padding: 5px;
 	margin-top: 20px;
 }
-
-/* PAGE PROFIL */
+/* ****************** INDEX - PAGE D'ACCUEIL ********************** */
+.hometitre {
+    font-family: 'Nunito', sans-serif;
+    text-align:center;
+    margin-top:30px;
+    margin-bottom: 30px;
+    
+}
+#carousel-example-generic {
+    margin-top:10px;
+    margin-bottom: 20px;
+/*    max-height:350px;
+    max-width:1200px;*/
+    margin-right:15px;
+    margin-left:15px;
+}
+.carousel-inner {
+/*   max-height:250px;
+   max-width:1200px;*/
+   text-align: center;
+}
+.item {
+    min-height: 223px;
+}
+.carrousel-image {
+}
+.carrousel-descriptif {
+     font-family: 'Nunito', sans-serif;
+     padding:50px;
+}
+.aside {
+    margin-top:10px;
+}
+.index-descr-fiche {
+    margin-bottom:0px;
+}
+.index-ref-fiche {
+    margin-top:0px;
+}
+.index-voir {
+    margin-top:10px;
+    margin-bottom: 10px;
+}
+.index-bouton-voir {
+    width:100%;
+}
+.salle_prix {
+	font-weight: bold;
+}
+.salle_titre {
+	color: steelblue;
+/*	font-weight: bold;*/
+}
+.nb-produits{
+    color: #225BAA;
+    margin: 17px;
+    border-bottom: 1px solid #225BAA;
+}
+.recherche_mobile {
+    display:none;
+}
+.recherche_salle_index_cache {
+ display: none;   
+}
+@media screen and (max-width: 768px) {
+    #filtres-boutique {
+        display:none;
+    }
+    #carousel-example-generic {
+        display:none;
+    }
+    .hometitre {
+        font-size:16pt;
+    }
+    .recherche_mobile {
+        display:unset;
+    }
+}
+/* ****************** PAGE PROFIL ******************* */
 .infos_profil {
 	color: #428bca;
 	display: inline-block;
 	width: 100px;
 	font-style: italic;
 }
-/* FICHE PRODUIT */
+/* ****************** FICHE PRODUIT ******************** */
+.panel-body {
+    padding-bottom: 0;
+}
+.fiche_produit {
+    margin-top: 25px;
+}
+.fiche_produit_h1 {
+font-size:22pt;
+}
+.fiche_produit_h2 {
+font-size:16pt;
+/*text-align: center;*/
+margin-left:55px;
+margin-top:0;
+margin-bottom: 0;
+}
+
+legend {
+    padding-left:20px;
+    padding-top:5px;
+    padding-bottom:5px;
+    margin-bottom: 0;
+/*    text-align: center;*/
+}
 .fiche_main_pic {
     text-align: center;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    margin-top:20px;
 }
 .main_pic {
     display: inline-block;
-    max-width: 100%;
+    width: 100%;
     height: auto;
     padding: 4px;
     line-height: 1.42857143;
@@ -62,6 +182,30 @@ body {
     border-radius: 4px;
 /*    margin-top:5px;*/
 }
+#large {
+    display: inline-block;
+    width: 80%;
+/*    height: auto;*/
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+.fiche_main_pic img {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  opacity: 1;
+  transition: opacity 1.85s;
+}
+.fiche_main_pic .hideme {
+  opacity: 0;
+  transition: opacity 0s;
+}
 .fiche-top {
     padding:15px;
 }
@@ -69,10 +213,15 @@ img {
     vertical-align: inherit;
 }
 .fiche_other_pics {
-    margin-top:20px;
 }
-/* FICHE ARTICLE */
-p .label_fiche {
+.daty2 {
+    padding-top:10px;
+    padding-bottom:5px;
+    padding-left:10px;
+    border-radius:5px;
+    display: none;
+}
+.label_fiche {
 	display: inline-block;
 	width: 140px;
 	color: #428bca;
@@ -93,31 +242,73 @@ p .label_fiche {
 .fichepro {
     width:100%;
 }
-.no-photo {
-    height: 165.36px;
-    margin-bottom: 9.64px;
-    padding-top: 30%;
-    background-color:#ccc;
-    text-align: center;
-}
-.no-photo p {
-        font-weight: bold;
-    }
+
 input.nn {
     -moz-appearance: textfield;
 }
-
-.salle_titre {
-	color: steelblue;
-	font-weight: bold;
+/** MAP **/
+#map {
+    height: 200px;
+    max-width: 345px;
+    border-radius: 2px;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-.salle_prix {
-	font-weight: bold;
-
+.adresse_carte {
+    margin-left: 50px;
+    max-width:85px;
 }
+#adresse {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+#text_latlng {
+    margin: 10px;
+}
+/** map end **/
 
-/* Tableau d'affichage des tables */
+@media screen and (max-width: 700px) {
+  .fiche_main_pic  {
+    display:none;
+  }
+}
+.autres_dispo_block {
+    margin-top: 30px;
+    padding-left:15px;
+}
+.fiche_produits_salles_villes {
+    padding-left:15px;
+    margin-left:15px;
+    margin-right:15px;
+    padding-right:15px;
+/*    background-color: #6EB6FF;*/
+    
+    
+}
+.vignette_fichpro {
+/*   background-color: #90F2FF;*/
+}
+.oklm {
+    margin-top:30px;
+    margin-bottom: 30px;
+}
+.dispo {
+    padding-top:40px;
+    line-height: 20px;
+    padding: 7px;
+    font-size:11px;
+    list-style-type: none; 
+}
+.dispo a {
+    text-decoration: none;
+    color: #333;
+    line-height: 20px;
+    padding: 5px;
+}
+.dispo a:hover {
+    color: #428bca;
+}
+/* ************* Tableau d'affichage des tables *************** */
 .affichage {
 	text-align: center;
 }
@@ -130,28 +321,87 @@ th.affichage {
 /* Connexion */
 .container_connexion {
 	position: fixed;
-	z-index:1;
-	width: 100%;
+	z-index:100;
+	min-width: 100%;
 	height: 100%;
-	padding: 5em 30em 5em 30em;
-
-background: rgba(0, 0, 0, 0.4);
+        padding-top:30px;
+        padding-left:40px;
+        padding-right:40px;
+/*	padding: 5em 30em 5em 30em;*/
+        background: rgba(0, 0, 0, 0.4);
 	/*opacity: 0.5;*/
-
 }
 
 .block_connexion {
-	margin: 0 auto;
+/*	margin: 0 auto;*/
+        min-width:300px;
+       
 	padding: 15px;
 	background-color: white;
 	border-radius: 1em;
 	border: 1px solid;
 }
+@media screen and (max-width: 1070px) {
+   
+    .block_connexion {
+         right:5%;
+         max-width:400px;
+    }
+}
+@media screen and (max-width: 770px) {
+   
+    .block_connexion {
+/*         right:1%;*/
+         max-width:350px;
+         left:15%;
+    }
+}
+@media screen and (max-width: 560px) {
+   
+    .block_connexion {
+         right:15%;
+             left:5%;
+         max-width:350px;
+    }
+}
+@media screen and (max-width: 460px) {
+   
+    .block_connexion {
+         right:18%;
+             left:1%;
+         max-width:350px;
+    }
+}
+/*@media screen and (max-width: 765px) {
+   
+    .block_connexion {
+         right:75%;
+    }
+}*/
+/*@media screen and (max-width: 600px) {
+   
+    .block_connexion {
+         right:100%;
+         
+    }
+}*/
 
 .fermeture>a {
 	text-decoration: none;
 	color: red;
 
+}
+
+/********* GESTION DES SALLES **********/
+.bloc-photos {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+legend {
+    margin-bottom: 20px;
+}
+.photo-actuelle{
+    margin-top: 15px;
 }
 /**** BOUTONS INPUT-FILE ****/
 
@@ -166,10 +416,31 @@ background: rgba(0, 0, 0, 0.4);
 }
 
 /*stylisation du label*/
-.btn-label {
-    width: 70%;
-    
-    
+@media screen and (max-width: 1000px){
+    .btn-label {
+       font-size: 0.8em;
+    }
 }
- 
+.btn-label {
+    display: block;
+    width: 70%;
+    margin: 0 auto;
+}
+.input-file:focus + label {
+	outline: 1px dotted #000;
+	outline: -webkit-focus-ring-color auto 4px;
+}
+.btn-label span {
+    margin-left: 5px;
+}
+.oqp {
+    background-color: #91BACF;
+}
+.oqp:hover {
+    background-color: #77ABD6;
+}
+.oqp>span {
+    color: lime;
+}
 /**** boutons input-file ****/
+/********* gestion des salles **********/

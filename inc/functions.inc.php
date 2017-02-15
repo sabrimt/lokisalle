@@ -95,9 +95,9 @@ function utilisateur_est_connecte_et_est_admin()
 }
 
 // FONCTIONS GESTION BOUTIQUE
-function verif_extension_photo()
-{
-	$extension = strrchr($_FILES['photo']['name'], '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
+function verif_extension_photo($col_name)
+{   
+	$extension = strrchr($_FILES[$col_name]['name'], '.'); // permet de retourner la chaine de caractères contenue après le '.' fourni en 2eme argument. Cette fonction part de la fin de la chaine puis remonte pour couper la chaine lorsqu'elle tombe sur la première occurence du caractère fourni en 2eme argument. Par exemple on récupère .jpg
 	$extension = strtolower(substr($extension, 1)); // ici on transforme la chaine en minuscule (strtolower) au cas ou et on coupe le point du début de la chaine (substr) au final le .jpg ou .JPG devient => jpg
 	$extension_valide = array('jpg', 'jpeg', 'png', 'gif'); // on place dans un tableau array les extensions accepetées.
 	
@@ -105,10 +105,48 @@ function verif_extension_photo()
 	
 	return $verif_extension; // on renvoi donc true ou false.
 }
+/****** redimensionnement des images ******/
+function accorder_image($source)
+{   
+    // Je renomme le fichier de sortie
+    $explode_src = explode('.', $source);
+    $src_name = $explode_src[0];
+    $renamed = $src_name . time() . '.jpg';
+    
+    // je récupère le type mime
+    $mime = mime_content_type('../' . $source);
+    $explode_mime = explode('/', $mime);
+    $ext = $explode_mime[count($explode_mime) - 1];
+    
+    $image_create = 'imagecreatefrom' . $ext; // détermine le nom de la function en fonction du mime type du fichier
+    $largeur = 300;// définition des nouvelles valeurs 
+    $hauteur = 200;
+    
+    
+    $image = $image_create('../' . $source);
+    $taille = getimagesize('../' . $source);
+    $sortie = imagecreatetruecolor($largeur,$hauteur);
 
+    $coef = min($taille[0]/$largeur,$taille[1]/$hauteur);
 
-// .jpg
-// .jpeg
+    $deltax = $taille[0]-($coef * $largeur);
+    $deltay = $taille[1]-($coef * $hauteur);
+
+    imagecopyresampled($sortie,$image,0,0,$deltax/2,$deltay/2,$largeur,$hauteur,$taille[0]-$deltax,$taille[1]-$deltay);
+    
+    imagejpeg($sortie, '../' . $renamed, 100);
+       
+    /*
+      Libération de la mémoire allouée aux deux images (sources et nouvelle).
+    */
+    imagedestroy($sortie);
+    imagedestroy($image);
+    
+    unlink('../' . $source); // Je supprime l'image chargée temporairement
+    
+    return $renamed;
+}
+
 
 /* FONCTIONS PANIER */
 //--- création du panier
@@ -194,12 +232,22 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 	
 	echo '<div class="col-sm-12">';
 
-	$resultat = $mysqli->query($req);// Requete de récupération de table
+	$resultat = execute_requete($req);// Requete de récupération de table
 	echo '<table border="2" class="table table-striped" style="border-collapse: collapse; width: 100%;">';
 	echo '<tr>';
+        
+        $nb_col = $resultat->field_count; // nombre de champs renvoyés par la requête(nombre de colonnes)
 	while($colonne = $resultat->fetch_field()) 
 	{
+            if($nb_col > 11)
+            {
 		echo '<th class="affichage">' . $colonne->name . '</th>';
+            } else {
+                if($colonne->name != 'photo_2' && $colonne->name != 'photo_3')
+                {
+                    echo '<th class="affichage">' . $colonne->name . '</th>';
+                }
+            }
 	}
 	if($nom_id !== "") // Si l'argument $nom_id est différent de "", ajouter les colonnes suppression et modification
 	{
@@ -208,19 +256,38 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 	echo '</tr>';
 
 	while($entree = $resultat->fetch_assoc())
-	{
+	{       $photo = ""; // permet de stocker la photo en cours
+        
 		echo '<tr>';
 		foreach($entree AS $indice => $valeur)
 		{
 			// afficher les images dans un img src !
-			if($indice == 'photo' || $indice == 'photo_2' || $indice == 'photo_3')
+			if(($indice == 'photo') || ($indice == 'photo_2') || ($indice == 'photo_3'))
 			{
-                            if (!empty($valeur))
+                            if($nb_col > 11)
                             {
-				echo '<td  class="affichage"><img src="' . URL . $valeur . '" alt="'. $valeur .'" width="90" /></td>';
+                                if (!empty($valeur))
+                                {
+                                    echo '<td  class="affichage"><img src="' . URL . $valeur . '" alt="'. $valeur .'" width="90" /></td>';
+                                } else {
+                                    echo '<td  class="affichage">Pas d\'image</td>';
+                                }
                             } else {
-                                echo '<td  class="affichage">Pas d\'image</td>';
+                                    if($photo == "")
+                                    {
+                                        $photo = $valeur;
+                                    }
+                                    if ($indice == 'photo_3')
+                                    {
+                                        if(!empty($photo))
+                                        {
+                                            echo '<td  class="affichage"><img src="' . URL . $photo . '" alt="'. $photo .'" width="90" /></td>'; 
+                                        } else {
+                                            echo '<td  class="affichage">Pas d\'image</td>';
+                                        }
+                                    }
                             }
+                            
 			}elseif($indice == 'description')
 			{
 				echo '<td  class="affichage">' . substr($valeur, 0, 26) . ' <a href="">... lire la suite</a></td>';
@@ -251,10 +318,10 @@ function afficher_table_avec_boucle($req, $nom_id = "")
 function change_date($date_bdd)
 {
 
-$date = new DateTime($date_bdd);
+    $date = new DateTime($date_bdd);
 
-//Retourne la date au format francophone:
-return $date->format('d/m/Y H:i:s');
+    //Retourne la date au format francophone:
+    return $date->format('d/m/Y H:i');
 }
 
 
