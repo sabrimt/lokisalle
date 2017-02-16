@@ -125,7 +125,7 @@ include("inc/nav.inc.php");
                                 }
                                 
                             }else {
-                                echo '<small><i>Il n\'y a pas d\'autres disponiblités pour cette salle</i></small>' ;
+                                echo '<small><i>Il n\'y a pas d\'autre disponiblité pour cette salle</i></small>' ;
                             }
                             
                             ?>
@@ -140,6 +140,8 @@ include("inc/nav.inc.php");
                     
                     <div class="row">
                         <?php
+                        if ($autres_ville->num_rows >0) {
+                            
                             while($autres_salles = $autres_ville->fetch_assoc())
                             {
                                     $photo_salle = "img/no_photo.jpg";
@@ -171,6 +173,20 @@ include("inc/nav.inc.php");
                         </div>
                         <?php
                             }
+                        } else {
+                            ?>
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-left:20px; padding-bottom: 10px; text-align: center;">
+                                <small><i>Il n'y a pas encore d'autre salle disponible dans cette ville</i></small><br/> <br/>
+                                <img src="img/icon-confused.jpg" style="width:100%; max-width: 100px;">
+                            </div>
+                            
+                            
+                        </div>
+                            
+                        <?php 
+                            
+                        }
                         ?>
                     </div>
               </div>

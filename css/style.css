@@ -41,6 +41,10 @@ body {
     color: darkred;
     
 }
+.navbar-brand {
+    float:none;
+    
+}
 .erreur {
 	background-color: darkred;
 	color: white;
@@ -61,8 +65,8 @@ body {
     text-align:center;
     margin-top:30px;
     margin-bottom: 30px;
-    
 }
+
 #carousel-example-generic {
     margin-top:10px;
     margin-bottom: 20px;
@@ -71,19 +75,25 @@ body {
     margin-right:15px;
     margin-left:15px;
 }
+
 .carousel-inner {
 /*   max-height:250px;
    max-width:1200px;*/
    text-align: center;
 }
-.item {
-    min-height: 223px;
+.item2 {
+/*    min-height: 223px;*/
+    width:100%;
+
 }
 .carrousel-image {
 }
 .carrousel-descriptif {
      font-family: 'Nunito', sans-serif;
      padding:50px;
+}
+.message-erreur {
+    padding:10px;
 }
 .aside {
     margin-top:10px;
@@ -453,3 +463,11 @@ legend {
 }
 /**** boutons input-file ****/
 /********* gestion des salles **********/
+
+/* *********** FOOTER ************* */
+.footero {
+    margin-top: 20px;
+}
+.li-footer {
+
+}

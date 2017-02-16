@@ -1,5 +1,26 @@
 
+<nav class="navbar navbar-inverse navbar-bottom" style="margin-top: 30px; margin-bottom:0; background: grey;">
+     <div class="container">
+          <div class="col-sm-11 col-sm-offset-1 footero" 
+        <div class="navbar-footer">
+           
+                <ul class="nav navbar-nav" style="min-height: 70px; font-size:10pt;">
+                  <li class="li-footer">  <a href="<?php echo URL; ?>index.php"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> CavaSalle </a> </li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>qui_sommes_nous.php"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Mentions Légales </a></li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>qui_sommes_nous.php"><span class="glyphicon glyphicon-paperclip" aria-hidden="true"></span> Conditions Générales de Vente </a></li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>qui_sommes_nous.php"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Plan du Site </a></li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>qui_sommes_nous.php"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Nous Rejoindre </a></li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>qui_sommes_nous.php"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Nous Contacter </a></li>
+                  <li class="li-footer">  <a href="<?php echo URL; ?>contact.php"><span class="glyphicon glyphicon-knight" aria-hidden="true"></span> Groupe Cava </a></li>
+                 </ul>
+        </div>
+         
+     </div>
+    
+</nav>
 
+
+    
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -29,19 +50,7 @@
 
 <!-- JAVASCRIPT PERSO  -->
         <script type="text/javascript" src="<?= URL; ?>js/main.js"></script>
-<!--        
-         <script>
 
-		     $(function() {
-		       $('.daty2').fadeIn(1000).css('background-color', '#f5f8fd');
-		    });
-
-	</script>
-        <script>
-            var filtreSalle = $('#filtres-salle');
-            var filtreMobile = $('#filtres-mobile');
-        filtreSalle.clone().appendTo(filtreMobile);
-     </script>-->
             
   </body>
 </html>

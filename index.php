@@ -170,7 +170,6 @@ if($get_active)
             $produit["id_salle"] = $salle['id_salle'];
 
             $tab_produit[] = $produit;
-
     }
 }
 // Texte affiché pour le résultat de produits
@@ -206,11 +205,8 @@ include("inc/nav.inc.php");
                   </div>
               </div>
           </div>
-          
-<!--     
-        <div class="starter-template">
-            <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
-        </div>-->
+           
+       
           <div class="row">
               <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
@@ -224,28 +220,28 @@ include("inc/nav.inc.php");
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner" role="listbox">
                   <div class="item active">
-                      <img src="img/homepub.jpg" alt="...">
+                      <img class="item2" src="img/homepub.jpg" alt="...">
                       <div class="carousel-caption">
                           <h2><b></b></h2>
                         <p></p>
                       </div>
                   </div>
                     <div class="item">
-                    <img src="img/conference_1.jpg" alt="...">
+                    <img class="item2" src="img/conference_1.jpg" alt="...">
                     <div class="carousel-caption">
                         <h2><b>Salles Conférence</b></h2>
                        <p>Conférence, Assemblée...</p>
                     </div>
                   </div>
                   <div class="item">
-                    <img src="img/reu_1.jpg" alt="...">
+                    <img class="item2" src="img/reu_1.jpg" alt="...">
                     <div class="carousel-caption">
                         <h2><b>Salles Réunion</b></h2>
                        <p>Réunion, entretien, présentation...</p>
                     </div>
                   </div>
                   <div class="item">
-                    <img src="img/standup2.jpg" alt="...">
+                    <img class="item2" src="img/standup2.jpg" alt="...">
                     <div class="carousel-caption">
                         <h2><b>Salles StandUp Meeting - Buffet</b></h2>
                       <p>Pour Petit-Déjeuner, Rencontre, Débat...</p>
@@ -264,6 +260,9 @@ include("inc/nav.inc.php");
                 </a>
             </div>
           </div>
+           <div class="starter-template message-erreur">
+            <?php echo $msg; // variable initialisée dans le fichier init.inc.php ?>
+        </div>
          <div class="row">
             <aside id="filtres-boutique" class="col-sm-3">
                     <form method="GET" action="" class="form" id="filtres-salle">
@@ -329,18 +328,31 @@ include("inc/nav.inc.php");
              </aside>
              <div class="col-xs-12 col-sm-9">
              
-                 <div class="nb-produits"><h4><?= $nb_produit_texte ?></h4></div>
+                 
+                    <?php if ($nb_result != 0) {
+                        echo '<div class="nb-produits"><h4>' . $nb_produit_texte . '</h4></div>';
+                    } else {
+                   
+                          echo '<div class="nb-produits"><h4> Pas de salle disponible </h4></div>';
+                    ?>
+                 <div class="row">
+                            <div class="col-sm-12" style="margin-top:40px; padding-bottom: 30px; text-align: center;">
+                                <i>Il n'y a plus de disponibilité pour le moment pour cette salle... </i><br/> <br/>
+                                <img src="img/icon-confused.jpg" style="width:100%; max-width: 150px;">
+                            </div>
+                            
+                            
+                        </div>
               <?php 
+                     }
                     // Affichage des différents produits
                     foreach($tab_produit AS $index => $val)
                     {
                         $reftitre = strtolower(substr($tab_produit[$index]['titre'], 0, 3));
                             ?>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" >
-<!--                    style="min-width:271px;"-->
                     <div class=" panel panel-primary">
                         <div class="panel-body" >
-<!--                            style="min-width:240px;"-->
                             <?php 
                                 if(!empty($tab_produit[$index]['photo']))
                                 {

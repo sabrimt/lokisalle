@@ -90,7 +90,6 @@ if(isset($_GET['action']) && $_GET['action'] == 'modification')
 
 if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays']) && isset($_POST['ville']) && isset($_POST['adresse']) && isset($_POST['cp']) && isset($_POST['capacite']) && isset($_POST['categorie']))
 {
-//	debug($_POST);
 	foreach($_POST as $indice => $valeur)
 	{
 		$_POST[$indice] = htmlentities($valeur, ENT_QUOTES);
@@ -178,7 +177,6 @@ if(isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['pays'
         
         
 }
-	debug($_POST);
 
 include("../inc/header.inc.php");
 include("../inc/nav.inc.php");
